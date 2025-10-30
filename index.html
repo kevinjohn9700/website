@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello, World!</title>
-  </head>
-  <body>
-    <h1>Hello</h1>
-    <form action="/submit" method="POST">
-      <button type="submit" name="response" value="yes">Yes</button>
-      <button type="submit" name="response" value="no">No</button>
-    </form>
-  </body>
-</html>
+from flask import Flask, render_template, request
 
+app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return render_template('myfile.html')
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    response = request.form.get('response')
+    print(f"User clicked: {response}")
+    return f"You clicked: {response}"
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
