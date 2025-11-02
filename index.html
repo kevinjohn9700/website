@@ -1,28 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>I Love You</title>
     <style>
+      :root {
+        --bg: #fff0f5;
+        --accent: #e6005c;
+        --text: #3a3a3a;
+      }
+
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+
       body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         text-align: center;
-        font-family: 'Segoe UI', sans-serif;
-        background-color: #fff0f5;
-        padding-top: 80px;
+        font-family: 'Segoe UI', Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        padding: 24px;
       }
+
       h1 {
-        font-size: 60px;
-        font-weight: bold;
-        color: #e6005c;
+        font-size: clamp(28px, 5vw, 60px);
+        font-weight: 700;
+        color: var(--accent);
+        margin: 0;
       }
-      img {
-        margin-top: 30px;
-        width: 160px;
+
+      .image-wrap {
+        margin-top: 24px;
+        max-width: 320px;
+        width: 100%;
+      }
+
+      .image-wrap img {
+        display: block;
+        width: 100%;
         height: auto;
+        border-radius: 8px;
+      }
+
+      /* small accessibility helper: reduce motion for users who prefer it */
+      @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; animation: none !important; }
       }
     </style>
   </head>
   <body>
-    <h1>I LOVE YOU</h1>
-    <img src="https://copilot.microsoft.com/th/id/BCO.e68882f2-4f41-4502-b998-e30478477918.png" alt="Rose">
+    <main>
+      <h1>I Love You</h1>
+      <div class="image-wrap" aria-hidden="false">
+        <!-- Confirm this URL resolves and you have permission to use it.
+             If not, replace with a local path like "images/rose.png". -->
+        <img src="https://copilot.microsoft.com/th/id/BCO.e68882f2-4f41-4502-b998-e30478477918.png"
+             alt="Single red rose on a light pink background" />
+      </div>
+    </main>
   </body>
 </html>
