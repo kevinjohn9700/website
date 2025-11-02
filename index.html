@@ -1,70 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>I Love You </title>
-    <style>
-      :root {
-        --bg: #fff0f5;
-        --accent: #e6005c;
-        --text: #3a3a3a;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>I Love You</title>
+  <style>
+    :root {
+      --bg: #fff0f5;
+      --accent: #e6005c;
+      --text: #3a3a3a;
+    }
 
-      html, body {
-        height: 100%;
-        margin: 0;
-      }
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
 
-      body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-        font-family: 'Segoe UI', Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-        background-color: var(--bg);
-        color: var(--text);
-        padding: 24px;
-      }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 24px;
+      position: relative;
+    }
 
-      h1 {
-        font-size: clamp(28px, 5vw, 60px);
-        font-weight: 700;
-        color: var(--accent);
-        margin: 0;
-      }
+    h1 {
+      font-size: clamp(28px, 5vw, 60px);
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0;
+    }
 
-      .image-wrap {
-        margin-top: 24px;
-        max-width: 320px;
-        width: 100%;
-      }
+    .image-wrap {
+      margin-top: 24px;
+      max-width: 320px;
+      width: 100%;
+    }
 
-      .image-wrap img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-      }
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
 
-      /* small accessibility helper: reduce motion for users who prefer it */
-      @media (prefers-reduced-motion: reduce) {
-        * { transition: none !important; animation: none !important; }
+    button {
+      margin-top: 32px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c4004f;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
       }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>I Love You Tessakutty</h1>
-      <div class="image-wrap" aria-hidden="false">
-        <!-- Confirm this URL resolves and you have permission to use it.
-             If not, replace with a local path like "images/rose.png". -->
-        <img src="https://copilot.microsoft.com/th/id/BCO.e68882f2-4f41-4502-b998-e30478477918.png"
-             alt="Single red rose on a light pink background" />
-      </div>
-    </main>
-  </body>
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>I Love You Tessakutty</h1>
+    <div class="image-wrap" aria-hidden="false">
+      <img src="https://copilot.microsoft.com/th/id/BCO.e68882f2-4f41-4502-b998-e30478477918.png"
+           alt="Single red rose on a light pink background" />
+    </div>
+
+    <button onclick="showHearts()">I Love You Too</button>
+  </main>
+
+  <script>
+    function showHearts() {
+      for (let i = 0; i < 100; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = '❤️';
+        heart.style.top = Math.random() * window.innerHeight + 'px';
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        document.body.appendChild(heart);
+      }
+    }
+  </script>
+</body>
 </html>
-
-
