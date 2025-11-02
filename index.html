@@ -59,38 +59,19 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #c4004f;
     }
 
     .heart {
       position: absolute;
       font-size: 24px;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        transition: none !important;
-        animation: none !important;
-      }
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
   <main>
     <h1>I Love You Tessakutty</h1>
-    <div class="image-wrap" aria-hidden="false">
+    <div class="image-wrap">
       <img src="https://copilot.microsoft.com/th/id/BCO.e68882f2-4f41-4502-b998-e30478477918.png"
            alt="Single red rose on a light pink background" />
     </div>
