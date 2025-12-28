@@ -11,7 +11,7 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
 
 /* Cake & Slice Containers */
-.cake-container, .slice-container {
+.cake-container {
   position:relative;
   text-align:center;
   user-select:none; 
@@ -30,10 +30,11 @@ h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
   top:120%; /* below the slice */
   left:50%;
   transform:translateX(-50%);
-  color:#ff3b7f;
+  color:black;            /* black text */
   font-size:1.5rem;
   font-weight:700;
   opacity:0;
+  white-space:nowrap;     /* single line */
   transition: opacity 1s ease;
 }
 
@@ -56,7 +57,7 @@ h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
     <span class="flame">🔥</span>
   </div>
   <div class="slice-emoji" id="slice">🍰</div>
-  <div class="cake-text" id="cakeText">Perfect Cut! Well Done! 🎉</div>
+  <div class="cake-text" id="cakeText">PERFECT CUT WELL DONE</div>
 </div>
 
 <script>
@@ -80,14 +81,13 @@ function serveSlice() {
   cake.style.transition = 'opacity 0.5s ease';
   cake.style.opacity = 0;
 
-  // Fade in slice
+  // Fade in slice and text
   setTimeout(() => {
     slice.style.opacity = 1;
-    cakeText.style.opacity = 1; // show text under slice
-  }, 500); // wait until cake fades out
+    cakeText.style.opacity = 1;
+  }, 500);
 }
 </script>
 
 </body>
 </html>
-
