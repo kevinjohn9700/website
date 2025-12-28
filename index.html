@@ -25,6 +25,18 @@ h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
 .cake-emoji { font-size:20rem; position:relative; transition: opacity 0.5s ease; }
 .slice-emoji { font-size:18rem; opacity:0; position:absolute; top:0; left:50%; transform:translateX(-50%); transition: opacity 1.2s ease; }
 
+.cake-text {
+  position:absolute;
+  top:120%; /* below the slice */
+  left:50%;
+  transform:translateX(-50%);
+  color:#ff3b7f;
+  font-size:1.5rem;
+  font-weight:700;
+  opacity:0;
+  transition: opacity 1s ease;
+}
+
 /* Flame */
 .flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
 
@@ -44,12 +56,14 @@ h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
     <span class="flame">🔥</span>
   </div>
   <div class="slice-emoji" id="slice">🍰</div>
+  <div class="cake-text" id="cakeText">Perfect Cut! Well Done! 🎉</div>
 </div>
 
 <script>
 const cakeContainer = document.getElementById('cakeContainer');
 const cake = document.getElementById('cake');
 const slice = document.getElementById('slice');
+const cakeText = document.getElementById('cakeText');
 
 let startX = 0;
 let served = false;
@@ -69,6 +83,7 @@ function serveSlice() {
   // Fade in slice
   setTimeout(() => {
     slice.style.opacity = 1;
+    cakeText.style.opacity = 1; // show text under slice
   }, 500); // wait until cake fades out
 }
 </script>
