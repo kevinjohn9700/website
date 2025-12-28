@@ -4,318 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy Birthday 🎂</title>
-
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+* { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+body { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:#ffd6e8; }
+
+.card { width: 90%; max-width: 360px; background: #fff3f7; border-radius:30px; padding:40px 28px; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,.15);}
+.card h1 { color:#ff2f92; font-size:1.9rem; margin-bottom:18px; }
+.card p { color:#444; font-size:1rem; line-height:1.6; margin-bottom:22px; }
+.btn { width:100%; padding:16px; border:none; border-radius:40px; background: linear-gradient(135deg,#ff2f92,#ff5fb3); color:white; font-size:1.05rem; cursor:pointer; }
+
+.cake-container {
+  text-align:center;
+  margin-top:30px;
+  opacity:0;
+  transform: scale(0.8);
+  transition: all 0.8s ease;
 }
 
-body {
-  height: 100vh;
-  background: #fff;
-  overflow: hidden;
+.cake-container.show {
+  opacity:1;
+  transform: scale(1);
 }
 
-/* SCREENS */
-.screen {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  transition: opacity .6s ease;
-}
+.cake-emoji { font-size:20rem; position:relative; }
+.flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* FIRST PAGE */
-#screen1 {
-  background: linear-gradient(135deg, #fff0f5, #ffe6ef);
-  animation: zoomIn 1.6s ease forwards;
-}
-
-@keyframes zoomIn {
-  from { transform: scale(.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.card {
-  width: 90%;
-  max-width: 360px;
-  background: #fff3f7;
-  border-radius: 30px;
-  padding: 40px 28px;
-  text-align: center;
-  box-shadow: 0 25px 50px rgba(0,0,0,.15);
-}
-
-.card h1 {
-  color: #ff2f92;
-  font-size: 1.9rem;
-  margin-bottom: 18px;
-}
-
-.card p {
-  color: #444;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 22px;
-}
-
-.card .footer {
-  margin-top: 20px;
-  font-size: 0.85rem;
-  color: #999;
-}
-
-.btn {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 40px;
-  background: linear-gradient(135deg,#ff2f92,#ff5fb3);
-  color: white;
-  font-size: 1.05rem;
-  cursor: pointer;
-}
-
-/* CAKE PAGE */
-#screen2 {
-  background: linear-gradient(#fff,#ffe6ef);
-}
-
-h2 {
-  color: #ff4f8b;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #666;
-  margin-bottom: 24px;
-}
-
-/* CAKE */
-.cake-wrapper {
-  position: relative;
-  width: 180px;
-  height: 110px;
-  touch-action: none;
-}
-
-.cake-half {
-  position: absolute;
-  top: 0;
-  width: 90px;
-  height: 110px;
-  background: #f28cb2;
-  transition: transform .7s ease;
-}
-
-.left {
-  left: 0;
-  border-radius: 0 0 0 18px;
-}
-
-.right {
-  right: 0;
-  border-radius: 0 0 18px 0;
-}
-
-.layer {
-  position: absolute;
-  width: 100%;
-  height: 12px;
-  background: #ffd1e2;
-  top: 40px;
-}
-
-.layer2 { top: 70px; }
-
-.frosting {
-  position: absolute;
-  top: -22px;
-  width: 100%;
-  height: 44px;
-  background: white;
-  border-radius: 50%;
-}
-
-.candle {
-  position: absolute;
-  top: -38px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 28px;
-  background: #ffd966;
-  border-radius: 4px;
-}
-
-/* CONFETTI */
-.confetti {
-  position: fixed;
-  width: 8px;
-  height: 12px;
-  top: -20px;
-  animation: fall 1.5s linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(120vh) rotate(360deg);
-  }
+@keyframes flicker {
+  0% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
+  50% { transform: translateX(-50%) translateY(-5px) scale(1.1); opacity:0.8; }
+  100% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
 }
 </style>
 </head>
-
 <body>
 
-<!-- SCREEN 1 -->
-<div class="screen" id="screen1">
-  <div class="card">
-    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
-    <p>Today is all about celebrating the most amazing person in my world. I’ve created something magical just for you on your special day...</p>
-    <button class="btn" onclick="goNext()">Let’s Gooo 💖✨</button>
-    <p class="footer">Made with endless love for your special day 💕</p>
-  </div>
+<div class="card">
+  <h1>Happy Birthday, Beautiful! 🎂✨</h1>
+  <p>Today is all about celebrating the most amazing person in my world. Click the button below to see your special birthday cake!</p>
+  <button class="btn" onclick="showCake()">Let’s Go 💖✨</button>
 </div>
 
-<!-- SCREEN 2 -->
-<div class="screen hidden" id="screen2">
-  <h2>Cut the Cake 🎂</h2>
-  <div class="subtitle">Swipe left or right</div>
-
-  <div class="cake-wrapper" id="cake">
-    <div class="cake-half left" id="leftHalf">
-      <div class="frosting"></div>
-      <div class="layer"></div>
-      <div class="layer layer2"></div>
-    </div>
-
-    <div class="cake-half right" id="rightHalf">
-      <div class="frosting"></div>
-      <div class="layer"></div>
-      <div class="layer layer2"></div>
-    </div>
-
-    <div class="candle"></div>
+<!-- Hidden Cake -->
+<div class="cake-container" id="cake">
+  <div class="cake-emoji">
+    🎂
+    <span class="flame">🔥</span>
   </div>
 </div>
 
 <script>
-const screen1 = document.getElementById("screen1");
-const screen2 = document.getElementById("screen2");
-const cake = document.getElementById("cake");
-const leftHalf = document.getElementById("leftHalf");
-const rightHalf = document.getElementById("rightHalf");
-
-function goNext() {
-  screen1.classList.add("hidden");
-  screen2.classList.remove("hidden");
-}
-
-/* ===== RELIABLE MOBILE SWIPE ===== */
-let startX = 0;
-let cutDone = false;
-
-cake.addEventListener("pointerdown", e => {
-  startX = e.clientX;
-});
-
-cake.addEventListener("pointermove", e => {
-  if (cutDone) return;
-
-  const diff = e.clientX - startX;
-
-  if (Math.abs(diff) > 40) {
-    cutCake();
-  }
-});
-
-function cutCake() {
-  cutDone = true;
-
-  leftHalf.style.transform = "translateX(-70px)";
-  rightHalf.style.transform = "translateX(70px)";
-
-  confetti();
-}
-
-/* CONFETTI */
-function confetti() {
-  for (let i = 0; i < 35; i++) {
-    const c = document.createElement("div");
-    c.className = "confetti";
-    c.style.left = Math.random() * 100 + "vw";
-    c.style.background = `hsl(${Math.random()*360},100%,70%)`;
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 1500);
-  }
+function showCake() {
+  document.getElementById('cake').classList.add('show');
+  // Optional: scroll to cake
+  document.getElementById('cake').scrollIntoView({ behavior: 'smooth' });
 }
 </script>
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Your Cake</title>
-  <style>
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #ffd6e8;
-      display:flex; align-items:center; justify-content:center;
-      min-height:100vh;
-      overflow:hidden;
-    }
 
-    .cake-container {
-      text-align:center;
-      animation: fadeIn 1s forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity:0; transform: scale(0.8); }
-      to { opacity:1; transform: scale(1); }
-    }
-
-    .cake-base {
-      font-size: 10rem; /* bigger cake */
-      display:flex; justify-content:center; align-items:flex-end;
-      position:relative;
-    }
-
-    .candle { font-size:3rem; margin:0 0.25rem; position:relative; }
-    .flame {
-      position:absolute; top:-2rem; left:50%;
-      transform:translateX(-50%);
-      font-size:2rem;
-      animation: flicker 0.3s infinite alternate;
-    }
-
-    @keyframes flicker {
-      0% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
-      50% { transform: translateX(-50%) translateY(-5px) scale(1.1); opacity:0.8; }
-      100% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
-    }
-
-    .cake-emoji { font-size: 15rem; margin-top: 20px; }
-  </style>
-</head>
-<body>
-  <div class="cake-container">
-    <div class="cake-base">
-    <div class="cake-emoji">🎂</div>
-  </div>
-</body>
-</html>
 
