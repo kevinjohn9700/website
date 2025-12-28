@@ -37,7 +37,7 @@ body {
     pointer-events: none;
 }
 
-/* ===== FIRST PAGE (MATCH IMAGE) ===== */
+/* ===== FIRST PAGE ===== */
 #screen1 {
     background: white;
     animation: zoomIn 1.6s ease forwards;
@@ -130,6 +130,7 @@ h2 {
     overflow: hidden;
 }
 
+/* layers */
 .cake::before,
 .cake::after {
     content: "";
@@ -142,6 +143,7 @@ h2 {
 .cake::before { top: 35px; }
 .cake::after  { top: 65px; }
 
+/* frosting */
 .frosting {
     position: absolute;
     top: -22px;
@@ -151,6 +153,7 @@ h2 {
     border-radius: 50%;
 }
 
+/* candles */
 .candle {
     position: absolute;
     top: -38px;
@@ -172,6 +175,7 @@ h2 {
     border-radius: 50%;
 }
 
+/* cut line */
 .cut-line {
     position: absolute;
     top: 0;
@@ -199,26 +203,20 @@ h2 {
 <div class="screen" id="screen1">
     <div class="card">
         <h1>Happy Birthday, Beautiful! 🎂 ✨</h1>
-
         <p>
             Today is all about celebrating the most amazing person in my world.
             I’ve created something magical just for you on your special day…
         </p>
-
         <div class="ready">Ready for your birthday surprise?</div>
-
         <button class="btn" onclick="goNext()">Let’s Gooo 💖</button>
-
-        <div class="footer">
-            Made with endless love for your special day 💕
-        </div>
+        <div class="footer">Made with endless love for your special day 💕</div>
     </div>
 </div>
 
 <!-- SECOND PAGE -->
 <div class="screen hidden" id="screen2">
     <h2>It’s Cake Time! 🎂</h2>
-    <div class="subtitle">Swipe down to cut the cake</div>
+    <div class="subtitle">Swipe left or right to cut the cake</div>
 
     <div class="cake-area">
         <div class="cake" id="cake">
@@ -241,30 +239,33 @@ function goNext() {
     document.getElementById("screen2").classList.remove("hidden");
 }
 
+/* ===== CAKE CUT (LEFT / RIGHT SWIPE) ===== */
 const cake = document.getElementById("cake");
 const cutLine = document.getElementById("cutLine");
 const message = document.getElementById("message");
 
-let startY = null;
-let done = false;
+let startX = null;
+let cutDone = false;
 
 cake.addEventListener("pointerdown", e => {
-    startY = e.clientY;
+    startX = e.clientX;
 });
 
 cake.addEventListener("pointerup", e => {
-    if (done || startY === null) return;
+    if (cutDone || startX === null) return;
 
-    if (e.clientY - startY > 60) {
-        done = true;
+    const swipeDistance = e.clientX - startX;
+
+    if (Math.abs(swipeDistance) > 60) {
+        cutDone = true;
         cutLine.style.display = "block";
         message.style.display = "block";
     }
-    startY = null;
+
+    startX = null;
 });
 </script>
 
 </body>
 </html>
-
 
