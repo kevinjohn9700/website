@@ -1,57 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>For My Best Friend</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7e8ff;
-            text-align: center;
-            padding-top: 100px;
-        }
-        #box {
-            background: white;
-            padding: 30px;
-            width: 300px;
-            margin: auto;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-        #message {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        button {
-            padding: 10px 20px;
-            border: none;
-            background: #a855f7;
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #9333ea;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Kesiya 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .zoom-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.1);
+      opacity: 0;
+      animation: zoomIn 4s ease forwards;
+      text-align: center;
+      color: #ff4081;
+    }
+
+    @keyframes zoomIn {
+      0% {
+        transform: translate(-50%, -50%) scale(0.1);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
-<div id="box">
-    <h2>Enter your best friend's name</h2>
-
-    <form method="POST">
-        <input type="text" name="friendname" placeholder="Type name here">
-        <br><br>
-        <button type="submit">Reveal</button>
-    </form>
-
-    {% if name %}
-    <div id="message">
-        This website is for my best friend:<br><br>
-        ❤️ {{ name }} ❤️
-    </div>
-    {% endif %}
+<div class="zoom-container">
+  <h1>🎂 Happy Birthday, Kesiya 🎉</h1>
+  <p>Made with endless love for your special day 💕</p>
 </div>
 
 </body>
