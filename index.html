@@ -37,6 +37,7 @@ body {
 
 /* FIRST PAGE */
 #screen1 {
+  background: linear-gradient(135deg, #fff0f5, #ffe6ef);
   animation: zoomIn 1.6s ease forwards;
 }
 
@@ -50,22 +51,28 @@ body {
   max-width: 360px;
   background: #fff3f7;
   border-radius: 30px;
-  padding: 36px 26px;
+  padding: 40px 28px;
   text-align: center;
   box-shadow: 0 25px 50px rgba(0,0,0,.15);
 }
 
 .card h1 {
   color: #ff2f92;
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   margin-bottom: 18px;
 }
 
 .card p {
   color: #444;
-  font-size: .95rem;
+  font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 22px;
+}
+
+.card .footer {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #999;
 }
 
 .btn {
@@ -99,7 +106,7 @@ h2 {
   position: relative;
   width: 180px;
   height: 110px;
-  touch-action: none; /* ⭐ IMPORTANT */
+  touch-action: none;
 }
 
 .cake-half {
@@ -173,9 +180,10 @@ h2 {
 <!-- SCREEN 1 -->
 <div class="screen" id="screen1">
   <div class="card">
-    <h1>Happy Birthday 🎂✨</h1>
-    <p>I made something special just for you 💖</p>
-    <button class="btn" onclick="goNext()">Let’s Gooo 💖</button>
+    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
+    <p>Today is all about celebrating the most amazing person in my world. I’ve created something magical just for you on your special day...</p>
+    <button class="btn" onclick="goNext()">Let’s Gooo 💖✨</button>
+    <p class="footer">Made with endless love for your special day 💕</p>
   </div>
 </div>
 
@@ -226,7 +234,7 @@ cake.addEventListener("pointermove", e => {
 
   const diff = e.clientX - startX;
 
-  if (Math.abs(diff) > 40) {   // ⭐ swipe threshold
+  if (Math.abs(diff) > 40) {
     cutCake();
   }
 });
