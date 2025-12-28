@@ -1,284 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Surprise 🎂</title>
-
-<style>
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    height: 100vh;
-    background: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-    overflow: hidden;
-}
-
-/* phone container */
-.phone {
-    width: 92vw;
-    max-width: 360px;
-    background: #fff6fa;
-    border-radius: 30px;
-    padding: 28px 22px;
-    text-align: center;
-    box-shadow: 0 20px 45px rgba(0,0,0,0.15);
-    display: none;
-}
-
-.phone.active { display: block; }
-
-/* ---------- FIRST SCREEN ---------- */
-#screen1 {
-    animation: zoomIn 2.5s ease forwards;
-}
-
-@keyframes zoomIn {
-    from { transform: scale(0.6); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-h1 {
-    color: #ff2f92;
-    font-size: 1.6rem;
-    margin-bottom: 14px;
-}
-
-p {
-    font-size: 0.9rem;
-    color: #555;
-    line-height: 1.6;
-}
-
-.ready {
-    font-weight: 600;
-    color: #ff2f92;
-    margin: 18px 0;
-}
-
-button {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 30px;
-    font-size: 1rem;
-    background: linear-gradient(135deg, #ff2f92, #ff6fb1);
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-
-button:active { transform: scale(0.97); }
-
-.footer {
-    margin-top: 20px;
-    font-size: 0.75rem;
-    color: #777;
-}
-
-/* ---------- CAKE SCREEN ---------- */
-.subtitle {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 14px;
-}
-
-.instructions {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 14px;
-    font-size: 0.85rem;
-    color: #555;
-    margin-bottom: 16px;
-}
-
-.cake-area {
-    position: relative;
-    height: 240px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* cake body */
-.cake {
-    position: relative;
-    width: 230px;
-    height: 140px;
-    background: linear-gradient(#f3d2b3, #e1b285);
-    border-radius: 0 0 70px 70px;
-    overflow: hidden;
-}
-
-/* frosting top */
-.cake::before {
-    content: "";
-    position: absolute;
-    top: -25px;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    background: #ffffff;
-    border-radius: 50%;
-}
-
-/* candle */
-.candle {
-    position: absolute;
-    top: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 42px;
-    background: #ff4d6d;
-    border-radius: 5px;
-}
-
-.flame {
-    position: absolute;
-    top: -16px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 12px;
-    height: 18px;
-    background: radial-gradient(circle, #ffd966, #ff8c00);
-    border-radius: 50%;
-}
-
-/* cut line — FIXED CENTER */
-.cut-line {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
-    background: #ff2f92;
-    display: none;
-}
-
-/* success message */
-.message {
-    margin-top: 16px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #ff2f92;
-    display: none;
-}
-
-/* confetti */
-.confetti {
-    position: absolute;
-    font-size: 18px;
-    animation: fall 1.4s linear forwards;
-}
-
-@keyframes fall {
-    from { transform: translateY(-20px); opacity: 1; }
-    to { transform: translateY(240px); opacity: 0; }
-}
-</style>
+    <title>Birthday Surprise</title>
 </head>
-
 <body>
 
-<!-- FIRST SCREEN -->
-<div class="phone active" id="screen1">
-    <h1>Happy Birthday,<br>Beautiful! 🎂✨</h1>
+<h1>Happy Birthday!</h1>
 
-    <p>
-        Today is all about celebrating the most amazing person in my world.
-        I’ve created something magical just for you on your special day...
-    </p>
+<p>Make your birthday wish and cut your cake!</p>
 
-    <div class="ready">Ready for your birthday surprise?</div>
+<!-- Cake -->
+<pre>
+     || 
+     ||   (candle)
+    ----
+   |    |
+   | CA |
+   | KE |
+   |____|
+</pre>
 
-    <button id="goBtn">Let’s Gooo 💖</button>
+{% if not cut %}
+<form method="POST">
+    <button type="submit">Cut the Cake ✂️</button>
+</form>
+{% endif %}
 
-    <div class="footer">
-        Made with endless love for your special day 💕
-    </div>
-</div>
+{% if cut %}
+<h2>You cut the cake! 🎉🎉</h2>
 
-<!-- CAKE SCREEN -->
-<div class="phone" id="screen2">
-    <h1>It’s Cake Time! 🎂</h1>
-    <div class="subtitle">Make your birthday wish come true!</div>
+<pre>
+   | CA |   | KE |
+   |____|   |____|
+</pre>
 
-    <div class="instructions">
-        Swipe down to cut the cake ✂️
-    </div>
-
-    <div class="cake-area">
-        <div class="cake" id="cake">
-            <div class="candle"></div>
-            <div class="flame"></div>
-            <div class="cut-line" id="cutLine"></div>
-        </div>
-    </div>
-
-    <div class="message" id="message">Perfect Cut! 🎉✨</div>
-</div>
-
-<script>
-const screen1 = document.getElementById("screen1");
-const screen2 = document.getElementById("screen2");
-const goBtn = document.getElementById("goBtn");
-
-goBtn.onclick = () => {
-    screen1.classList.remove("active");
-    screen2.classList.add("active");
-    initCake();
-};
-
-function initCake() {
-    const cake = document.getElementById("cake");
-    const cutLine = document.getElementById("cutLine");
-    const message = document.getElementById("message");
-
-    let startY = null;
-    let done = false;
-
-    cake.addEventListener("pointerdown", e => {
-        if (done) return;
-        startY = e.clientY;
-    });
-
-    cake.addEventListener("pointerup", e => {
-        if (done || startY === null) return;
-
-        const distance = Math.abs(e.clientY - startY);
-
-        /* REQUIRE REAL SWIPE */
-        if (distance > 60) {
-            done = true;
-            cutLine.style.display = "block";
-            message.style.display = "block";
-            launchConfetti();
-        }
-
-        startY = null;
-    });
-}
-
-function launchConfetti() {
-    for (let i = 0; i < 20; i++) {
-        const c = document.createElement("div");
-        c.className = "confetti";
-        c.textContent = ["🎉","✨","🎂","💖"][Math.floor(Math.random()*4)];
-        c.style.left = Math.random() * 100 + "%";
-        c.style.top = "0px";
-        document.body.appendChild(c);
-        setTimeout(() => c.remove(), 1400);
-    }
-}
-</script>
+<p>Perfect cut! Enjoy your birthday! 🎂✨</p>
+{% endif %}
 
 </body>
 </html>
-
