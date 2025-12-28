@@ -1,271 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy Birthday 🎂</title>
 
 <style>
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
-    height: 100vh;
-    background: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  height: 100vh;
+  overflow: hidden;
+  background: #fff;
 }
 
 /* ===== SCREENS ===== */
 .screen {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.5s ease;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: opacity .6s ease;
 }
 
 .hidden {
-    opacity: 0;
-    pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ===== FIRST PAGE ===== */
 #screen1 {
-    background: white;
-    animation: zoomIn 1.6s ease forwards;
+  animation: zoomIn 1.6s ease forwards;
 }
 
 @keyframes zoomIn {
-    from { transform: scale(0.92); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  from { transform: scale(.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 .card {
-    width: 90%;
-    max-width: 360px;
-    background: #fff3f7;
-    border-radius: 30px;
-    padding: 36px 26px;
-    text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+  width: 90%;
+  max-width: 360px;
+  background: #fff3f7;
+  border-radius: 30px;
+  padding: 36px 26px;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0,0,0,.15);
 }
 
 .card h1 {
-    color: #ff2f92;
-    font-size: 1.8rem;
-    margin-bottom: 18px;
+  color: #ff2f92;
+  font-size: 1.8rem;
+  margin-bottom: 18px;
 }
 
 .card p {
-    color: #444;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 22px;
+  color: #444;
+  font-size: .95rem;
+  line-height: 1.6;
+  margin-bottom: 22px;
 }
 
 .ready {
-    color: #ff2f92;
-    font-weight: 500;
-    margin-bottom: 24px;
+  color: #ff2f92;
+  margin-bottom: 24px;
 }
 
 .btn {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 40px;
-    background: linear-gradient(135deg, #ff2f92, #ff5fb3);
-    color: white;
-    font-size: 1.05rem;
-    cursor: pointer;
-    box-shadow: 0 12px 25px rgba(255, 47, 146, 0.45);
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(135deg,#ff2f92,#ff5fb3);
+  color: white;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 12px 25px rgba(255,47,146,.45);
 }
 
 .footer {
-    margin-top: 22px;
-    font-size: 0.8rem;
-    color: #777;
+  margin-top: 22px;
+  font-size: .8rem;
+  color: #777;
 }
 
-/* ===== SECOND PAGE ===== */
+/* ===== CAKE PAGE ===== */
 #screen2 {
-    flex-direction: column;
-    background: linear-gradient(#ffffff, #ffe6ef);
+  background: linear-gradient(#fff,#ffe6ef);
 }
 
-/* text */
 h2 {
-    color: #ff4f8b;
-    margin-bottom: 6px;
+  color: #ff4f8b;
+  margin-bottom: 6px;
 }
 
 .subtitle {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 22px;
+  color: #666;
+  margin-bottom: 24px;
 }
 
 /* ===== CAKE ===== */
 .cake-area {
-    height: 260px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  height: 260px;
 }
 
-.cake {
-    position: relative;
-    width: 180px;
-    height: 110px;
-    background: #f28cb2;
-    border-radius: 0 0 18px 18px;
-    overflow: hidden;
+.cake-wrapper {
+  position: relative;
+  width: 180px;
+  height: 110px;
 }
 
-/* layers */
-.cake::before,
-.cake::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 12px;
-    background: #ffd1e2;
+.cake-half {
+  position: absolute;
+  top: 0;
+  width: 90px;
+  height: 110px;
+  background: #f28cb2;
+  overflow: hidden;
+  transition: transform .8s ease;
 }
 
-.cake::before { top: 35px; }
-.cake::after  { top: 65px; }
+.left {
+  left: 0;
+  border-radius: 0 0 0 18px;
+}
 
-/* frosting */
+.right {
+  right: 0;
+  border-radius: 0 0 18px 0;
+}
+
+.layer {
+  position: absolute;
+  width: 100%;
+  height: 12px;
+  background: #ffd1e2;
+  top: 40px;
+}
+
+.layer2 { top: 70px; }
+
 .frosting {
-    position: absolute;
-    top: -22px;
-    width: 100%;
-    height: 44px;
-    background: white;
-    border-radius: 50%;
+  position: absolute;
+  top: -22px;
+  width: 100%;
+  height: 44px;
+  background: white;
+  border-radius: 50%;
 }
 
-/* candles */
 .candle {
-    position: absolute;
-    top: -38px;
-    width: 8px;
-    height: 28px;
-    background: #ffd966;
-    border-radius: 4px;
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 28px;
+  background: #ffd966;
+  border-radius: 4px;
 }
 
 .candle::after {
-    content: "";
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 10px;
-    background: orange;
-    border-radius: 50%;
+  content:"";
+  position:absolute;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:6px;
+  height:10px;
+  background:orange;
+  border-radius:50%;
 }
 
-/* cut line */
-.cut-line {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3px;
-    height: 100%;
-    background: #ff4f8b;
-    display: none;
+/* ===== CONFETTI ===== */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  top: -20px;
+  animation: fall 1.6s linear forwards;
 }
 
-.message {
-    margin-top: 18px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #ff4f8b;
-    display: none;
+@keyframes fall {
+  to {
+    transform: translateY(120vh) rotate(360deg);
+  }
+}
+
+/* ===== FINAL PAGE ===== */
+#screen3 {
+  background: linear-gradient(#fff,#ffe6ef);
+}
+
+#screen3 h1 {
+  color: #ff2f92;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+#screen3 p {
+  color: #555;
+  font-size: 1rem;
 }
 </style>
 </head>
 
 <body>
 
-<!-- FIRST PAGE -->
+<!-- SCREEN 1 -->
 <div class="screen" id="screen1">
-    <div class="card">
-        <h1>Happy Birthday, Beautiful! 🎂 ✨</h1>
-        <p>
-            Today is all about celebrating the most amazing person in my world.
-            I’ve created something magical just for you on your special day…
-        </p>
-        <div class="ready">Ready for your birthday surprise?</div>
-        <button class="btn" onclick="goNext()">Let’s Gooo 💖</button>
-        <div class="footer">Made with endless love for your special day 💕</div>
-    </div>
+  <div class="card">
+    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
+    <p>
+      Today is all about celebrating the most amazing person in my world.
+      I made something special just for you 💖
+    </p>
+    <div class="ready">Ready for your birthday surprise?</div>
+    <button class="btn" onclick="goNext()">Let’s Gooo 💖</button>
+    <div class="footer">Made with endless love 💕</div>
+  </div>
 </div>
 
-<!-- SECOND PAGE -->
+<!-- SCREEN 2 -->
 <div class="screen hidden" id="screen2">
-    <h2>It’s Cake Time! 🎂</h2>
-    <div class="subtitle">Swipe left or right to cut the cake</div>
+  <h2>It’s Cake Time! 🎂</h2>
+  <div class="subtitle">Swipe left or right to cut</div>
 
-    <div class="cake-area">
-        <div class="cake" id="cake">
-            <div class="frosting"></div>
+  <div class="cake-area" id="cakeArea">
+    <div class="cake-wrapper" id="cake">
+      <div class="cake-half left" id="leftHalf">
+        <div class="frosting"></div>
+        <div class="layer"></div>
+        <div class="layer layer2"></div>
+      </div>
 
-            <div class="candle" style="left:30%"></div>
-            <div class="candle" style="left:50%"></div>
-            <div class="candle" style="left:70%"></div>
+      <div class="cake-half right" id="rightHalf">
+        <div class="frosting"></div>
+        <div class="layer"></div>
+        <div class="layer layer2"></div>
+      </div>
 
-            <div class="cut-line" id="cutLine"></div>
-        </div>
+      <div class="candle"></div>
     </div>
+  </div>
+</div>
 
-    <div class="message" id="message">Nice Cut 🎉</div>
+<!-- SCREEN 3 -->
+<div class="screen hidden" id="screen3">
+  <h1>Surprise 🎁</h1>
+  <p>Hope this made you smile 💖</p>
 </div>
 
 <script>
 function goNext() {
-    document.getElementById("screen1").classList.add("hidden");
-    document.getElementById("screen2").classList.remove("hidden");
+  screen1.classList.add("hidden");
+  screen2.classList.remove("hidden");
 }
 
-/* ===== CAKE CUT (LEFT / RIGHT SWIPE) ===== */
-const cake = document.getElementById("cake");
-const cutLine = document.getElementById("cutLine");
-const message = document.getElementById("message");
-
+/* ===== CAKE CUT ===== */
 let startX = null;
-let cutDone = false;
+let done = false;
 
-cake.addEventListener("pointerdown", e => {
-    startX = e.clientX;
-});
+cake.addEventListener("pointerdown", e => startX = e.clientX);
 
 cake.addEventListener("pointerup", e => {
-    if (cutDone || startX === null) return;
-
-    const swipeDistance = e.clientX - startX;
-
-    if (Math.abs(swipeDistance) > 60) {
-        cutDone = true;
-        cutLine.style.display = "block";
-        message.style.display = "block";
-    }
-
-    startX = null;
+  if (done || startX === null) return;
+  if (Math.abs(e.clientX - startX) > 60) cutCake();
 });
+
+function cutCake() {
+  done = true;
+
+  leftHalf.style.transform = "translateX(-60px)";
+  rightHalf.style.transform = "translateX(60px)";
+
+  confetti();
+
+  setTimeout(() => {
+    screen2.classList.add("hidden");
+    screen3.classList.remove("hidden");
+  }, 1800);
+}
+
+/* ===== CONFETTI ===== */
+function confetti() {
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = `hsl(${Math.random()*360},100%,70%)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 1600);
+  }
+}
 </script>
 
 </body>
 </html>
-
