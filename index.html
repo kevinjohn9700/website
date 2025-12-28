@@ -17,6 +17,7 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
   align-items:center;
   flex-direction:column;
   transition: opacity 0.8s ease;
+  pointer-events: auto;
 }
 
 .screen.hidden { opacity:0; pointer-events:none; }
@@ -61,7 +62,7 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 </div>
 
 <!-- SECOND SCREEN -->
-<div class="screen" id="screen2">
+<div class="screen hidden" id="screen2">
   <div class="cake-container" id="cake">
     <div class="cake-emoji">
       🎂
@@ -79,18 +80,17 @@ function showCake() {
   // Fade out first screen fast
   screen1.style.transition = 'opacity 0.5s ease';
   screen1.style.opacity = 0;
-  
+
   setTimeout(() => {
-    screen1.classList.add('hidden');
-    
-    // Show cake slowly
-    screen2.classList.remove('hidden');
-    cake.classList.add('show');
-  }, 500); // wait until first screen fades out
+    screen1.classList.add('hidden'); // disable pointer-events
+    screen2.classList.remove('hidden'); // make second screen active
+    cake.classList.add('show'); // fade-in cake
+  }, 500);
 }
 </script>
 
 </body>
 </html>
+
 
 
