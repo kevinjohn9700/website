@@ -1,59 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Happy Birthday Kesiya 🎉</title>
-  <style>
+<meta charset="UTF-8">
+<title>Happy Birthday 💖</title>
+
+<style>
     body {
-      margin: 0;
-      padding: 0;
-      background: white;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
+        margin: 0;
+        height: 100vh;
+        background: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
     }
 
-    .zoom-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.1);
-      opacity: 0;
-      animation: zoomIn 4s ease forwards;
-      text-align: center;
-      color: #ff4081;
+    /* Card container */
+    .card {
+        width: 330px;
+        background: #fff6fa;
+        border-radius: 28px;
+        padding: 32px 26px;
+        text-align: center;
+        box-shadow: 0 18px 45px rgba(0,0,0,0.15);
+
+        /* zoom from white background */
+        transform: scale(0.6);
+        opacity: 0;
+        animation: zoomIn 2.8s ease forwards;
     }
 
     @keyframes zoomIn {
-      0% {
-        transform: translate(-50%, -50%) scale(0.1);
-        opacity: 0;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-      }
+        0% {
+            transform: scale(0.6);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
     }
 
     h1 {
-      font-size: 3rem;
-      margin: 0;
+        color: #ff2f92;
+        font-size: 26px;
+        margin-bottom: 16px;
     }
 
     p {
-      font-size: 1.2rem;
-      margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 18px;
     }
-  </style>
+
+    .ready {
+        font-weight: bold;
+        color: #ff2f92;
+        margin-bottom: 20px;
+    }
+
+    button {
+        background: linear-gradient(135deg, #ff2f92, #ff6fb1);
+        border: none;
+        color: white;
+        padding: 14px 32px;
+        font-size: 16px;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+
+    button:active {
+        transform: scale(0.96);
+    }
+
+    .footer {
+        margin-top: 22px;
+        font-size: 12px;
+        color: #777;
+    }
+</style>
 </head>
+
 <body>
 
-<div class="zoom-container">
-  <h1>🎂 Happy Birthday, Kesiya 🎉</h1>
-  <p>Made with endless love for your special day 💕</p>
+<div class="card">
+    <h1>Happy Birthday,<br>Beautiful! 🎂✨</h1>
+
+    <p>
+        Today is all about celebrating the most amazing person in my world.
+        I’ve created something magical just for you on your special day...
+    </p>
+
+    <div class="ready">Ready for your birthday surprise?</div>
+
+    <button>Let’s Gooo 💖</button>
+
+    <div class="footer">
+        Made with endless love for your special day 💕
+    </div>
 </div>
 
 </body>
