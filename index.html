@@ -3,33 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Cake 🎂</title>
+<title>Slice the Cake 🎂</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, sans-serif; }
 body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
 
 /* Cake Container */
 .cake-container { position:relative; text-align:center; cursor:pointer; }
-.cake-emoji { font-size:20rem; position:relative; display:inline-block; }
+
+.cake-emoji { font-size:20rem; position:relative; display:inline-block; transition: clip-path 0.8s ease; }
 .flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
 
 /* Plate */
 .plate {
   width:120px; height:40px; background:#fff5ee; border-radius:50%/20%; position:absolute; bottom:50px; left:50%; transform:translateX(-50%); box-shadow:0 5px 10px rgba(0,0,0,0.2);
-}
-
-/* Slice */
-.slice {
-  position:absolute;
-  top:0;
-  width:50px;
-  height:100%;
-  background:#ffd1e2;
-  border-left:2px solid #ff9ad5;
-  border-radius:6px 0 0 6px;
-  transform-origin: left bottom;
-  transition: transform 0.8s ease, top 0.8s ease, left 0.8s ease;
-  z-index:10;
 }
 
 /* Confetti */
@@ -46,66 +33,9 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 </head>
 <body>
 
-<h1 style="color:#ff2f92; margin-bottom:20px;">Swipe the Cake to Serve a Slice 🎂✨</h1>
+<h1 style="color:#ff2f92; margin-bottom:20px;">Swipe the Cake to Take a Slice 🎂✨</h1>
 
 <div class="cake-container" id="cakeContainer">
-  <div class="cake-emoji">🎂
-    <span class="flame">🔥</span>
-  </div>
-</div>
+  <div class="cake-emoji" id="cake">🎂
 
-<div class="plate" id="plate"></div>
-
-<script>
-const cakeContainer = document.getElementById('cakeContainer');
-const plate = document.getElementById('plate');
-
-let startX = 0;
-let sliceCount = 0;
-
-cakeContainer.addEventListener('pointerdown', e => { startX = e.clientX; });
-cakeContainer.addEventListener('pointerup', e => {
-  const diff = e.clientX - startX;
-  if(Math.abs(diff) > 30) serveSlice(diff);
-});
-
-function serveSlice(diff) {
-  sliceCount++;
-  // create slice element
-  const slice = document.createElement('div');
-  slice.className = 'slice';
-  slice.style.left = `${100 + sliceCount*40}px`; // start from cake right side
-  slice.style.top = '0px';
-  cakeContainer.appendChild(slice);
-
-  // animate slice flying to plate
-  setTimeout(() => {
-    const plateRect = plate.getBoundingClientRect();
-    const cakeRect = cakeContainer.getBoundingClientRect();
-    const targetX = plateRect.left - cakeRect.left + 20;
-    const targetY = plateRect.top - cakeRect.top - 20;
-    slice.style.transform = `rotate(-45deg)`;
-    slice.style.left = `${targetX}px`;
-    slice.style.top = `${targetY}px`;
-  }, 50);
-
-  // optional: confetti when slice is served
-  confetti();
-}
-
-// confetti effect
-function confetti() {
-  for (let i=0;i<20;i++) {
-    const c = document.createElement('div');
-    c.className='confetti';
-    c.style.left = Math.random()*100+'vw';
-    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),1500);
-  }
-}
-</script>
-
-</body>
-</html>
 
