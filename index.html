@@ -17,6 +17,8 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      overflow: hidden;
+      touch-action: pan-y;
     }
 
     .card {
@@ -108,6 +110,52 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-4px); }
     }
+
+    /* Cake with candles */
+    .cake-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+
+    .cake-container.show {
+      opacity: 1;
+    }
+
+    .cake-base {
+      font-size: 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    /* Candles */
+    .candle {
+      font-size: 1.5rem;
+      margin: 0 0.15rem;
+      position: relative;
+    }
+
+    .flame {
+      position: absolute;
+      top: -1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      animation: flicker 0.3s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) translateY(-2px) scale(1.1); opacity: 0.8; }
+      100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+    }
+
   </style>
 </head>
 <body>
@@ -136,6 +184,45 @@
     <div class="footer-text">
       Made with <span>endless love</span> for your special day 💕
     </div>
+
+    <!-- Cake with Candles -->
+    <div class="cake-container" id="cake">
+      <div class="cake-base">
+        <div class="candle">🕯<span class="flame">🔥</span></div>
+        <div class="candle">🕯<span class="flame">🔥</span></div>
+        <div class="candle">🕯<span class="flame">🔥</span></div>
+      </div>
+      <div style="font-size:5rem;">🎂</div>
+    </div>
   </div>
+
+  <script>
+    let startY = 0;
+    let endY = 0;
+    let cake = document.getElementById('cake');
+
+    document.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      endY = e.touches[0].clientY;
+      if (endY - startY > 50) { // swipe down threshold
+        cake.classList.add('show');
+      }
+    });
+
+    // Desktop drag support
+    let isMouseDown = false;
+    document.addEventListener('mousedown', (e) => { isMouseDown = true; startY = e.clientY; });
+    document.addEventListener('mouseup', (e) => { isMouseDown = false; });
+    document.addEventListener('mousemove', (e) => {
+      if (!isMouseDown) return;
+      endY = e.clientY;
+      if (endY - startY > 50) {
+        cake.classList.add('show');
+      }
+    });
+  </script>
 </body>
 </html>
