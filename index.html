@@ -5,22 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy Birthday 🎂</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-body { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; background:#ffd6e8; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, sans-serif; }
+body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; }
 
-.card { width: 90%; max-width: 360px; background: #fff3f7; border-radius:30px; padding:40px 28px; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,.15);}
+/* Screens */
+.screen {
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  transition: opacity 0.8s ease;
+}
+
+.screen.hidden { opacity:0; pointer-events:none; }
+
+/* FIRST SCREEN */
+.card { width:90%; max-width:360px; background:#fff3f7; border-radius:30px; padding:40px 28px; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,.15); }
 .card h1 { color:#ff2f92; font-size:1.9rem; margin-bottom:18px; }
 .card p { color:#444; font-size:1rem; line-height:1.6; margin-bottom:22px; }
 .btn { width:100%; padding:16px; border:none; border-radius:40px; background: linear-gradient(135deg,#ff2f92,#ff5fb3); color:white; font-size:1.05rem; cursor:pointer; }
 
+/* SECOND SCREEN - Cake */
 .cake-container {
   text-align:center;
-  margin-top:30px;
   opacity:0;
   transform: scale(0.8);
-  transition: all 0.8s ease;
+  transition: opacity 1.5s ease, transform 1.5s ease;
 }
-
 .cake-container.show {
   opacity:1;
   transform: scale(1);
@@ -38,25 +51,42 @@ body { display:flex; flex-direction:column; align-items:center; justify-content:
 </head>
 <body>
 
-<div class="card">
-  <h1>Happy Birthday, Beautiful! 🎂✨</h1>
-  <p>Today is all about celebrating the most amazing person in my world. Click the button below to see your special birthday cake!</p>
-  <button class="btn" onclick="showCake()">Let’s Go 💖✨</button>
+<!-- FIRST SCREEN -->
+<div class="screen" id="screen1">
+  <div class="card">
+    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
+    <p>Today is all about celebrating the most amazing person in my world. Click the button below to see your special birthday cake!</p>
+    <button class="btn" onclick="showCake()">Let’s Go 💖✨</button>
+  </div>
 </div>
 
-<!-- Hidden Cake -->
-<div class="cake-container" id="cake">
-  <div class="cake-emoji">
-    🎂
-    <span class="flame">🔥</span>
+<!-- SECOND SCREEN -->
+<div class="screen" id="screen2">
+  <div class="cake-container" id="cake">
+    <div class="cake-emoji">
+      🎂
+      <span class="flame">🔥</span>
+    </div>
   </div>
 </div>
 
 <script>
+const screen1 = document.getElementById('screen1');
+const screen2 = document.getElementById('screen2');
+const cake = document.getElementById('cake');
+
 function showCake() {
-  document.getElementById('cake').classList.add('show');
-  // Optional: scroll to cake
-  document.getElementById('cake').scrollIntoView({ behavior: 'smooth' });
+  // Fade out first screen fast
+  screen1.style.transition = 'opacity 0.5s ease';
+  screen1.style.opacity = 0;
+  
+  setTimeout(() => {
+    screen1.classList.add('hidden');
+    
+    // Show cake slowly
+    screen2.classList.remove('hidden');
+    cake.classList.add('show');
+  }, 500); // wait until first screen fades out
 }
 </script>
 
