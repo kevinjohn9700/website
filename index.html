@@ -30,7 +30,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  transition: opacity 0.8s ease;
+  transition: opacity 1.2s ease;
 }
 
 .hidden {
@@ -76,19 +76,19 @@ body {
 /* ===== SCREEN 2 ===== */
 .instruction {
   position: absolute;
-  top: 6%;
+  top: 7%;
   font-size: 1.7rem;
   color: #ff2f92;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.6s ease;
 }
 
 .cake-container {
   position: relative;
   user-select: none;
-  touch-action: none; /* 🔥 CRITICAL FIX */
+  touch-action: none;
   opacity: 0;
   transform: scale(0.85);
-  transition: opacity 1.2s ease, transform 1.2s ease;
+  transition: opacity 1.8s ease, transform 1.8s ease;
 }
 
 .cake-container.show {
@@ -99,7 +99,7 @@ body {
 .cake-emoji {
   font-size: 20rem;
   position: relative;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.8s ease;
 }
 
 .slice-emoji {
@@ -107,18 +107,18 @@ body {
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(0);
   opacity: 0;
-  transition: opacity 0.9s ease, transform 0.9s ease;
+  transition: opacity 1.4s ease, transform 1.4s ease;
 }
 
 .cake-text {
-  margin-top: 20px;
+  margin-top: 24px;
   color: black;
   font-size: 1.5rem;
   font-weight: 700;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 1.2s ease;
 }
 
 .flame {
@@ -127,12 +127,12 @@ body {
   left: 50%;
   transform: translateX(-50%);
   font-size: 3rem;
-  animation: flicker 0.3s infinite alternate;
+  animation: flicker 0.45s infinite alternate;
 }
 
 @keyframes flicker {
   0% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-5px); }
+  50% { transform: translateX(-50%) translateY(-4px); }
   100% { transform: translateX(-50%) translateY(0); }
 }
 
@@ -145,7 +145,7 @@ body {
   max-width: 420px;
   text-align: center;
   box-shadow: 0 25px 50px rgba(0,0,0,.15);
-  animation: fadeUp 1.2s ease forwards;
+  animation: fadeUp 1.6s ease forwards;
 }
 
 .message-box h2 {
@@ -160,7 +160,7 @@ body {
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
@@ -221,10 +221,10 @@ function goToCake() {
     screen1.classList.add('hidden');
     screen2.classList.remove('hidden');
     cakeContainer.classList.add('show');
-  }, 500);
+  }, 600);
 }
 
-/* 🔥 INSTANT CUT LOGIC (NO DELAY, GAME-LEVEL) */
+/* INSTANT TOUCH — SLOW VISUALS */
 let served = false;
 
 cakeContainer.addEventListener('pointerdown', () => {
@@ -239,21 +239,20 @@ function serveSlice() {
   instruction.style.opacity = 0;
 
   slice.style.opacity = 1;
-  slice.style.transform = 'translateX(-50%) translateY(50px)';
+  slice.style.transform = 'translateX(-50%) translateY(60px)';
 
-  setTimeout(() => cakeText.style.opacity = 1, 300);
+  setTimeout(() => cakeText.style.opacity = 1, 600);
 
   setTimeout(() => {
     screen2.style.opacity = 0;
     setTimeout(() => {
       screen2.classList.add('hidden');
       screen3.classList.remove('hidden');
-    }, 600);
-  }, 1600);
+    }, 900);
+  }, 2600);
 }
 </script>
 
 </body>
 </html>
-
 
