@@ -4,11 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Happy Birthday 🎂</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, sans-serif; }
-body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
 
-/* Screens */
+<style>
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:-apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background:#ffd6e8;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* SCREENS */
 .screen {
   position:absolute;
   inset:0;
@@ -19,89 +33,158 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
   transition: opacity 0.8s ease;
 }
 
-.screen.hidden { opacity:0; pointer-events:none; }
+.hidden {
+  opacity:0;
+  pointer-events:none;
+}
 
-/* FIRST SCREEN */
-.card { width:90%; max-width:360px; background:#fff3f7; border-radius:30px; padding:40px 28px; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,.15); }
-.card h1 { color:#ff2f92; font-size:1.9rem; margin-bottom:18px; }
-.card p { color:#444; font-size:1rem; line-height:1.6; margin-bottom:22px; }
-.btn { width:100%; padding:16px; border:none; border-radius:40px; background: linear-gradient(135deg,#ff2f92,#ff5fb3); color:white; font-size:1.05rem; cursor:pointer; }
-
-/* SECOND SCREEN - Cake */
-.instruction {
-  color:#ff2f92;
-  font-size:1.6rem;
+/* ===== SCREEN 1 ===== */
+.card {
+  width:90%;
+  max-width:360px;
+  background:#fff3f7;
+  border-radius:30px;
+  padding:40px 28px;
   text-align:center;
+  box-shadow:0 25px 50px rgba(0,0,0,.15);
+}
+
+.card h1 {
+  color:#ff2f92;
+  font-size:1.9rem;
+  margin-bottom:18px;
+}
+
+.card p {
+  color:#444;
+  font-size:1rem;
+  line-height:1.6;
+  margin-bottom:22px;
+}
+
+.btn {
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:40px;
+  background:linear-gradient(135deg,#ff2f92,#ff5fb3);
+  color:white;
+  font-size:1.05rem;
+  cursor:pointer;
+}
+
+/* ===== SCREEN 2 ===== */
+.instruction {
   position:absolute;
-  top:5%;
-  left:50%;
-  transform:translateX(-50%);
+  top:6%;
+  font-size:1.6rem;
+  color:#ff2f92;
   transition: opacity 0.5s ease;
 }
 
 .cake-container {
-  text-align:center;
-  opacity:0;
-  transform: scale(0.8);
-  transition: opacity 1.5s ease, transform 1.5s ease;
   position:relative;
   user-select:none;
+  opacity:0;
+  transform:scale(0.85);
+  transition: opacity 1.5s ease, transform 1.5s ease;
 }
 
 .cake-container.show {
   opacity:1;
-  transform: scale(1);
+  transform:scale(1);
 }
 
-.cake-emoji { font-size:20rem; position:relative; transition: opacity 0.5s ease; }
+.cake-emoji {
+  font-size:20rem;
+  position:relative;
+  transition: opacity 0.5s ease;
+}
+
 .slice-emoji {
   font-size:18rem;
-  opacity:0;
   position:absolute;
   top:0;
   left:50%;
-  transform: translateX(-50%) translateY(0);
+  transform:translateX(-50%);
+  opacity:0;
   transition: opacity 1s ease, transform 1s ease;
 }
 
 .cake-text {
-  position:absolute;
-  top:120%;
-  left:50%;
-  transform:translateX(-50%);
+  margin-top:20px;
   color:black;
   font-size:1.5rem;
   font-weight:700;
   opacity:0;
-  white-space:nowrap;
   transition: opacity 1s ease;
 }
 
-.flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
+.flame {
+  position:absolute;
+  top:-2rem;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:3rem;
+  animation:flicker 0.3s infinite alternate;
+}
 
 @keyframes flicker {
-  0% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
-  50% { transform: translateX(-50%) translateY(-5px) scale(1.1); opacity:0.8; }
-  100% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
+  0% { transform:translateX(-50%) translateY(0); }
+  50% { transform:translateX(-50%) translateY(-5px); }
+  100% { transform:translateX(-50%) translateY(0); }
+}
+
+/* ===== SCREEN 3 ===== */
+.message-box {
+  background:#fff;
+  padding:40px;
+  border-radius:30px;
+  width:85%;
+  max-width:420px;
+  text-align:center;
+  box-shadow:0 25px 50px rgba(0,0,0,.15);
+  animation:fadeUp 1.2s ease forwards;
+}
+
+.message-box h2 {
+  color:#ff2f92;
+  margin-bottom:16px;
+}
+
+.message-box p {
+  color:#444;
+  font-size:1.05rem;
+  line-height:1.6;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
 }
 </style>
 </head>
+
 <body>
 
-<!-- FIRST SCREEN -->
+<!-- SCREEN 1 -->
 <div class="screen" id="screen1">
   <div class="card">
     <h1>Happy Birthday, Beautiful! 🎂✨</h1>
-    <p>Today is all about celebrating the most amazing person in my world. Click the button below to see your special birthday cake!</p>
-    <button class="btn" onclick="showCake()">Let’s Go 💖✨</button>
+    <p>Today is all about celebrating the most amazing person in my world.</p>
+    <button class="btn" onclick="goToCake()">Let’s Go 💖✨</button>
   </div>
 </div>
 
-<!-- SECOND SCREEN -->
+<!-- SCREEN 2 -->
 <div class="screen hidden" id="screen2">
-  <div class="instruction" id="instruction">Swipe the Cake to Serve a Slice 🎂🍰</div>
+  <div class="instruction" id="instruction">
+    Swipe the Cake to Serve a Slice 🎂🍰
+  </div>
+
   <div class="cake-container" id="cakeContainer">
-    <div class="cake-emoji" id="cake">🎂
+    <div class="cake-emoji" id="cake">
+      🎂
       <span class="flame">🔥</span>
     </div>
     <div class="slice-emoji" id="slice">🍰</div>
@@ -109,17 +192,29 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
   </div>
 </div>
 
+<!-- SCREEN 3 -->
+<div class="screen hidden" id="screen3">
+  <div class="message-box">
+    <h2>Happy Birthday 💕</h2>
+    <p>
+      May your day be filled with smiles, laughter, and everything that makes
+      you happiest. You deserve all the love today and always. 🎉✨
+    </p>
+  </div>
+</div>
+
 <script>
 const screen1 = document.getElementById('screen1');
 const screen2 = document.getElementById('screen2');
+const screen3 = document.getElementById('screen3');
+
 const cakeContainer = document.getElementById('cakeContainer');
 const cake = document.getElementById('cake');
 const slice = document.getElementById('slice');
 const cakeText = document.getElementById('cakeText');
 const instruction = document.getElementById('instruction');
 
-function showCake() {
-  screen1.style.transition = 'opacity 0.5s ease';
+function goToCake() {
   screen1.style.opacity = 0;
   setTimeout(() => {
     screen1.classList.add('hidden');
@@ -134,23 +229,28 @@ let served = false;
 cakeContainer.addEventListener('pointerdown', e => startX = e.clientX);
 cakeContainer.addEventListener('pointerup', e => {
   const diff = e.clientX - startX;
-  if(Math.abs(diff) > 30 && !served) serveSlice();
+  if (Math.abs(diff) > 30 && !served) serveSlice();
 });
 
 function serveSlice() {
   served = true;
-  // Fade out full cake and instruction
+
   cake.style.opacity = 0;
   instruction.style.opacity = 0;
 
-  // Animate slice moving down and fade in
   slice.style.opacity = 1;
-  slice.style.transform = 'translateX(-50%) translateY(50px)'; // slide down
+  slice.style.transform = 'translateX(-50%) translateY(50px)';
 
-  // Fade in text under slice
+  setTimeout(() => cakeText.style.opacity = 1, 400);
+
+  // Go to final page
   setTimeout(() => {
-    cakeText.style.opacity = 1;
-  }, 500);
+    screen2.style.opacity = 0;
+    setTimeout(() => {
+      screen2.classList.add('hidden');
+      screen3.classList.remove('hidden');
+    }, 600);
+  }, 2000);
 }
 </script>
 
