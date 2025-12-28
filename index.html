@@ -28,6 +28,11 @@ body {
     padding: 30px 22px;
     text-align: center;
     box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+    display: none;
+}
+
+.phone.active {
+    display: block;
 }
 
 /* ---------- FIRST SCREEN ---------- */
@@ -78,11 +83,7 @@ button:active { transform: scale(0.97); }
     color: #777;
 }
 
-/* ---------- SECOND SCREEN ---------- */
-#screen2 {
-    display: none;
-}
-
+/* ---------- CAKE ---------- */
 .subtitle {
     font-size: 0.9rem;
     color: #666;
@@ -179,7 +180,7 @@ button:active { transform: scale(0.97); }
 <body>
 
 <!-- FIRST SCREEN -->
-<div class="phone" id="screen1">
+<div class="phone active" id="screen1">
     <h1>Happy Birthday,<br>Beautiful! 🎂✨</h1>
 
     <p>
@@ -189,7 +190,7 @@ button:active { transform: scale(0.97); }
 
     <div class="ready">Ready for your birthday surprise?</div>
 
-    <button onclick="goToCake()">Let’s Gooo 💖</button>
+    <button id="goBtn">Let’s Gooo 💖</button>
 
     <div class="footer">
         Made with endless love for your special day 💕
@@ -202,8 +203,7 @@ button:active { transform: scale(0.97); }
     <div class="subtitle">Make your birthday wish come true!</div>
 
     <div class="instructions">
-        Cut your birthday cake 🎉<br>
-        <strong>Swipe across the cake ✂️</strong>
+        Swipe across the cake to cut it ✂️
     </div>
 
     <div class="cake-area">
@@ -218,34 +218,40 @@ button:active { transform: scale(0.97); }
 </div>
 
 <script>
-function goToCake() {
-    document.getElementById("screen1").style.display = "none";
-    document.getElementById("screen2").style.display = "block";
+const screen1 = document.getElementById("screen1");
+const screen2 = document.getElementById("screen2");
+const goBtn = document.getElementById("goBtn");
+
+goBtn.addEventListener("click", () => {
+    screen1.classList.remove("active");
+    screen2.classList.add("active");
+    initCake();
+});
+
+function initCake() {
+    let isCut = false;
+    const cake = document.getElementById("cake");
+    const cutLine = document.getElementById("cutLine");
+    const message = document.getElementById("message");
+
+    cake.addEventListener("pointerdown", () => {
+        if (!isCut) cutLine.style.display = "block";
+    });
+
+    cake.addEventListener("pointermove", e => {
+        if (isCut || e.pressure === 0) return;
+        const rect = cake.getBoundingClientRect();
+        cutLine.style.left = (e.clientX - rect.left) + "px";
+    });
+
+    cake.addEventListener("pointerup", () => {
+        if (isCut) return;
+        isCut = true;
+        cutLine.style.display = "none";
+        message.style.display = "block";
+        confetti();
+    });
 }
-
-/* cake cut logic */
-let isCut = false;
-const cake = document.getElementById("cake");
-const cutLine = document.getElementById("cutLine");
-const message = document.getElementById("message");
-
-cake.addEventListener("touchstart", () => {
-    if (!isCut) cutLine.style.display = "block";
-});
-
-cake.addEventListener("touchmove", e => {
-    if (isCut) return;
-    const rect = cake.getBoundingClientRect();
-    cutLine.style.left = (e.touches[0].clientX - rect.left) + "px";
-});
-
-cake.addEventListener("touchend", () => {
-    if (isCut) return;
-    isCut = true;
-    cutLine.style.display = "none";
-    message.style.display = "block";
-    confetti();
-});
 
 function confetti() {
     for (let i = 0; i < 20; i++) {
@@ -253,4 +259,12 @@ function confetti() {
         c.className = "confetti";
         c.textContent = ["🎉","✨","🎂","💖"][Math.floor(Math.random()*4)];
         c.style.left = Math.random()*100 + "%";
-        c.style.top
+        c.style.top = "0px";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 1500);
+    }
+}
+</script>
+
+</body>
+</html>
