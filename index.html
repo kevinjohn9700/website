@@ -30,11 +30,10 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 /* SECOND SCREEN - Cake */
 .instruction {
   color:#ff2f92;
-  font-size:1.6rem; /* bigger font */
-  margin-bottom:30px;
+  font-size:1.6rem;
   text-align:center;
   position:absolute;
-  top:5%; /* move higher */
+  top:5%;
   left:50%;
   transform:translateX(-50%);
   transition: opacity 0.5s ease;
@@ -47,11 +46,6 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
   transition: opacity 1.5s ease, transform 1.5s ease;
   position:relative;
   user-select:none;
-  -webkit-user-select:none;
-  -ms-user-select:none;
-  -moz-user-select:none;
-  -webkit-touch-callout:none;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .cake-container.show {
@@ -60,7 +54,15 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 }
 
 .cake-emoji { font-size:20rem; position:relative; transition: opacity 0.5s ease; }
-.slice-emoji { font-size:18rem; opacity:0; position:absolute; top:0; left:50%; transform:translateX(-50%); transition: opacity 1.2s ease; }
+.slice-emoji {
+  font-size:18rem;
+  opacity:0;
+  position:absolute;
+  top:0;
+  left:50%;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 1s ease, transform 1s ease;
+}
 
 .cake-text {
   position:absolute;
@@ -119,7 +121,6 @@ const instruction = document.getElementById('instruction');
 function showCake() {
   screen1.style.transition = 'opacity 0.5s ease';
   screen1.style.opacity = 0;
-
   setTimeout(() => {
     screen1.classList.add('hidden');
     screen2.classList.remove('hidden');
@@ -138,13 +139,16 @@ cakeContainer.addEventListener('pointerup', e => {
 
 function serveSlice() {
   served = true;
-  // Fade out full cake and instruction quickly
+  // Fade out full cake and instruction
   cake.style.opacity = 0;
   instruction.style.opacity = 0;
 
-  // Fade in slice and text
+  // Animate slice moving down and fade in
+  slice.style.opacity = 1;
+  slice.style.transform = 'translateX(-50%) translateY(50px)'; // slide down
+
+  // Fade in text under slice
   setTimeout(() => {
-    slice.style.opacity = 1;
     cakeText.style.opacity = 1;
   }, 500);
 }
@@ -152,3 +156,4 @@ function serveSlice() {
 
 </body>
 </html>
+
