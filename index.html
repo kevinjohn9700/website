@@ -3,23 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Serve a Slice 🍰</title>
+<title>Happy Birthday 🎂</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, sans-serif; }
 body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
 
-h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
+/* Screens */
+.screen {
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  transition: opacity 0.8s ease;
+}
 
-/* Cake & Slice Containers */
+.screen.hidden { opacity:0; pointer-events:none; }
+
+/* FIRST SCREEN */
+.card { width:90%; max-width:360px; background:#fff3f7; border-radius:30px; padding:40px 28px; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,.15); }
+.card h1 { color:#ff2f92; font-size:1.9rem; margin-bottom:18px; }
+.card p { color:#444; font-size:1rem; line-height:1.6; margin-bottom:22px; }
+.btn { width:100%; padding:16px; border:none; border-radius:40px; background: linear-gradient(135deg,#ff2f92,#ff5fb3); color:white; font-size:1.05rem; cursor:pointer; }
+
+/* SECOND SCREEN - Cake */
 .cake-container {
-  position:relative;
   text-align:center;
-  user-select:none; 
-  -webkit-user-select:none; 
-  -ms-user-select:none; 
+  opacity:0;
+  transform: scale(0.8);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+  position:relative;
+  user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
   -moz-user-select:none;
-  -webkit-touch-callout:none; 
+  -webkit-touch-callout:none;
   -webkit-tap-highlight-color: transparent;
+}
+
+.cake-container.show {
+  opacity:1;
+  transform: scale(1);
 }
 
 .cake-emoji { font-size:20rem; position:relative; transition: opacity 0.5s ease; }
@@ -27,18 +52,17 @@ h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
 
 .cake-text {
   position:absolute;
-  top:120%; /* below the slice */
+  top:120%;
   left:50%;
   transform:translateX(-50%);
-  color:black;            /* black text */
+  color:black;
   font-size:1.5rem;
   font-weight:700;
   opacity:0;
-  white-space:nowrap;     /* single line */
+  white-space:nowrap;
   transition: opacity 1s ease;
 }
 
-/* Flame */
 .flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
 
 @keyframes flicker {
@@ -50,21 +74,44 @@ h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
 </head>
 <body>
 
-<h1>Swipe the Cake to Serve a Slice 🎂🍰</h1>
-
-<div class="cake-container" id="cakeContainer">
-  <div class="cake-emoji" id="cake">🎂
-    <span class="flame">🔥</span>
+<!-- FIRST SCREEN -->
+<div class="screen" id="screen1">
+  <div class="card">
+    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
+    <p>Today is all about celebrating the most amazing person in my world. Click the button below to see your special birthday cake!</p>
+    <button class="btn" onclick="showCake()">Let’s Go 💖✨</button>
   </div>
-  <div class="slice-emoji" id="slice">🍰</div>
-  <div class="cake-text" id="cakeText">PERFECT CUT WELL DONE</div>
+</div>
+
+<!-- SECOND SCREEN -->
+<div class="screen hidden" id="screen2">
+  <div class="cake-container" id="cakeContainer">
+    <div class="cake-emoji" id="cake">🎂
+      <span class="flame">🔥</span>
+    </div>
+    <div class="slice-emoji" id="slice">🍰</div>
+    <div class="cake-text" id="cakeText">PERFECT CUT WELL DONE</div>
+  </div>
 </div>
 
 <script>
+const screen1 = document.getElementById('screen1');
+const screen2 = document.getElementById('screen2');
 const cakeContainer = document.getElementById('cakeContainer');
 const cake = document.getElementById('cake');
 const slice = document.getElementById('slice');
 const cakeText = document.getElementById('cakeText');
+
+function showCake() {
+  screen1.style.transition = 'opacity 0.5s ease';
+  screen1.style.opacity = 0;
+
+  setTimeout(() => {
+    screen1.classList.add('hidden');
+    screen2.classList.remove('hidden');
+    cakeContainer.classList.add('show');
+  }, 500);
+}
 
 let startX = 0;
 let served = false;
@@ -78,7 +125,6 @@ cakeContainer.addEventListener('pointerup', e => {
 function serveSlice() {
   served = true;
   // Fade out full cake quickly
-  cake.style.transition = 'opacity 0.5s ease';
   cake.style.opacity = 0;
 
   // Fade in slice and text
