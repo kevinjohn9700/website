@@ -28,6 +28,13 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 .btn { width:100%; padding:16px; border:none; border-radius:40px; background: linear-gradient(135deg,#ff2f92,#ff5fb3); color:white; font-size:1.05rem; cursor:pointer; }
 
 /* SECOND SCREEN - Cake */
+.instruction {
+  color:#ff2f92;
+  font-size:1.2rem;
+  margin-bottom:20px;
+  text-align:center;
+}
+
 .cake-container {
   text-align:center;
   opacity:0;
@@ -85,6 +92,7 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 
 <!-- SECOND SCREEN -->
 <div class="screen hidden" id="screen2">
+  <div class="instruction">Swipe the Cake to Serve a Slice 🎂🍰</div>
   <div class="cake-container" id="cakeContainer">
     <div class="cake-emoji" id="cake">🎂
       <span class="flame">🔥</span>
@@ -124,10 +132,7 @@ cakeContainer.addEventListener('pointerup', e => {
 
 function serveSlice() {
   served = true;
-  // Fade out full cake quickly
   cake.style.opacity = 0;
-
-  // Fade in slice and text
   setTimeout(() => {
     slice.style.opacity = 1;
     cakeText.style.opacity = 1;
@@ -137,3 +142,4 @@ function serveSlice() {
 
 </body>
 </html>
+
