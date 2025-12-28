@@ -3,46 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday 🎂</title>
+<title>Birthday Cake 🎂</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, sans-serif; }
-body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; flex-direction:column; }
 
-/* Screens */
-.screen {
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  transition: opacity 0.8s ease;
-  pointer-events: auto;
-}
-
-.screen.hidden { opacity:0; pointer-events:none; }
-
-/* FIRST SCREEN */
-.card { width:90%; max-width:360px; background:#fff3f7; border-radius:30px; padding:40px 28px; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,.15); }
-.card h1 { color:#ff2f92; font-size:1.9rem; margin-bottom:18px; }
-.card p { color:#444; font-size:1rem; line-height:1.6; margin-bottom:22px; }
-.btn { width:100%; padding:16px; border:none; border-radius:40px; background: linear-gradient(135deg,#ff2f92,#ff5fb3); color:white; font-size:1.05rem; cursor:pointer; }
-
-/* SECOND SCREEN - Cake */
-.cake-container {
-  text-align:center;
-  opacity:0;
-  transform: scale(0.8);
-  transition: opacity 1.5s ease, transform 1.5s ease;
-}
-.cake-container.show {
-  opacity:1;
-  transform: scale(1);
-}
-
-.cake-emoji { font-size:20rem; position:relative; }
+/* Cake Container */
+.cake-container { position:relative; text-align:center; cursor:pointer; }
+.cake-emoji { font-size:20rem; position:relative; display:inline-block; }
 .flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
 
+/* Slice Animation */
+.slice {
+  position:absolute;
+  top:0;
+  width:50px;
+  height:100%;
+  background:#ffd1e2;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  transform-origin: left bottom;
+  transform: rotate(0deg);
+  border-left:2px solid #ff9ad5;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+}
+
+/* Confetti */
+.confetti {
+  position:fixed;
+  width:8px;
+  height:12px;
+  top:-20px;
+  animation: fall 1.5s linear forwards;
+}
+@keyframes fall { to { transform: translateY(120vh) rotate(360deg); } }
+
+/* Flame Flicker */
 @keyframes flicker {
   0% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
   50% { transform: translateX(-50%) translateY(-5px) scale(1.1); opacity:0.8; }
@@ -52,45 +47,51 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 </head>
 <body>
 
-<!-- FIRST SCREEN -->
-<div class="screen" id="screen1">
-  <div class="card">
-    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
-    <p>Today is all about celebrating the most amazing person in my world. Click the button below to see your special birthday cake!</p>
-    <button class="btn" onclick="showCake()">Let’s Go 💖✨</button>
-  </div>
-</div>
+<h1 style="color:#ff2f92; margin-bottom:20px;">Click the Cake to Take a Slice 🎂✨</h1>
 
-<!-- SECOND SCREEN -->
-<div class="screen hidden" id="screen2">
-  <div class="cake-container" id="cake">
-    <div class="cake-emoji">
-      🎂
-      <span class="flame">🔥</span>
-    </div>
+<div class="cake-container" id="cakeContainer">
+  <div class="cake-emoji">🎂
+    <span class="flame">🔥</span>
   </div>
 </div>
 
 <script>
-const screen1 = document.getElementById('screen1');
-const screen2 = document.getElementById('screen2');
-const cake = document.getElementById('cake');
+const cake = document.getElementById('cakeContainer');
 
-function showCake() {
-  // Fade out first screen fast
-  screen1.style.transition = 'opacity 0.5s ease';
-  screen1.style.opacity = 0;
+cake.addEventListener('click', () => {
+  takeSlice();
+  confetti();
+});
 
+function takeSlice() {
+  // create slice element
+  const slice = document.createElement('div');
+  slice.className = 'slice';
+  slice.style.left = `${Math.random() * 80 + 10}px`; // random slice position
+  cake.appendChild(slice);
+
+  // animate slice rotation
   setTimeout(() => {
-    screen1.classList.add('hidden'); // disable pointer-events
-    screen2.classList.remove('hidden'); // make second screen active
-    cake.classList.add('show'); // fade-in cake
-  }, 500);
+    slice.style.transform = `rotate(-45deg) translateY(60px)`;
+    slice.style.opacity = 0;
+  }, 50);
+
+  // remove slice after animation
+  setTimeout(() => slice.remove(), 1000);
+}
+
+// confetti effect
+function confetti() {
+  for (let i=0;i<20;i++) {
+    const c = document.createElement('div');
+    c.className='confetti';
+    c.style.left = Math.random()*100+'vw';
+    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1500);
+  }
 }
 </script>
 
 </body>
 </html>
-
-
-
