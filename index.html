@@ -3,17 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>It's Cake Time 🎂</title>
+<title>Birthday Surprise 🎂</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
     height: 100vh;
-    background: #fff;
+    background: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,37 +19,88 @@ body {
     overflow: hidden;
 }
 
-.screen {
+/* shared phone card */
+.phone {
     width: 92vw;
     max-width: 360px;
+    background: #fff6fa;
+    border-radius: 30px;
+    padding: 30px 22px;
     text-align: center;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+}
+
+/* ---------- FIRST SCREEN ---------- */
+#screen1 {
+    animation: zoomIn 2.6s ease forwards;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 h1 {
     color: #ff2f92;
     font-size: 1.6rem;
-    margin-bottom: 6px;
+    margin-bottom: 16px;
+}
+
+p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.ready {
+    font-weight: 600;
+    color: #ff2f92;
+    margin: 18px 0;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #ff2f92, #ff6fb1);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+button:active { transform: scale(0.97); }
+
+.footer {
+    margin-top: 20px;
+    font-size: 0.75rem;
+    color: #777;
+}
+
+/* ---------- SECOND SCREEN ---------- */
+#screen2 {
+    display: none;
 }
 
 .subtitle {
     font-size: 0.9rem;
     color: #666;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .instructions {
-    background: #fff5f8;
-    border-radius: 20px;
+    background: #fff;
+    border-radius: 18px;
     padding: 14px;
     font-size: 0.85rem;
     color: #555;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .cake-area {
     position: relative;
-    width: 100%;
-    height: 200px;
+    height: 220px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,7 +119,6 @@ h1 {
     content: "";
     position: absolute;
     top: -20px;
-    left: 0;
     width: 100%;
     height: 40px;
     background: #fff;
@@ -101,7 +149,6 @@ h1 {
 
 .cut-line {
     position: absolute;
-    top: 0;
     width: 3px;
     height: 100%;
     background: #ff2f92;
@@ -109,10 +156,10 @@ h1 {
 }
 
 .message {
-    margin-top: 16px;
+    margin-top: 14px;
     font-size: 1.2rem;
-    color: #ff2f92;
     font-weight: bold;
+    color: #ff2f92;
     display: none;
 }
 
@@ -124,23 +171,42 @@ h1 {
 
 @keyframes fall {
     from { transform: translateY(-20px); opacity: 1; }
-    to { transform: translateY(200px); opacity: 0; }
+    to { transform: translateY(220px); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="screen">
+<!-- FIRST SCREEN -->
+<div class="phone" id="screen1">
+    <h1>Happy Birthday,<br>Beautiful! 🎂✨</h1>
+
+    <p>
+        Today is all about celebrating the most amazing person in my world.
+        I’ve created something magical just for you on your special day...
+    </p>
+
+    <div class="ready">Ready for your birthday surprise?</div>
+
+    <button onclick="goToCake()">Let’s Gooo 💖</button>
+
+    <div class="footer">
+        Made with endless love for your special day 💕
+    </div>
+</div>
+
+<!-- SECOND SCREEN -->
+<div class="phone" id="screen2">
     <h1>It’s Cake Time! 🎂</h1>
     <div class="subtitle">Make your birthday wish come true!</div>
 
     <div class="instructions">
         Cut your birthday cake 🎉<br>
-        <strong>Swipe across the cake to cut it ✂️</strong>
+        <strong>Swipe across the cake ✂️</strong>
     </div>
 
-    <div class="cake-area" id="cakeArea">
+    <div class="cake-area">
         <div class="cake" id="cake">
             <div class="candle"></div>
             <div class="flame"></div>
@@ -152,48 +218,39 @@ h1 {
 </div>
 
 <script>
+function goToCake() {
+    document.getElementById("screen1").style.display = "none";
+    document.getElementById("screen2").style.display = "block";
+}
+
+/* cake cut logic */
 let isCut = false;
 const cake = document.getElementById("cake");
 const cutLine = document.getElementById("cutLine");
 const message = document.getElementById("message");
 
-cake.addEventListener("touchstart", startCut);
-cake.addEventListener("touchmove", moveCut);
-cake.addEventListener("touchend", endCut);
+cake.addEventListener("touchstart", () => {
+    if (!isCut) cutLine.style.display = "block";
+});
 
-function startCut(e) {
-    if (isCut) return;
-    cutLine.style.display = "block";
-}
-
-function moveCut(e) {
+cake.addEventListener("touchmove", e => {
     if (isCut) return;
     const rect = cake.getBoundingClientRect();
-    const touchX = e.touches[0].clientX - rect.left;
-    cutLine.style.left = touchX + "px";
-}
+    cutLine.style.left = (e.touches[0].clientX - rect.left) + "px";
+});
 
-function endCut() {
+cake.addEventListener("touchend", () => {
     if (isCut) return;
     isCut = true;
     cutLine.style.display = "none";
     message.style.display = "block";
-    createConfetti();
-}
+    confetti();
+});
 
-function createConfetti() {
+function confetti() {
     for (let i = 0; i < 20; i++) {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.textContent = ["🎉","✨","🎂","💖"][Math.floor(Math.random()*4)];
-        confetti.style.left = Math.random() * 100 + "%";
-        confetti.style.top = "0px";
-        document.body.appendChild(confetti);
-
-        setTimeout(() => confetti.remove(), 1500);
-    }
-}
-</script>
-
-</body>
-</html>
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.textContent = ["🎉","✨","🎂","💖"][Math.floor(Math.random()*4)];
+        c.style.left = Math.random()*100 + "%";
+        c.style.top
