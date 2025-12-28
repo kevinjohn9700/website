@@ -30,9 +30,14 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 /* SECOND SCREEN - Cake */
 .instruction {
   color:#ff2f92;
-  font-size:1.2rem;
-  margin-bottom:20px;
+  font-size:1.6rem; /* bigger font */
+  margin-bottom:30px;
   text-align:center;
+  position:absolute;
+  top:5%; /* move higher */
+  left:50%;
+  transform:translateX(-50%);
+  transition: opacity 0.5s ease;
 }
 
 .cake-container {
@@ -92,7 +97,7 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 
 <!-- SECOND SCREEN -->
 <div class="screen hidden" id="screen2">
-  <div class="instruction">Swipe the Cake to Serve a Slice 🎂🍰</div>
+  <div class="instruction" id="instruction">Swipe the Cake to Serve a Slice 🎂🍰</div>
   <div class="cake-container" id="cakeContainer">
     <div class="cake-emoji" id="cake">🎂
       <span class="flame">🔥</span>
@@ -109,6 +114,7 @@ const cakeContainer = document.getElementById('cakeContainer');
 const cake = document.getElementById('cake');
 const slice = document.getElementById('slice');
 const cakeText = document.getElementById('cakeText');
+const instruction = document.getElementById('instruction');
 
 function showCake() {
   screen1.style.transition = 'opacity 0.5s ease';
@@ -132,7 +138,11 @@ cakeContainer.addEventListener('pointerup', e => {
 
 function serveSlice() {
   served = true;
+  // Fade out full cake and instruction quickly
   cake.style.opacity = 0;
+  instruction.style.opacity = 0;
+
+  // Fade in slice and text
   setTimeout(() => {
     slice.style.opacity = 1;
     cakeText.style.opacity = 1;
@@ -142,4 +152,3 @@ function serveSlice() {
 
 </body>
 </html>
-
