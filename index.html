@@ -4,23 +4,13 @@
   <meta charset="UTF-8" />
   <title>Happy Birthday</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin:0; padding:0; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #ffd6e8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      overflow: hidden;
-      touch-action: pan-y;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      min-height:100vh;
     }
-
     .card {
       background: #fff;
       border-radius: 24px;
@@ -28,134 +18,45 @@
       max-width: 420px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
-      position: relative;
-      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
     }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -80px;
-      background: radial-gradient(circle at top left, #ffb3d9 0, transparent 55%),
-                  radial-gradient(circle at bottom right, #ffe6f2 0, transparent 55%);
-      opacity: 0.5;
-      z-index: -1;
-    }
-
-    .headline {
-      font-size: 1.9rem;
-      font-weight: 800;
-      color: #ff3b7f;
-      margin-bottom: 10px;
-      letter-spacing: 0.03em;
-    }
-
-    .headline span {
-      color: #ff6fa6;
-    }
-
-    .emoji-line {
-      font-size: 1.4rem;
-      margin-bottom: 18px;
-    }
-
-    .body-text {
-      font-size: 0.98rem;
-      line-height: 1.6;
-      color: #555;
-      margin-bottom: 26px;
-    }
-
-    .question {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #ff3b7f;
-      margin-bottom: 24px;
-    }
-
+    .headline { font-size:1.9rem; font-weight:800; color:#ff3b7f; margin-bottom:10px; }
+    .headline span { color:#ff6fa6; }
+    .emoji-line { font-size:1.4rem; margin-bottom:18px; }
+    .body-text { font-size:0.98rem; line-height:1.6; color:#555; margin-bottom:26px; }
     .cta-pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 12px 26px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #ff3b7f, #ff9ad5);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.98rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      box-shadow: 0 10px 20px rgba(255, 60, 133, 0.4);
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 26px; border-radius:999px; background: linear-gradient(135deg,#ff3b7f,#ff9ad5);
+      color:#fff; font-weight:700; font-size:0.98rem; cursor:pointer;
     }
+    .cta-pill:hover { transform:translateY(-2px); box-shadow:0 12px 24px rgba(255,60,133,0.5); }
 
-    .cta-arrow {
-      font-size: 1.2rem;
-      animation: bounce 1.1s infinite;
-    }
-
-    .footer-text {
-      margin-top: 26px;
-      font-size: 0.85rem;
-      color: #777;
-    }
-
-    .footer-text span {
-      color: #ff3b7f;
-      font-weight: 600;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
-
-    /* Cake with candles */
+    /* Cake container (hidden initially) */
     .cake-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0;
+      margin-top:30px;
+      text-align:center;
+      opacity:0;
       transition: opacity 1s ease;
-      pointer-events: none;
     }
-
-    .cake-container.show {
-      opacity: 1;
-    }
+    .cake-container.show { opacity:1; }
 
     .cake-base {
-      font-size: 5rem;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      position: relative;
+      font-size:5rem;
+      display:flex; justify-content:center; align-items:flex-end;
+      position:relative;
     }
-
-    /* Candles */
-    .candle {
-      font-size: 1.5rem;
-      margin: 0 0.15rem;
-      position: relative;
-    }
-
+    .candle { font-size:1.5rem; margin:0 0.15rem; position:relative; }
     .flame {
-      position: absolute;
-      top: -1.2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1rem;
+      position:absolute; top:-1.2rem; left:50%;
+      transform:translateX(-50%);
+      font-size:1rem;
       animation: flicker 0.3s infinite alternate;
     }
-
     @keyframes flicker {
-      0% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
-      50% { transform: translateX(-50%) translateY(-2px) scale(1.1); opacity: 0.8; }
-      100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+      0% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
+      50% { transform: translateX(-50%) translateY(-2px) scale(1.1); opacity:0.8; }
+      100% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
     }
-
   </style>
 </head>
 <body>
@@ -163,66 +64,31 @@
     <div class="headline">
       Happy Birthday, <span>Beautiful!</span>
     </div>
-    <div class="emoji-line">
-      🎂✨
-    </div>
-
+    <div class="emoji-line">🎉✨</div>
     <div class="body-text">
       Today is all about celebrating the most amazing person in my world.
-      I’ve created something magical just for you on your special day...
+      Click the button below to see your special birthday cake!
     </div>
+    <div class="cta-pill" onclick="showCake()">Let's Go</div>
+  </div>
 
-    <div class="question">
-      Ready for your birthday surprise?
+  <!-- Cake hidden initially -->
+  <div class="cake-container" id="cake">
+    <div class="cake-base">
+      <div class="candle">🕯<span class="flame">🔥</span></div>
+      <div class="candle">🕯<span class="flame">🔥</span></div>
+      <div class="candle">🕯<span class="flame">🔥</span></div>
     </div>
-
-    <div class="cta-pill">
-      <span>Swipe up</span>
-      <span class="cta-arrow">⬆️</span>
-    </div>
-
-    <div class="footer-text">
-      Made with <span>endless love</span> for your special day 💕
-    </div>
-
-    <!-- Cake with Candles -->
-    <div class="cake-container" id="cake">
-      <div class="cake-base">
-        <div class="candle">🕯<span class="flame">🔥</span></div>
-        <div class="candle">🕯<span class="flame">🔥</span></div>
-        <div class="candle">🕯<span class="flame">🔥</span></div>
-      </div>
-      <div style="font-size:5rem;">🎂</div>
-    </div>
+    <div style="font-size:5rem;">🎂</div>
   </div>
 
   <script>
-    let startY = 0;
-    let endY = 0;
-    let cake = document.getElementById('cake');
-
-    document.addEventListener('touchstart', (e) => {
-      startY = e.touches[0].clientY;
-    });
-
-    document.addEventListener('touchmove', (e) => {
-      endY = e.touches[0].clientY;
-      if (endY - startY > 50) { // swipe down threshold
-        cake.classList.add('show');
-      }
-    });
-
-    // Desktop drag support
-    let isMouseDown = false;
-    document.addEventListener('mousedown', (e) => { isMouseDown = true; startY = e.clientY; });
-    document.addEventListener('mouseup', (e) => { isMouseDown = false; });
-    document.addEventListener('mousemove', (e) => {
-      if (!isMouseDown) return;
-      endY = e.clientY;
-      if (endY - startY > 50) {
-        cake.classList.add('show');
-      }
-    });
+    function showCake() {
+      document.getElementById('cake').classList.add('show');
+      // Scroll to cake after showing it
+      document.getElementById('cake').scrollIntoView({ behavior: 'smooth' });
+    }
   </script>
 </body>
 </html>
+
