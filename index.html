@@ -3,27 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Slice the Cake 🎂</title>
+<title>Serve a Slice 🍰</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, sans-serif; }
 body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
 
-/* Cake Container */
-.cake-container { position:relative; text-align:center; cursor:pointer; }
+h1 { color:#ff2f92; margin-bottom:20px; text-align:center; }
 
-.cake-emoji { font-size:20rem; position:relative; display:inline-block; transition: clip-path 0.8s ease; }
-.flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
-
-/* Plate */
-.plate {
-  width:120px; height:40px; background:#fff5ee; border-radius:50%/20%; position:absolute; bottom:50px; left:50%; transform:translateX(-50%); box-shadow:0 5px 10px rgba(0,0,0,0.2);
+/* Cake & Slice Containers */
+.cake-container, .slice-container {
+  position:relative;
+  text-align:center;
+  user-select:none; 
+  -webkit-user-select:none; 
+  -ms-user-select:none; 
+  -moz-user-select:none;
+  -webkit-touch-callout:none; 
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Confetti */
-.confetti { position:fixed; width:8px; height:12px; top:-20px; animation: fall 1.5s linear forwards; }
-@keyframes fall { to { transform: translateY(120vh) rotate(360deg); } }
+.cake-emoji { font-size:20rem; position:relative; transition: opacity 0.5s ease; }
+.slice-emoji { font-size:18rem; opacity:0; position:absolute; top:0; left:50%; transform:translateX(-50%); transition: opacity 1.2s ease; }
 
-/* Flame Flicker */
+/* Flame */
+.flame { position:absolute; top:-2rem; left:50%; transform:translateX(-50%); font-size:3rem; animation:flicker 0.3s infinite alternate; }
+
 @keyframes flicker {
   0% { transform: translateX(-50%) translateY(0) scale(1); opacity:1; }
   50% { transform: translateX(-50%) translateY(-5px) scale(1.1); opacity:0.8; }
@@ -33,9 +37,42 @@ body { background:#ffd6e8; min-height:100vh; display:flex; justify-content:cente
 </head>
 <body>
 
-<h1 style="color:#ff2f92; margin-bottom:20px;">Swipe the Cake to Take a Slice 🎂✨</h1>
+<h1>Swipe the Cake to Serve a Slice 🎂🍰</h1>
 
 <div class="cake-container" id="cakeContainer">
   <div class="cake-emoji" id="cake">🎂
+    <span class="flame">🔥</span>
+  </div>
+  <div class="slice-emoji" id="slice">🍰</div>
+</div>
 
+<script>
+const cakeContainer = document.getElementById('cakeContainer');
+const cake = document.getElementById('cake');
+const slice = document.getElementById('slice');
+
+let startX = 0;
+let served = false;
+
+cakeContainer.addEventListener('pointerdown', e => startX = e.clientX);
+cakeContainer.addEventListener('pointerup', e => {
+  const diff = e.clientX - startX;
+  if(Math.abs(diff) > 30 && !served) serveSlice();
+});
+
+function serveSlice() {
+  served = true;
+  // Fade out full cake quickly
+  cake.style.transition = 'opacity 0.5s ease';
+  cake.style.opacity = 0;
+
+  // Fade in slice
+  setTimeout(() => {
+    slice.style.opacity = 1;
+  }, 500); // wait until cake fades out
+}
+</script>
+
+</body>
+</html>
 
