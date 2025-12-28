@@ -1,326 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday 🎂</title>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #ffd6e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-body {
-  height: 100vh;
-  background: #fff;
-  overflow: hidden;
-}
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 32px 26px 40px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
 
-/* SCREENS */
-.screen {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  transition: opacity .6s ease;
-}
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -80px;
+      background: radial-gradient(circle at top left, #ffb3d9 0, transparent 55%),
+                  radial-gradient(circle at bottom right, #ffe6f2 0, transparent 55%);
+      opacity: 0.5;
+      z-index: -1;
+    }
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
+    .headline {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #ff3b7f;
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
 
-/* FIRST PAGE */
-#screen1 {
-  background: linear-gradient(135deg, #fff0f5, #ffe6ef);
-  animation: zoomIn 1.6s ease forwards;
-}
+    .headline span {
+      color: #ff6fa6;
+    }
 
-@keyframes zoomIn {
-  from { transform: scale(.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+    .emoji-line {
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+    }
 
-.card {
-  width: 90%;
-  max-width: 360px;
-  background: #fff3f7;
-  border-radius: 30px;
-  padding: 40px 28px;
-  text-align: center;
-  box-shadow: 0 25px 50px rgba(0,0,0,.15);
-}
+    .body-text {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 26px;
+    }
 
-.card h1 {
-  color: #ff2f92;
-  font-size: 1.9rem;
-  margin-bottom: 18px;
-}
+    .question {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #ff3b7f;
+      margin-bottom: 24px;
+    }
 
-.card p {
-  color: #444;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 22px;
-}
+    .cta-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff3b7f, #ff9ad5);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.98rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      box-shadow: 0 10px 20px rgba(255, 60, 133, 0.4);
+    }
 
-.card .footer {
-  margin-top: 20px;
-  font-size: 0.85rem;
-  color: #999;
-}
+    .cta-arrow {
+      font-size: 1.2rem;
+      animation: bounce 1.1s infinite;
+    }
 
-.btn {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 40px;
-  background: linear-gradient(135deg,#ff2f92,#ff5fb3);
-  color: white;
-  font-size: 1.05rem;
-  cursor: pointer;
-}
+    .footer-text {
+      margin-top: 26px;
+      font-size: 0.85rem;
+      color: #777;
+    }
 
-/* CAKE PAGE */
-#screen2 {
-  background: linear-gradient(#fff,#ffe6ef);
-}
+    .footer-text span {
+      color: #ff3b7f;
+      font-weight: 600;
+    }
 
-h2 {
-  color: #ff4f8b;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #666;
-  margin-bottom: 24px;
-}
-
-/* CAKE */
-.cake-wrapper {
-  position: relative;
-  width: 180px;
-  height: 110px;
-  touch-action: none;
-  animation: cakePop 1s ease forwards;
-  transform: scale(.8);
-  opacity: 0;
-}
-
-@keyframes cakePop {
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.cake-half {
-  position: absolute;
-  top: 0;
-  width: 90px;
-  height: 110px;
-  background: #f28cb2;
-  transition: transform .7s ease;
-}
-
-.left {
-  left: 0;
-  border-radius: 0 0 0 18px;
-}
-
-.right {
-  right: 0;
-  border-radius: 0 0 18px 0;
-}
-
-.layer {
-  position: absolute;
-  width: 100%;
-  height: 12px;
-  background: #ffd1e2;
-  top: 40px;
-}
-
-.layer2 { top: 70px; }
-
-.frosting {
-  position: absolute;
-  top: -22px;
-  width: 100%;
-  height: 44px;
-  background: white;
-  border-radius: 50%;
-}
-
-.candle {
-  position: absolute;
-  top: -38px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 28px;
-  background: #ffd966;
-  border-radius: 4px;
-}
-
-.candle::after {
-  content: "";
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 14px;
-  height: 14px;
-  background: radial-gradient(circle, #ffeb99, #ff9900);
-  border-radius: 50%;
-  animation: flameFlicker .15s infinite alternate;
-}
-
-@keyframes flameFlicker {
-  from { transform: translateX(-50%) scale(1); }
-  to   { transform: translateX(-50%) scale(1.2); }
-}
-
-/* CONFETTI */
-.confetti {
-  position: fixed;
-  width: 8px;
-  height: 12px;
-  top: -20px;
-  animation: fall 1.5s linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(120vh) rotate(360deg);
-  }
-}
-
-/* CUT MESSAGE */
-#cutMessage {
-  text-align: center;
-  margin-top: 30px;
-  transition: opacity 0.6s ease;
-}
-
-#cutMessage.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#cutMessage h2 {
-  color: #ff2f92;
-  font-size: 1.8rem;
-  margin-bottom: 12px;
-  animation: popIn 0.8s ease forwards;
-}
-
-#cutMessage .subtitle {
-  color: #555;
-  font-size: 1rem;
-  animation: fadeIn 1.2s ease forwards;
-}
-
-@keyframes popIn {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-</style>
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+  </style>
 </head>
-
 <body>
-
-<!-- SCREEN 1 -->
-<div class="screen" id="screen1">
   <div class="card">
-    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
-    <p>Today is all about celebrating the most amazing person in my world. I’ve created something magical just for you on your special day...</p>
-    <button class="btn" onclick="goNext()">Let’s Gooo 💖✨</button>
-    <p class="footer">Made with endless love for your special day 💕</p>
-  </div>
-</div>
-
-<!-- SCREEN 2 -->
-<div class="screen hidden" id="screen2">
-  <h2>Cut the Cake 🎂</h2>
-  <div class="subtitle">Swipe left or right</div>
-
-  <div class="cake-wrapper" id="cake">
-    <div class="cake-half left" id="leftHalf">
-      <div class="frosting"></div>
-      <div class="layer"></div>
-      <div class="layer layer2"></div>
+    <div class="headline">
+      Happy Birthday, <span>Beautiful!</span>
+    </div>
+    <div class="emoji-line">
+      🎂✨
     </div>
 
-    <div class="cake-half right" id="rightHalf">
-      <div class="frosting"></div>
-      <div class="layer"></div>
-      <div class="layer layer2"></div>
+    <div class="body-text">
+      Today is all about celebrating the most amazing person in my world.
+      I’ve created something magical just for you on your special day...
     </div>
 
-    <div class="candle"></div>
+    <div class="question">
+      Ready for your birthday surprise?
+    </div>
+
+    <div class="cta-pill">
+      <span>Swipe up</span>
+      <span class="cta-arrow">⬆️</span>
+    </div>
+
+    <div class="footer-text">
+      Made with <span>endless love</span> for your special day 💕
+    </div>
   </div>
-
-  <!-- CUT MESSAGE -->
-  <div id="cutMessage" class="hidden">
-    <h2>Perfect Cut! 🎉</h2>
-    <p class="subtitle">May this year bring you everything your heart desires ✨</p>
-  </div>
-</div>
-
-<script>
-const screen1 = document.getElementById("screen1");
-const screen2 = document.getElementById("screen2");
-const cake = document.getElementById("cake");
-const leftHalf = document.getElementById("leftHalf");
-const rightHalf = document.getElementById("rightHalf");
-const cutMessage = document.getElementById("cutMessage");
-
-function goNext() {
-  screen1.classList.add("hidden");
-  screen2.classList.remove("hidden");
-}
-
-/* SWIPE DETECTION */
-let startX = 0;
-let cutDone = false;
-
-cake.addEventListener("pointerdown", e => {
-  startX = e.clientX;
-});
-
-cake.addEventListener("pointermove", e => {
-  if (cutDone) return;
-  const diff = e.clientX - startX;
-  if (Math.abs(diff) > 40) {
-    cutCake();
-  }
-});
-
-function cutCake() {
-  cutDone = true;
-  leftHalf.style.transform = "translateX(-70px) rotate(-3deg)";
-  rightHalf.style.transform = "translateX(70px) rotate(3deg)";
-  confetti();
-  cutMessage.classList.remove("hidden");
-}
-
-/* CONFETTI */
-function confetti() {
-  for (let i = 0; i < 35; i++) {
-    const c = document.createElement("div");
-    c.className = "confetti";
-    c.style.left = Math.random() * 100 + "vw";
-    c.style.background = `hsl(${Math.random()*360},100%,70%)`;
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 
+</body>
+</html>
