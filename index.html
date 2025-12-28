@@ -3,125 +3,324 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Animation</title>
+<title>Happy Birthday 🎂</title>
+
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background: linear-gradient(to bottom, #ffefba, #ffffff);
-    font-family: 'Arial', sans-serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
-  h1 {
-    font-size: 3em;
-    color: #ff4081;
-    text-shadow: 2px 2px 8px #fff;
-    animation: pulse 1s infinite;
-  }
+body {
+  height: 100vh;
+  background: #fff;
+  overflow: hidden;
+}
 
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-  }
+/* SCREENS */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: opacity .6s ease;
+}
 
-  .balloon {
-    position: absolute;
-    bottom: -100px;
-    width: 40px;
-    height: 60px;
-    background-color: red;
-    border-radius: 50% 50% 50% 50%;
-    animation: floatUp linear infinite;
-  }
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
-  @keyframes floatUp {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
-  }
+/* FIRST PAGE */
+#screen1 {
+  background: linear-gradient(135deg, #fff0f5, #ffe6ef);
+  animation: zoomIn 1.6s ease forwards;
+}
 
-  canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
+@keyframes zoomIn {
+  from { transform: scale(.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.card {
+  width: 90%;
+  max-width: 360px;
+  background: #fff3f7;
+  border-radius: 30px;
+  padding: 40px 28px;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0,0,0,.15);
+}
+
+.card h1 {
+  color: #ff2f92;
+  font-size: 1.9rem;
+  margin-bottom: 18px;
+}
+
+.card p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.card .footer {
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(135deg,#ff2f92,#ff5fb3);
+  color: white;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+/* CAKE PAGE */
+#screen2 {
+  background: linear-gradient(#fff,#ffe6ef);
+}
+
+h2 {
+  color: #ff4f8b;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* CAKE */
+.cake-wrapper {
+  position: relative;
+  width: 180px;
+  height: 110px;
+  touch-action: none;
+  animation: cakePop 1s ease forwards;
+  transform: scale(.8);
+  opacity: 0;
+}
+
+@keyframes cakePop {
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
+}
+
+.cake-half {
+  position: absolute;
+  top: 0;
+  width: 90px;
+  height: 110px;
+  background: #f28cb2;
+  transition: transform .7s ease;
+}
+
+.left {
+  left: 0;
+  border-radius: 0 0 0 18px;
+}
+
+.right {
+  right: 0;
+  border-radius: 0 0 18px 0;
+}
+
+.layer {
+  position: absolute;
+  width: 100%;
+  height: 12px;
+  background: #ffd1e2;
+  top: 40px;
+}
+
+.layer2 { top: 70px; }
+
+.frosting {
+  position: absolute;
+  top: -22px;
+  width: 100%;
+  height: 44px;
+  background: white;
+  border-radius: 50%;
+}
+
+.candle {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 28px;
+  background: #ffd966;
+  border-radius: 4px;
+}
+
+.candle::after {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #ffeb99, #ff9900);
+  border-radius: 50%;
+  animation: flameFlicker .15s infinite alternate;
+}
+
+@keyframes flameFlicker {
+  from { transform: translateX(-50%) scale(1); }
+  to   { transform: translateX(-50%) scale(1.2); }
+}
+
+/* CONFETTI */
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 12px;
+  top: -20px;
+  animation: fall 1.5s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(120vh) rotate(360deg);
+  }
+}
+
+/* CUT MESSAGE */
+#cutMessage {
+  text-align: center;
+  margin-top: 30px;
+  transition: opacity 0.6s ease;
+}
+
+#cutMessage.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#cutMessage h2 {
+  color: #ff2f92;
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  animation: popIn 0.8s ease forwards;
+}
+
+#cutMessage .subtitle {
+  color: #555;
+  font-size: 1rem;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 </style>
 </head>
+
 <body>
 
-<h1>Happy Birthday!</h1>
+<!-- SCREEN 1 -->
+<div class="screen" id="screen1">
+  <div class="card">
+    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
+    <p>Today is all about celebrating the most amazing person in my world. I’ve created something magical just for you on your special day...</p>
+    <button class="btn" onclick="goNext()">Let’s Gooo 💖✨</button>
+    <p class="footer">Made with endless love for your special day 💕</p>
+  </div>
+</div>
 
-<canvas id="confetti"></canvas>
+<!-- SCREEN 2 -->
+<div class="screen hidden" id="screen2">
+  <h2>Cut the Cake 🎂</h2>
+  <div class="subtitle">Swipe left or right</div>
+
+  <div class="cake-wrapper" id="cake">
+    <div class="cake-half left" id="leftHalf">
+      <div class="frosting"></div>
+      <div class="layer"></div>
+      <div class="layer layer2"></div>
+    </div>
+
+    <div class="cake-half right" id="rightHalf">
+      <div class="frosting"></div>
+      <div class="layer"></div>
+      <div class="layer layer2"></div>
+    </div>
+
+    <div class="candle"></div>
+  </div>
+
+  <!-- CUT MESSAGE -->
+  <div id="cutMessage" class="hidden">
+    <h2>Perfect Cut! 🎉</h2>
+    <p class="subtitle">May this year bring you everything your heart desires ✨</p>
+  </div>
+</div>
 
 <script>
-  // Balloon generator
-  function createBalloon() {
-    const balloon = document.createElement('div');
-    balloon.classList.add('balloon');
-    balloon.style.left = Math.random() * window.innerWidth + 'px';
-    balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-    balloon.style.animationDuration = (3 + Math.random() * 3) + 's';
-    document.body.appendChild(balloon);
+const screen1 = document.getElementById("screen1");
+const screen2 = document.getElementById("screen2");
+const cake = document.getElementById("cake");
+const leftHalf = document.getElementById("leftHalf");
+const rightHalf = document.getElementById("rightHalf");
+const cutMessage = document.getElementById("cutMessage");
 
-    setTimeout(() => {
-      balloon.remove();
-    }, 6000);
+function goNext() {
+  screen1.classList.add("hidden");
+  screen2.classList.remove("hidden");
+}
+
+/* SWIPE DETECTION */
+let startX = 0;
+let cutDone = false;
+
+cake.addEventListener("pointerdown", e => {
+  startX = e.clientX;
+});
+
+cake.addEventListener("pointermove", e => {
+  if (cutDone) return;
+  const diff = e.clientX - startX;
+  if (Math.abs(diff) > 40) {
+    cutCake();
   }
+});
 
-  setInterval(createBalloon, 300);
+function cutCake() {
+  cutDone = true;
+  leftHalf.style.transform = "translateX(-70px) rotate(-3deg)";
+  rightHalf.style.transform = "translateX(70px) rotate(3deg)";
+  confetti();
+  cutMessage.classList.remove("hidden");
+}
 
-  // Confetti animation
-  const canvas = document.getElementById('confetti');
-  const ctx = canvas.getContext('2d');
-  let confettiPieces = [];
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  function ConfettiPiece() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height - canvas.height;
-    this.size = Math.random() * 8 + 4;
-    this.speed = Math.random() * 3 + 2;
-    this.angle = Math.random() * 360;
-    this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
-  }
-
-  for (let i = 0; i < 150; i++) {
-    confettiPieces.push(new ConfettiPiece());
-  }
-
-  function drawConfetti() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    confettiPieces.forEach(p => {
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      p.y += p.speed;
-      p.x += Math.sin(p.angle * Math.PI / 180) * 2;
-      p.angle += 0.1;
-
-      if (p.y > canvas.height) {
-        p.y = -p.size;
-        p.x = Math.random() * canvas.width;
-      }
-    });
-    requestAnimationFrame(drawConfetti);
-  }
-
-  drawConfetti();
-</script>
-
-</body>
-</html>
-
+/* CONFETTI */
+function confetti() {
+  for (let i = 0; i < 35; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = `hsl(${Math.random()*360},100%,70%)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 
