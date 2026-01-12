@@ -28,21 +28,32 @@
         100% { transform: scale(1); }
     }
 
-    /* 💌 centered and moved lower */
+    /* 💌 centered and lower */
     .main-heart {
         font-size: 130px;
         width: 100%;
         text-align: center;
-        margin-top: 150px; /* moved down */
+        margin-top: 150px;
     }
 
-    /* Text below, also moved down */
+    /* Text below */
     h1 {
         font-size: 48px;
         color: #d1004f;
         margin-top: 25px;
         width: 100%;
         text-align: center;
+    }
+
+    /* Bottom small text */
+    .bottom-text {
+        font-size: 14px;
+        color: black;
+        position: fixed;
+        bottom: 20px;
+        width: 100%;
+        text-align: center;
+        opacity: 0.8;
     }
 
     /* Falling 💗 hearts */
@@ -69,6 +80,11 @@
 
 <!-- Text below -->
 <h1 class="beat">I love you nanduzza</h1>
+
+<!-- Bottom Malayalam line -->
+<div class="bottom-text">
+    eth paranjillal orakam varilla athayalum time aduth alogich pina paranja mathi
+</div>
 
 <script>
     function createHeart() {
