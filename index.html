@@ -42,12 +42,12 @@
         text-align: center;
     }
 
-    /* Updated bottom text: bigger + moved up */
+    /* Bottom text moved higher */
     .bottom-text {
-        font-size: 18px;          /* bigger font */
+        font-size: 18px;
         color: black;
         position: fixed;
-        bottom: 60px;             /* moved upward */
+        bottom: 100px;   /* moved further up */
         width: 100%;
         text-align: center;
         opacity: 0.85;
@@ -86,18 +86,4 @@
         heart.innerText = "💗";
 
         heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (3 + Math.random() * 4) + "s";
-        heart.style.fontSize = (15 + Math.random() * 30) + "px";
-
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-            heart.remove();
-        }, 7000);
-    }
-
-    setInterval(createHeart, 300);
-</script>
-
-</body>
-</html>
+        heart.style.animation
