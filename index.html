@@ -14,7 +14,6 @@
         text-align: center;
     }
 
-    /* Beating animation */
     .beat {
         animation: heartbeat 1.4s infinite ease-in-out;
         display: inline-block;
@@ -28,7 +27,6 @@
         100% { transform: scale(1); }
     }
 
-    /* 💌 centered and lower */
     .main-heart {
         font-size: 130px;
         width: 100%;
@@ -36,7 +34,6 @@
         margin-top: 150px;
     }
 
-    /* Text below */
     h1 {
         font-size: 48px;
         color: #d1004f;
@@ -45,18 +42,17 @@
         text-align: center;
     }
 
-    /* Bottom small text */
+    /* Updated bottom text: bigger + moved up */
     .bottom-text {
-        font-size: 14px;
+        font-size: 18px;          /* bigger font */
         color: black;
         position: fixed;
-        bottom: 20px;
+        bottom: 60px;             /* moved upward */
         width: 100%;
         text-align: center;
-        opacity: 0.8;
+        opacity: 0.85;
     }
 
-    /* Falling 💗 hearts */
     .heart {
         position: fixed;
         top: -10px;
@@ -75,13 +71,10 @@
 
 <body>
 
-<!-- 💌 perfectly centered and lower -->
 <div class="main-heart beat">💌</div>
 
-<!-- Text below -->
 <h1 class="beat">I love you nanduzza</h1>
 
-<!-- Bottom Malayalam line -->
 <div class="bottom-text">
     eth paranjillal orakam varilla athayalum time aduth alogich pina paranja mathi
 </div>
