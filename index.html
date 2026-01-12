@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>I Love You Nanduzza</title>
 
 <style>
@@ -29,43 +28,45 @@
     }
 
     .main-heart {
-        font-size: 22vw;
-        margin-top: 25vh;
+        font-size: 130px;
         width: 100%;
+        text-align: center;
+        margin-top: 150px;
     }
 
     h1 {
-        font-size: 8vw;
+        font-size: 48px;
         color: #d1004f;
-        margin-top: 3vh;
+        margin-top: 25px;
         width: 100%;
+        text-align: center;
     }
 
-    /* Updated bottom text */
+    /* Bottom text moved higher */
     .bottom-text {
-        font-size: 6vw;           /* larger font */
+        font-size: 18px;
         color: black;
         position: fixed;
-        bottom: 25vh;             /* moved higher */
+        bottom: 100px;
         width: 100%;
         text-align: center;
         opacity: 0.85;
-        padding: 0 20px;
     }
 
+    /* Falling hearts restored */
     .heart {
         position: fixed;
-        top: -60px;
+        top: -50px; /* start higher so they appear */
         color: #ff4d88;
-        font-size: 6vw;
+        font-size: 20px;
         animation: fall linear infinite;
         opacity: 0.85;
-        z-index: -1;
+        z-index: -1; /* behind everything */
     }
 
     @keyframes fall {
         0% { transform: translateY(0) rotate(0deg); }
-        100% { transform: translateY(120vh) rotate(360deg); }
+        100% { transform: translateY(110vh) rotate(360deg); }
     }
 </style>
 </head>
@@ -88,6 +89,7 @@
 
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.animationDuration = (3 + Math.random() * 4) + "s";
+        heart.style.fontSize = (15 + Math.random() * 30) + "px";
 
         document.body.appendChild(heart);
 
@@ -99,5 +101,3 @@
     setInterval(createHeart, 300);
 </script>
 
-</body>
-</html>
