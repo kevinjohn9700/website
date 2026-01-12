@@ -11,15 +11,7 @@
         background: #ffe6ef;
         overflow: hidden;
         font-family: "Poppins", sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;   /* centers horizontally */
         text-align: center;
-    }
-
-    /* Container to keep 💌 and text centered together */
-    .top-container {
-        margin-top: 40px;
     }
 
     /* Beating animation */
@@ -36,16 +28,21 @@
         100% { transform: scale(1); }
     }
 
-    /* 💌 */
+    /* 💌 centered at top */
     .main-heart {
         font-size: 130px;
+        width: 100%;
+        text-align: center;
+        margin-top: 40px;
     }
 
-    /* Text */
+    /* Text centered below */
     h1 {
         font-size: 48px;
         color: #d1004f;
-        margin-top: 10px;
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
     }
 
     /* Falling 💗 hearts */
@@ -67,10 +64,11 @@
 
 <body>
 
-<div class="top-container">
-    <div class="main-heart beat">💌</div>
-    <h1 class="beat">I love you nanduzza</h1>
-</div>
+<!-- 💌 perfectly centered -->
+<div class="main-heart beat">💌</div>
+
+<!-- Text below -->
+<h1 class="beat">I love you nanduzza</h1>
 
 <script>
     function createHeart() {
