@@ -3,33 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <title>I Love You Nanduzz</title>
+
 <style>
     body {
         margin: 0;
         padding: 0;
-        background: #ffdde6;
+        background: #ffe6ef;
         overflow: hidden;
         font-family: "Poppins", sans-serif;
         text-align: center;
     }
 
-    /* Big heart on top */
+    /* Main beating heart */
     .big-heart {
-        font-size: 120px;
+        font-size: 150px;
         margin-top: 40px;
-        color: #ff2d55;
-        animation: pulse 1.5s infinite;
+        animation: heartbeat 1.4s infinite ease-in-out;
     }
 
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.15); }
+    @keyframes heartbeat {
+        0%   { transform: scale(1); }
+        25%  { transform: scale(1.18); }
+        40%  { transform: scale(1); }
+        60%  { transform: scale(1.22); }
         100% { transform: scale(1); }
     }
 
     h1 {
         font-size: 48px;
-        color: #d1003f;
+        color: #d1004f;
         margin-top: -10px;
     }
 
@@ -37,10 +39,10 @@
     .heart {
         position: fixed;
         top: -10px;
-        color: #ff4d6d;
+        color: #ff4d88;
         font-size: 20px;
         animation: fall linear infinite;
-        opacity: 0.8;
+        opacity: 0.85;
     }
 
     @keyframes fall {
@@ -49,19 +51,102 @@
     }
 </style>
 </head>
+
 <body>
 
-<div class="big-heart">❤️</div>
+<div class="big-heart">💗<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>I Love You Nanduzz</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #ffe6ef;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        text-align: center;
+    }
+
+    /* Main beating heart */
+    .big-heart {
+        font-size: 150px;
+        margin-top: 40px;
+        animation: heartbeat 1.4s infinite ease-in-out;
+    }
+
+    @keyframes heartbeat {
+        0%   { transform: scale(1); }
+        25%  { transform: scale(1.18); }
+        40%  { transform: scale(1); }
+        60%  { transform: scale(1.22); }
+        100% { transform: scale(1); }
+    }
+
+    h1 {
+        font-size: 48px;
+        color: #d1004f;
+        margin-top: -10px;
+    }
+
+    /* Falling hearts */
+    .heart {
+        position: fixed;
+        top: -10px;
+        color: #ff4d88;
+        font-size: 20px;
+        animation: fall linear infinite;
+        opacity: 0.85;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(110vh) rotate(360deg); }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="big-heart">💌</div>
 <h1>I love you nanduzz</h1>
 
 <script>
     function createHeart() {
         const heart = document.createElement("div");
         heart.classList.add("heart");
-        heart.innerText = "❤️";
+        heart.innerText = "💗";
+
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.animationDuration = (3 + Math.random() * 4) + "s";
-        heart.style.fontSize = (15 + Math.random() * 25) + "px";
+        heart.style.fontSize = (15 + Math.random() * 30) + "px";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 7000);
+    }
+
+    setInterval(createHeart, 300);
+</script>
+
+</body>
+</html></div>
+<h1>I love you nanduzz</h1>
+
+<script>
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "";
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (3 + Math.random() * 4) + "s";
+        heart.style.fontSize = (15 + Math.random() * 30) + "px";
+
         document.body.appendChild(heart);
 
         setTimeout(() => {
@@ -74,3 +159,4 @@
 
 </body>
 </html>
+
