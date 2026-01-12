@@ -14,21 +14,10 @@
         text-align: center;
     }
 
-    /* Beating 💌 and text */
+    /* Beating animation */
     .beat {
         animation: heartbeat 1.4s infinite ease-in-out;
         display: inline-block;
-    }
-
-    .main-heart {
-        font-size: 130px;
-        margin-top: 40px;
-    }
-
-    h1 {
-        font-size: 48px;
-        color: #d1004f;
-        margin-top: 20px; /* moved down for spacing */
     }
 
     @keyframes heartbeat {
@@ -37,6 +26,19 @@
         40%  { transform: scale(1); }
         60%  { transform: scale(1.22); }
         100% { transform: scale(1); }
+    }
+
+    /* 💌 at the top */
+    .main-heart {
+        font-size: 130px;
+        margin-top: 40px;
+    }
+
+    /* Text below the 💌 */
+    h1 {
+        font-size: 48px;
+        color: #d1004f;
+        margin-top: 10px;
     }
 
     /* Falling 💗 hearts */
@@ -58,10 +60,10 @@
 
 <body>
 
-<!-- 💌 at the top -->
+<!-- 💌 centered at top -->
 <div class="main-heart beat">💌</div>
 
-<!-- Text below -->
+<!-- Text centered below -->
 <h1 class="beat">I love you nanduzza</h1>
 
 <script>
