@@ -2,258 +2,75 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday 🎂</title>
-
+<title>I Love You Nanduzz</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        background: #ffdde6;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        text-align: center;
+    }
 
-body {
-  background: #ffd6e8;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
+    /* Big heart on top */
+    .big-heart {
+        font-size: 120px;
+        margin-top: 40px;
+        color: #ff2d55;
+        animation: pulse 1.5s infinite;
+    }
 
-/* ===== SCREENS ===== */
-.screen {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  transition: opacity 1.2s ease;
-}
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+        100% { transform: scale(1); }
+    }
 
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
+    h1 {
+        font-size: 48px;
+        color: #d1003f;
+        margin-top: -10px;
+    }
 
-/* ===== SCREEN 1 ===== */
-.card {
-  width: 90%;
-  max-width: 360px;
-  background: #fff3f7;
-  border-radius: 30px;
-  padding: 40px 28px;
-  text-align: center;
-  box-shadow: 0 25px 50px rgba(0,0,0,.15);
-}
+    /* Falling hearts */
+    .heart {
+        position: fixed;
+        top: -10px;
+        color: #ff4d6d;
+        font-size: 20px;
+        animation: fall linear infinite;
+        opacity: 0.8;
+    }
 
-.card h1 {
-  color: #ff2f92;
-  font-size: 1.9rem;
-  margin-bottom: 18px;
-}
-
-.card p {
-  color: #444;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 22px;
-}
-
-.btn {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 40px;
-  background: linear-gradient(135deg,#ff2f92,#ff5fb3);
-  color: white;
-  font-size: 1.05rem;
-  cursor: pointer;
-}
-
-/* ===== SCREEN 2 ===== */
-.instruction {
-  position: absolute;
-  top: 7%;
-  font-size: 1.7rem;
-  color: #ff2f92;
-  transition: opacity 0.6s ease;
-}
-
-.cake-container {
-  position: relative;
-  user-select: none;
-  touch-action: none;
-  opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 1.8s ease, transform 1.8s ease;
-}
-
-.cake-container.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.cake-emoji {
-  font-size: 20rem;
-  position: relative;
-  transition: opacity 0.8s ease;
-}
-
-.slice-emoji {
-  font-size: 18rem;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%) translateY(0);
-  opacity: 0;
-  transition: opacity 1.4s ease, transform 1.4s ease;
-}
-
-.cake-text {
-  margin-top: 24px;
-  color: black;
-  font-size: 1.5rem;
-  font-weight: 700;
-  opacity: 0;
-  transition: opacity 1.2s ease;
-}
-
-.flame {
-  position: absolute;
-  top: -2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 3rem;
-  animation: flicker 0.45s infinite alternate;
-}
-
-@keyframes flicker {
-  0% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-4px); }
-  100% { transform: translateX(-50%) translateY(0); }
-}
-
-/* ===== SCREEN 3 ===== */
-.message-box {
-  background: #fff;
-  padding: 40px;
-  border-radius: 30px;
-  width: 85%;
-  max-width: 420px;
-  text-align: center;
-  box-shadow: 0 25px 50px rgba(0,0,0,.15);
-  animation: fadeUp 1.6s ease forwards;
-}
-
-.message-box h2 {
-  color: #ff2f92;
-  margin-bottom: 16px;
-}
-
-.message-box p {
-  color: #444;
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(110vh) rotate(360deg); }
+    }
 </style>
 </head>
-
 <body>
 
-<!-- ===== SCREEN 1 ===== -->
-<div class="screen" id="screen1">
-  <div class="card">
-    <h1>Happy Birthday, Beautiful! 🎂✨</h1>
-    <p>Today is all about celebrating the most amazing person in my world.</p>
-    <button class="btn" onclick="goToCake()">Let’s Go 💖✨</button>
-  </div>
-</div>
-
-<!-- ===== SCREEN 2 ===== -->
-<div class="screen hidden" id="screen2">
-  <div class="instruction" id="instruction">
-    Swipe or Tap the Cake to Serve a Slice 🎂🍰
-  </div>
-
-  <div class="cake-container" id="cakeContainer">
-    <div class="cake-emoji" id="cake">
-      🎂
-      <span class="flame">🔥</span>
-    </div>
-    <div class="slice-emoji" id="slice">🍰</div>
-    <div class="cake-text" id="cakeText">PERFECT CUT WELL DONE</div>
-  </div>
-</div>
-
-<!-- ===== SCREEN 3 ===== -->
-<div class="screen hidden" id="screen3">
-  <div class="message-box">
-    <h2>Happy Birthday Shuttumani💕</h2>
-    <p>
-      May your day be filled with smiles, laughter, and everything that makes
-      you happiest. You deserve all the love today and always. And have a wonderful day gurl 🎉✨
-    </p>
-  </div>
-</div>
+<div class="big-heart">❤️</div>
+<h1>I love you nanduzz</h1>
 
 <script>
-const screen1 = document.getElementById('screen1');
-const screen2 = document.getElementById('screen2');
-const screen3 = document.getElementById('screen3');
+    function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (3 + Math.random() * 4) + "s";
+        heart.style.fontSize = (15 + Math.random() * 25) + "px";
+        document.body.appendChild(heart);
 
-const cakeContainer = document.getElementById('cakeContainer');
-const cake = document.getElementById('cake');
-const slice = document.getElementById('slice');
-const cakeText = document.getElementById('cakeText');
-const instruction = document.getElementById('instruction');
+        setTimeout(() => {
+            heart.remove();
+        }, 7000);
+    }
 
-function goToCake() {
-  screen1.style.opacity = 0;
-  setTimeout(() => {
-    screen1.classList.add('hidden');
-    screen2.classList.remove('hidden');
-    cakeContainer.classList.add('show');
-  }, 600);
-}
-
-/* INSTANT TOUCH — SLOW VISUALS */
-let served = false;
-
-cakeContainer.addEventListener('pointerdown', () => {
-  if (served) return;
-  serveSlice();
-});
-
-function serveSlice() {
-  served = true;
-
-  cake.style.opacity = 0;
-  instruction.style.opacity = 0;
-
-  slice.style.opacity = 1;
-  slice.style.transform = 'translateX(-50%) translateY(60px)';
-
-  setTimeout(() => cakeText.style.opacity = 1, 600);
-
-  setTimeout(() => {
-    screen2.style.opacity = 0;
-    setTimeout(() => {
-      screen2.classList.add('hidden');
-      screen3.classList.remove('hidden');
-    }, 900);
-  }, 2600);
-}
+    setInterval(createHeart, 300);
 </script>
 
 </body>
 </html>
-
-
