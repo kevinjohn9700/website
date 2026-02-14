@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -454,7 +454,251 @@
             </div>
         </div>
         <button class="open-btn" onclick="openEnvelope()">Open Me</button>
-    </div><!DOCTYPE html>
+    </div><style>
+        /* Additional Styles for Hiding Spots */
+        .hiding-spots-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 800px;
+            padding: 20px;
+            z-index: 15;
+            perspective: 1000px;
+        }
+
+        .hiding-spot {
+            font-size: 3.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s;
+            position: relative;
+            user-select: none;
+            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.1));
+        }
+
+        .hiding-spot:hover {
+            transform: scale(1.1) translateY(-5px);
+        }
+
+        .hiding-spot.shaking {
+            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+            color: #ccc;
+            /* Fade out slightly to show checked */
+            cursor: default;
+        }
+
+        .hiding-spot.revealed {
+            animation: popOpen 0.5s ease forwards;
+            pointer-events: none;
+        }
+
+        .hidden-heart-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 2rem;
+            color: #ff0000;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .pop-anim {
+            animation: popHeart 1s ease forwards;
+        }
+
+        @keyframes shake {
+
+            10%,
+            90% {
+                transform: translate3d(-1px, 0, 0);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(2px, 0, 0);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-4px, 0, 0);
+            }
+
+            40%,
+            60% {
+                transform: translate3d(4px, 0, 0);
+            }
+        }
+
+        @keyframes popOpen {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes popHeart {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translate(-50%, -150%) scale(2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -300%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Adjust game stage layout for grid */
+        #game-stage {
+            display: flex;
+            /* Ensure flex for centering */
+        }
+    </style>
+
+    <script>
+        let heartsFound = 0;
+        const totalHearts = 3;
+
+        // Items to hide things in
+        const hidingItems = ['🎁', '🎁', '🎁', '🧸', '🧸', '💐', '💐', '☁️', '💌', '🍬', '🧁', '🌹'];
+        let spots = [];
+
+        window.onload = function () {
+            initGame();
+        };
+
+        function initGame() {
+            const container = document.querySelector('.hiding-spots-container');
+            // Shuffle items
+            hidingItems.sort(() => Math.random() - 0.5);
+
+            // Limit to maybe 12 items on screen for clean look
+            const displayItems = hidingItems.slice(0, 12);
+
+            // Pick 3 random indices to hold hearts
+            let heartIndices = new Set();
+            while (heartIndices.size < 3) {
+                heartIndices.add(Math.floor(Math.random() * displayItems.length));
+            }
+
+            displayItems.forEach((icon, index) => {
+                const spot = document.createElement('div');
+                spot.classList.add('hiding-spot');
+                spot.innerText = icon;
+                spot.dataset.hasHeart = heartIndices.has(index);
+                spot.onclick = () => checkSpot(spot);
+                container.appendChild(spot);
+                spots.push(spot);
+            });
+        }
+
+        function checkSpot(element) {
+            if (element.classList.contains('shaking') || element.classList.contains('revealed')) return;
+
+            if (element.dataset.hasHeart === "true") {
+                // FOUND HEART
+                element.classList.add('revealed');
+
+                // Show floating heart
+                const heart = document.createElement('div');
+                heart.classList.add('hidden-heart-popup', 'pop-anim');
+                heart.innerText = '❤️';
+                element.appendChild(heart);
+
+                // Sparkles at position
+                const rect = element.getBoundingClientRect();
+                createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+                heartsFound++;
+                document.getElementById('counter').innerText = heartsFound;
+
+                if (heartsFound === totalHearts) {
+                    setTimeout(revealEnvelope, 1200);
+                }
+            } else {
+                // EMPTY
+                element.classList.add('shaking');
+                // Optional: Change emoji to empty/sad or just fade
+                // element.style.opacity = '0.5';
+            }
+        }
+
+        function createSparkles(x, y) {
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.innerText = '✨';
+                sparkle.style.left = (x + (Math.random() * 40 - 20)) + 'px';
+                sparkle.style.top = (y + (Math.random() * 40 - 20)) + 'px';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 800);
+            }
+        }
+
+        function revealEnvelope() {
+            const gameStage = document.getElementById('game-stage');
+            const envelopeStage = document.getElementById('envelope-stage');
+
+            gameStage.classList.add('hidden');
+
+            setTimeout(() => {
+                gameStage.style.display = 'none';
+                envelopeStage.style.display = 'flex';
+                void envelopeStage.offsetWidth;
+                envelopeStage.classList.add('visible');
+            }, 1000);
+        }
+
+        function openEnvelope() {
+            const envContainer = document.getElementById('envelope');
+            const letterView = document.getElementById('letter-view');
+            envContainer.classList.add('open');
+            setTimeout(() => {
+                letterView.classList.add('active');
+                createConfetti();
+            }, 1500);
+        }
+
+        function closeLetter() {
+            document.getElementById('letter-view').classList.remove('active');
+        }
+
+        function createConfetti() {
+            const colors = ['#ff4d6d', '#ff8fa3', '#fff', '#gold'];
+            for (let i = 0; i < 50; i++) {
+                const conf = document.createElement('div');
+                conf.style.position = 'fixed';
+                conf.style.left = Math.random() * 100 + 'vw';
+                conf.style.top = -10 + 'px';
+                conf.style.width = '10px';
+                conf.style.height = '10px';
+                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                conf.style.animation = `float ${Math.random() * 3 + 2}s linear forwards`;
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 5000);
+            }
+        }
+    </script>
+</body>
+
+</html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -573,4 +817,5 @@ document.getElementById('love-screen').style.display='flex';
 
 </body>
 </html>
+
 
