@@ -2,418 +2,212 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Surprise</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #ff4d6d;
-            --secondary-color: #ff8fa3;
-            --glass-bg: rgba(255, 255, 255, 0.25);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --text-color: #590d22;
-        }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Be My Valentine 💘</title>
 
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            height: 100vh;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+            background-size: 400% 400%;
+            animation: bgMove 12s ease infinite;
+            font-family: "Poppins", sans-serif;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-color);
         }
 
-        /* Ambient Background Animations */
-        .bg-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            animation: float 20s infinite linear;
-        }
-
-        .shape:nth-child(1) {
-            width: 150px;
-            height: 150px;
-            top: 10%;
-            left: 10%;
-            animation-duration: 25s;
-        }
-
-        .shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            bottom: 20%;
-            right: 10%;
-            animation-duration: 30s;
-        }
-
-        .shape:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            top: 40%;
-            left: 50%;
-            animation-duration: 35s;
-        }
-
-        @keyframes float {
+        @keyframes bgMove {
             0% {
-                transform: translate(0, 0) rotate(0deg);
+                background-position: 0% 50%;
             }
 
             50% {
-                transform: translate(20px, 40px) rotate(180deg);
+                background-position: 100% 50%;
             }
 
             100% {
-                transform: translate(0, 0) rotate(360deg);
+                background-position: 0% 50%;
             }
         }
 
-        /* Game Container */
-        #game-stage {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s ease;
-        }
-
-        #game-stage.hidden {
-            opacity: 0;
-            pointer-events: none;
-            display: none;
-        }
-
-        .instructions {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
+        /* Card */
+        .card {
+            width: min(92%, 420px);
+            padding: 40px 30px 45px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(18px);
+            border-radius: 28px;
             text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            margin-bottom: 2rem;
-            animation: fadeIn 1s ease-out;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.25),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+            position: relative;
+            animation: cardIn 1.1s ease;
         }
 
-        .instructions h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .instructions p {
-            font-size: 1.2rem;
-        }
-
-        .score-board {
-            margin-top: 1rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        /* Hidden Hearts */
-        .heart-target {
-            position: absolute;
-            font-size: 2.5rem;
-            color: #d62828;
-            /* Slightly darker to blend but identifiable if looked for */
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0.8;
-            filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.3));
-            animation: pulse-soft 3s infinite;
-        }
-
-        .heart-target:hover {
-            transform: scale(1.2);
-            color: #ff0000;
-        }
-
-        /* Random positions for hearts (will be set by JS mostly, but examples here) */
-
-        @keyframes pulse-soft {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes fadeIn {
+        @keyframes cardIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(30px) scale(0.95);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        /* Envelope Stage */
-        #envelope-stage {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            opacity: 0;
-            transition: opacity 1.5s ease;
+        /* Glow ring */
+        .card::before {
+            content: "";
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
+            inset: -2px;
+            border-radius: 30px;
+            background: linear-gradient(120deg, #ff4d6d, #ff9a9e, #fbc2eb);
+            z-index: -1;
+            filter: blur(20px);
+            opacity: 0.7;
         }
 
-        #envelope-stage.visible {
-            display: flex;
-            opacity: 1;
+        .emoji {
+            font-size: 68px;
+            margin-bottom: 12px;
+            animation: heartbeat 1.8s infinite;
         }
 
-        .envelope-container {
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.08);
+            }
+
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(1.12);
+            }
+        }
+
+        h2 {
+            font-family: "Playfair Display", serif;
+            font-size: 28px;
+            color: #4a1c2f;
+            margin-bottom: 30px;
+            line-height: 1.35;
+        }
+
+        .buttons {
             position: relative;
-            cursor: pointer;
-            transition: transform 0.5s ease;
+            height: 78px;
         }
 
-        .envelope-container:hover {
-            transform: scale(1.05);
-        }
-
-        .envelope {
-            width: 300px;
-            height: 200px;
-            background: #ff4d6d;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            transition: all 0.5s ease;
-        }
-
-        .flap {
+        button {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 110px solid #ff758f;
-            /* Lighter shade */
-            transform-origin: top;
-            transition: transform 0.6s ease 0.5s, z-index 0.2s;
-            z-index: 5;
-        }
-
-        .pocket {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 200px solid #ff4d6d;
-            z-index: 3;
-        }
-
-        .letter-preview {
-            width: 260px;
-            height: 180px;
-            background: white;
-            position: absolute;
-            bottom: 0;
-            border-radius: 5px;
-            z-index: 2;
-            transition: transform 0.8s ease 1s;
-        }
-
-        .seal {
-            width: 40px;
-            height: 40px;
-            background: #d00000;
-            border-radius: 50%;
-            position: absolute;
-            top: 80px;
-            left: 130px;
-            z-index: 6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ffcccb;
-            font-size: 1.2rem;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: opacity 0.5s ease;
-        }
-
-        /* Open state for envelope */
-        .envelope-container.open .flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .envelope-container.open .seal {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .envelope-container.open .letter-preview {
-            transform: translateY(-100px);
-            z-index: 4;
-        }
-
-        .open-btn {
-            margin-top: 3rem;
-            padding: 1rem 3rem;
-            background: white;
-            color: var(--primary-color);
+            padding: 14px 36px;
+            border-radius: 40px;
             border: none;
-            border-radius: 50px;
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .open-btn:hover {
+        button:active {
+            transform: scale(0.94);
+        }
+
+        #yes {
+            left: 12%;
+            background: linear-gradient(135deg, #ff4d6d, #ff758f);
+            color: #fff;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.55);
+        }
+
+        #yes:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
-            background: #fff0f3;
+            box-shadow: 0 20px 40px rgba(255, 77, 109, 0.7);
         }
 
-        /* Full Letter View */
-        #letter-view {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            z-index: 50;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+        #no {
+            left: 55%;
+            background: rgba(255, 255, 255, 0.9);
+            color: #777;
         }
 
-        #letter-view.active {
-            display: flex;
-            opacity: 1;
+        .hint {
+            margin-top: 28px;
+            font-size: 13px;
+            color: #6b6b6b;
+            font-style: italic;
         }
 
-        .love-letter {
-            background: #fff;
-            width: 90%;
-            max-width: 600px;
-            padding: 3rem;
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            background-image: repeating-linear-gradient(white 0px, white 24px, #e9ecef 25px);
-            line-height: 25px;
-            transform: scale(0.8);
-            transition: transform 0.5s ease;
-        }
-
-        #letter-view.active .love-letter {
-            transform: scale(1);
-        }
-
-        .love-letter h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .love-letter p {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: #333;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .close-btn {
+        /* Floating depth hearts */
+        .heart {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #aaa;
-            background: none;
-            border: none;
-        }
-
-        .close-btn:hover {
-            color: #333;
-        }
-
-        /* Sparkle animation for finding heart */
-        .sparkle {
-            position: absolute;
+            bottom: -20px;
+            animation: floatUp linear forwards;
             pointer-events: none;
-            animation: sparkleAnim 0.8s ease-out forwards;
-            font-size: 20px;
-            color: gold;
+            filter: blur(0.3px);
         }
 
-        @keyframes sparkleAnim {
-            0% {
-                transform: scale(0) rotate(0deg);
+        @keyframes floatUp {
+            from {
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
 
-            100% {
-                transform: scale(2) rotate(180deg);
+            to {
+                transform: translateY(-120vh) scale(1.8);
                 opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 23px;
+            }
+
+            .emoji {
+                font-size: 58px;
+            }
+
+            button {
+                padding: 12px 28px;
+                font-size: 15px;
+            }
+
+            #yes {
+                left: 8%;
+            }
+
+            #no {
+                left: 55%;
             }
         }
     </style>
@@ -421,296 +215,88 @@
 
 <body>
 
-    <!-- Background Shapes -->
-    <div class="bg-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
+    <div class="card">
+        <div class="emoji">🐱❤️</div>
+        <h2>Aditi,<br>will you be my Valentine?</h2>
 
-    <!-- Game Stage -->
-    <div id="game-stage">
-        <div class="instructions">
-            <h1>Find My Heart</h1>
-            <p>I've hidden 3 hearts inside these gifts and surprises.<br>Click them to find where my heart lies!</p>
-            <div class="score-board">Hearts Found: <span id="counter">0</span>/3</div>
+        <div class="buttons">
+            <button id="yes">Yes 💖</button>
+            <button id="no">No 🙈</button>
         </div>
 
-        <!-- Hiding Spots Container -->
-        <div class="hiding-spots-container">
-            <!-- Generated by JS -->
-        </div>
+        <div class="hint">Some love stories don’t allow “no” ✨</div>
     </div>
 
-    <!-- Envelope Stage -->
-    <div id="envelope-stage">
-        <div class="envelope-container" id="envelope">
-            <div class="envelope">
-                <div class="pocket"></div>
-                <!-- The letter inside -->
-                <div class="letter-preview"></div>
-                <div class="flap"></div>
-                <div class="seal">❤️</div>
-            </div>
-        </div>
-        <button class="open-btn" onclick="openEnvelope()">Open Me</button>
-    </div>
-
-    <!-- Full Letter View -->
-    <div id="letter-view">
-        <div class="love-letter">
-            <button class="close-btn" onclick="closeLetter()">×</button>
-            <h2>My Dearest Valentine,</h2>
-            <p>Just like you found these hidden hearts, you've found the deepest parts of my soul.</p>
-            <p>Every moment with you is a surprise I cherish, a gift I never want to stop opening.</p>
-            <p>Thank you for being my adventure, my comfort, and my love.</p>
-            <p>Happy Valentine's Day! ❤️</p>
-            <p style="text-align: right;">- Yours forever</p>
-        </div>
-    </div>
-
-    <style>
-        /* Additional Styles for Hiding Spots */
-        .hiding-spots-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            max-width: 800px;
-            padding: 20px;
-            z-index: 15;
-            perspective: 1000px;
-        }
-
-        .hiding-spot {
-            font-size: 3.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.3s;
-            position: relative;
-            user-select: none;
-            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.1));
-        }
-
-        .hiding-spot:hover {
-            transform: scale(1.1) translateY(-5px);
-        }
-
-        .hiding-spot.shaking {
-            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
-            color: #ccc;
-            /* Fade out slightly to show checked */
-            cursor: default;
-        }
-
-        .hiding-spot.revealed {
-            animation: popOpen 0.5s ease forwards;
-            pointer-events: none;
-        }
-
-        .hidden-heart-popup {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-size: 2rem;
-            color: #ff0000;
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        .pop-anim {
-            animation: popHeart 1s ease forwards;
-        }
-
-        @keyframes shake {
-
-            10%,
-            90% {
-                transform: translate3d(-1px, 0, 0);
-            }
-
-            20%,
-            80% {
-                transform: translate3d(2px, 0, 0);
-            }
-
-            30%,
-            50%,
-            70% {
-                transform: translate3d(-4px, 0, 0);
-            }
-
-            40%,
-            60% {
-                transform: translate3d(4px, 0, 0);
-            }
-        }
-
-        @keyframes popOpen {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.2);
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: scale(0);
-                opacity: 0;
-            }
-        }
-
-        @keyframes popHeart {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0;
-            }
-
-            50% {
-                transform: translate(-50%, -150%) scale(2);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translate(-50%, -300%) scale(0);
-                opacity: 0;
-            }
-        }
-
-        /* Adjust game stage layout for grid */
-        #game-stage {
-            display: flex;
-            /* Ensure flex for centering */
-        }
-    </style>
+    <!-- Sounds -->
+    <audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-cartoon-voice-laugh-343.mp3"></audio>
+    <audio id="yesSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
 
     <script>
-        let heartsFound = 0;
-        const totalHearts = 3;
+        const noBtn = document.getElementById("no");
+        const yesBtn = document.getElementById("yes");
+        const card = document.querySelector(".card");
+        const hoverSound = document.getElementById("hoverSound");
+        const yesSound = document.getElementById("yesSound");
 
-        // Items to hide things in
-        const hidingItems = ['🎁', '🎁', '🎁', '🧸', '🧸', '💐', '💐', '☁️', '💌', '🍬', '🧁', '🌹'];
-        let spots = [];
+        noBtn.addEventListener("mouseenter", () => {
+            hoverSound.currentTime = 0;
+            hoverSound.play();
 
-        window.onload = function () {
-            initGame();
-        };
+            const cardRect = card.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
 
-        function initGame() {
-            const container = document.querySelector('.hiding-spots-container');
-            // Shuffle items
-            hidingItems.sort(() => Math.random() - 0.5);
+            const maxX = cardRect.width - btnRect.width - 10;
+            const maxY = cardRect.height - btnRect.height - 10;
 
-            // Limit to maybe 12 items on screen for clean look
-            const displayItems = hidingItems.slice(0, 12);
+            noBtn.style.left = Math.random() * maxX + "px";
+            noBtn.style.top = Math.random() * maxY + "px";
+        });
 
-            // Pick 3 random indices to hold hearts
-            let heartIndices = new Set();
-            while (heartIndices.size < 3) {
-                heartIndices.add(Math.floor(Math.random() * displayItems.length));
-            }
+        yesBtn.addEventListener("click", () => {
+            yesSound.play();
 
-            displayItems.forEach((icon, index) => {
-                const spot = document.createElement('div');
-                spot.classList.add('hiding-spot');
-                spot.innerText = icon;
-                spot.dataset.hasHeart = heartIndices.has(index);
-                spot.onclick = () => checkSpot(spot);
-                container.appendChild(spot);
-                spots.push(spot);
+            confetti({
+                particleCount: 260,
+                spread: 120,
+                origin: { y: 0.65 }
             });
-        }
 
-        function checkSpot(element) {
-            if (element.classList.contains('shaking') || element.classList.contains('revealed')) return;
-
-            if (element.dataset.hasHeart === "true") {
-                // FOUND HEART
-                element.classList.add('revealed');
-
-                // Show floating heart
-                const heart = document.createElement('div');
-                heart.classList.add('hidden-heart-popup', 'pop-anim');
-                heart.innerText = '❤️';
-                element.appendChild(heart);
-
-                // Sparkles at position
-                const rect = element.getBoundingClientRect();
-                createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-                heartsFound++;
-                document.getElementById('counter').innerText = heartsFound;
-
-                if (heartsFound === totalHearts) {
-                    setTimeout(revealEnvelope, 1200);
-                }
-            } else {
-                // EMPTY
-                element.classList.add('shaking');
-                // Optional: Change emoji to empty/sad or just fade
-                // element.style.opacity = '0.5';
-            }
-        }
-
-        function createSparkles(x, y) {
-            for (let i = 0; i < 8; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.classList.add('sparkle');
-                sparkle.innerText = '✨';
-                sparkle.style.left = (x + (Math.random() * 40 - 20)) + 'px';
-                sparkle.style.top = (y + (Math.random() * 40 - 20)) + 'px';
-                document.body.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 800);
-            }
-        }
-
-        function revealEnvelope() {
-            const gameStage = document.getElementById('game-stage');
-            const envelopeStage = document.getElementById('envelope-stage');
-
-            gameStage.classList.add('hidden');
+            // Send email via FormSubmit
+            fetch("https://formsubmit.co/ajax/demo@gmail.com", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: "She said YES! 💖"
+                })
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.log(error));
 
             setTimeout(() => {
-                gameStage.style.display = 'none';
-                envelopeStage.style.display = 'flex';
-                void envelopeStage.offsetWidth;
-                envelopeStage.classList.add('visible');
-            }, 1000);
+                alert("YAY 💕 I can’t wait for Valentine’s Day with you!");
+            }, 500);
+        });
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💗";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = Math.random() * 22 + 14 + "px";
+            heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+            heart.style.opacity = Math.random() * 0.5 + 0.4;
+
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 8000);
         }
 
-        function openEnvelope() {
-            const envContainer = document.getElementById('envelope');
-            const letterView = document.getElementById('letter-view');
-            envContainer.classList.add('open');
-            setTimeout(() => {
-                letterView.classList.add('active');
-                createConfetti();
-            }, 1500);
-        }
-
-        function closeLetter() {
-            document.getElementById('letter-view').classList.remove('active');
-        }
-
-        function createConfetti() {
-            const colors = ['#ff4d6d', '#ff8fa3', '#fff', '#gold'];
-            for (let i = 0; i < 50; i++) {
-                const conf = document.createElement('div');
-                conf.style.position = 'fixed';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.top = -10 + 'px';
-                conf.style.width = '10px';
-                conf.style.height = '10px';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animation = `float ${Math.random() * 3 + 2}s linear forwards`;
-                document.body.appendChild(conf);
-                setTimeout(() => conf.remove(), 5000);
-            }
-        }
+        setInterval(createHeart, 380);
     </script>
+
 </body>
 
 </html>
