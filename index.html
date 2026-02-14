@@ -73,7 +73,7 @@ font-weight:600;
 color:var(--primary-color);
 }
 
-/* ORIGINAL SIZE PRESERVED */
+/* ORIGINAL SIZE */
 .hiding-spots-container{
 display:flex;
 flex-wrap:wrap;
@@ -172,6 +172,7 @@ width:100%;
 height:100%;
 background:linear-gradient(135deg,#ff4d6d,#ff8fa3);
 display:none;
+flex-direction:column;
 justify-content:center;
 align-items:center;
 z-index:200;
@@ -182,6 +183,13 @@ font-family:'Dancing Script';
 color:white;
 font-size:4rem;
 animation:fadeLove 1.5s ease forwards;
+}
+
+#love-screen .by-text{
+margin-top:15px;
+color:white;
+font-size:1.4rem;
+opacity:0.9;
 }
 
 @keyframes fadeLove{
@@ -228,7 +236,8 @@ to{opacity:1;transform:scale(1);}
 
 <!-- LOVE SCREEN -->
 <div id="love-screen">
-<h1>I Love You Shuttumani❤️</h1>
+<h1>I Love You ❤️</h1>
+<div class="by-text">by Kevin</div>
 </div>
 
 <script>
@@ -293,4 +302,3 @@ document.getElementById('love-screen').style.display='flex';
 
 </body>
 </html>
-
