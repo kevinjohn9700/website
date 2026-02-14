@@ -1,716 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Surprise</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #ff4d6d;
-            --secondary-color: #ff8fa3;
-            --glass-bg: rgba(255, 255, 255, 0.25);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --text-color: #590d22;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Special Surprise</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-color);
-        }
+<style>
+:root{
+--primary-color:#ff4d6d;
+--secondary-color:#ff8fa3;
+--glass-bg:rgba(255,255,255,0.25);
+--glass-border:rgba(255,255,255,0.5);
+--text-color:#590d22;
+}
 
-        /* Ambient Background Animations */
-        .bg-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            animation: float 20s infinite linear;
-        }
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%);
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+color:var(--text-color);
+}
 
-        .shape:nth-child(1) {
-            width: 150px;
-            height: 150px;
-            top: 10%;
-            left: 10%;
-            animation-duration: 25s;
-        }
+/* Background */
+.bg-shapes{position:absolute;width:100%;height:100%;z-index:0;}
+.shape{
+position:absolute;border-radius:50%;
+background:rgba(255,255,255,0.3);
+animation:float 20s infinite linear;
+}
+.shape:nth-child(1){width:150px;height:150px;top:10%;left:10%;}
+.shape:nth-child(2){width:200px;height:200px;bottom:20%;right:10%;}
+.shape:nth-child(3){width:100px;height:100px;top:40%;left:50%;}
 
-        .shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            bottom: 20%;
-            right: 10%;
-            animation-duration: 30s;
-        }
+@keyframes float{
+0%{transform:translate(0,0) rotate(0);}
+50%{transform:translate(20px,40px) rotate(180deg);}
+100%{transform:translate(0,0) rotate(360deg);}
+}
 
-        .shape:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            top: 40%;
-            left: 50%;
-            animation-duration: 35s;
-        }
+/* Game */
+#game-stage{
+position:relative;
+width:100%;
+height:100%;
+z-index:10;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
 
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
+.instructions{
+background:var(--glass-bg);
+backdrop-filter:blur(10px);
+padding:2rem;
+border-radius:20px;
+border:1px solid var(--glass-border);
+text-align:center;
+margin-bottom:2rem;
+}
 
-            50% {
-                transform: translate(20px, 40px) rotate(180deg);
-            }
+.instructions h1{
+font-family:'Dancing Script',cursive;
+font-size:3rem;
+}
 
-            100% {
-                transform: translate(0, 0) rotate(360deg);
-            }
-        }
+.score-board{
+margin-top:1rem;
+font-size:1.5rem;
+font-weight:600;
+color:var(--primary-color);
+}
 
-        /* Game Container */
-        #game-stage {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s ease;
-        }
+/* Hiding Spots */
+.hiding-spots-container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:2rem;
+max-width:800px;
+padding:20px;
+}
 
-        #game-stage.hidden {
-            opacity: 0;
-            pointer-events: none;
-            display: none;
-        }
+.hiding-spot{
+font-size:3.5rem;
+cursor:pointer;
+transition:.3s;
+}
 
-        .instructions {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            text-align: center;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            margin-bottom: 2rem;
-            animation: fadeIn 1s ease-out;
-        }
+.hiding-spot:hover{transform:scale(1.1);}
 
-        .instructions h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
+.hiding-spot.shaking{animation:shake .5s;opacity:.5;}
+.hiding-spot.revealed{animation:popOpen .5s forwards;}
 
-        .instructions p {
-            font-size: 1.2rem;
-        }
+@keyframes shake{
+10%,90%{transform:translateX(-2px);}
+20%,80%{transform:translateX(2px);}
+}
 
-        .score-board {
-            margin-top: 1rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
+@keyframes popOpen{
+0%{transform:scale(1);}
+100%{transform:scale(0);opacity:0;}
+}
 
-        /* Hidden Hearts */
-        .heart-target {
-            position: absolute;
-            font-size: 2.5rem;
-            color: #d62828;
-            /* Slightly darker to blend but identifiable if looked for */
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 0.8;
-            filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.3));
-            animation: pulse-soft 3s infinite;
-        }
+/* Envelope */
+#envelope-stage{
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
 
-        .heart-target:hover {
-            transform: scale(1.2);
-            color: #ff0000;
-        }
+.envelope{
+width:300px;
+height:200px;
+background:#ff4d6d;
+border-radius:10px;
+position:relative;
+}
 
-        /* Random positions for hearts (will be set by JS mostly, but examples here) */
+.flap{
+position:absolute;
+width:0;height:0;
+border-left:150px solid transparent;
+border-right:150px solid transparent;
+border-top:110px solid #ff758f;
+transition:.6s;
+}
 
-        @keyframes pulse-soft {
-            0% {
-                transform: scale(1);
-            }
+.envelope-container.open .flap{
+transform:rotateX(180deg);
+}
 
-            50% {
-                transform: scale(1.05);
-            }
+.open-btn{
+margin-top:2rem;
+padding:1rem 3rem;
+border:none;
+border-radius:50px;
+font-size:1.3rem;
+cursor:pointer;
+}
 
-            100% {
-                transform: scale(1);
-            }
-        }
+/* Letter */
+#letter-view{
+position:fixed;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+display:none;
+justify-content:center;
+align-items:center;
+}
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+#letter-view.active{display:flex;}
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.love-letter{
+background:#fff;
+width:90%;
+max-width:600px;
+padding:3rem;
+border-radius:5px;
+text-align:center;
+}
 
-        /* Envelope Stage */
-        #envelope-stage {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 20;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-        }
+.love-letter h2{
+font-family:'Dancing Script';
+font-size:2.5rem;
+color:var(--primary-color);
+margin-bottom:1rem;
+}
 
-        #envelope-stage.visible {
-            display: flex;
-            opacity: 1;
-        }
+/* Next Button */
+.next-btn{
+margin-top:2rem;
+padding:12px 30px;
+border:none;
+border-radius:40px;
+font-size:1.3rem;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
 
-        .envelope-container {
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.5s ease;
-        }
+/* Love Screen */
+#love-screen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(135deg,#ff4d6d,#ff8fa3);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:200;
+}
 
-        .envelope-container:hover {
-            transform: scale(1.05);
-        }
+#love-screen h1{
+color:white;
+font-size:4rem;
+font-family:'Dancing Script';
+animation:fadeLove 1.5s ease forwards;
+}
 
-        .envelope {
-            width: 300px;
-            height: 200px;
-            background: #ff4d6d;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            transition: all 0.5s ease;
-        }
-
-        .flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 110px solid #ff758f;
-            /* Lighter shade */
-            transform-origin: top;
-            transition: transform 0.6s ease 0.5s, z-index 0.2s;
-            z-index: 5;
-        }
-
-        .pocket {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 200px solid #ff4d6d;
-            z-index: 3;
-        }
-
-        .letter-preview {
-            width: 260px;
-            height: 180px;
-            background: white;
-            position: absolute;
-            bottom: 0;
-            border-radius: 5px;
-            z-index: 2;
-            transition: transform 0.8s ease 1s;
-        }
-
-        .seal {
-            width: 40px;
-            height: 40px;
-            background: #d00000;
-            border-radius: 50%;
-            position: absolute;
-            top: 80px;
-            left: 130px;
-            z-index: 6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ffcccb;
-            font-size: 1.2rem;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: opacity 0.5s ease;
-        }
-
-        /* Open state for envelope */
-        .envelope-container.open .flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .envelope-container.open .seal {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .envelope-container.open .letter-preview {
-            transform: translateY(-100px);
-            z-index: 4;
-        }
-
-        .open-btn {
-            margin-top: 3rem;
-            padding: 1rem 3rem;
-            background: white;
-            color: var(--primary-color);
-            border: none;
-            border-radius: 50px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .open-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
-            background: #fff0f3;
-        }
-
-        /* Full Letter View */
-        #letter-view {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            z-index: 50;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        #letter-view.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .love-letter {
-            background: #fff;
-            width: 90%;
-            max-width: 600px;
-            padding: 3rem;
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-            background-image: repeating-linear-gradient(white 0px, white 24px, #e9ecef 25px);
-            line-height: 25px;
-            transform: scale(0.8);
-            transition: transform 0.5s ease;
-        }
-
-        #letter-view.active .love-letter {
-            transform: scale(1);
-        }
-
-        .love-letter h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .love-letter p {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: #333;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #aaa;
-            background: none;
-            border: none;
-        }
-
-        .close-btn:hover {
-            color: #333;
-        }
-
-        /* Sparkle animation for finding heart */
-        .sparkle {
-            position: absolute;
-            pointer-events: none;
-            animation: sparkleAnim 0.8s ease-out forwards;
-            font-size: 20px;
-            color: gold;
-        }
-
-        @keyframes sparkleAnim {
-            0% {
-                transform: scale(0) rotate(0deg);
-                opacity: 1;
-            }
-
-            100% {
-                transform: scale(2) rotate(180deg);
-                opacity: 0;
-            }
-        }
-    </style>
+@keyframes fadeLove{
+from{opacity:0;transform:scale(.7);}
+to{opacity:1;transform:scale(1);}
+}
+</style>
 </head>
 
 <body>
 
-    <!-- Background Shapes -->
-    <div class="bg-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
+<div class="bg-shapes">
+<div class="shape"></div>
+<div class="shape"></div>
+<div class="shape"></div>
+</div>
 
-    <!-- Game Stage -->
-    <div id="game-stage">
-        <div class="instructions">
-            <h1>Find My Heart</h1>
-            <p>I've hidden 3 hearts inside these gifts and surprises.<br>Click them to find where my heart lies!</p>
-            <div class="score-board">Hearts Found: <span id="counter">0</span>/3</div>
-        </div>
+<!-- Game -->
+<div id="game-stage">
+<div class="instructions">
+<h1>Find My Heart</h1>
+<p>Find 3 hidden hearts ❤️</p>
+<div class="score-board">Hearts Found: <span id="counter">0</span>/3</div>
+</div>
 
-        <!-- Hiding Spots Container -->
-        <div class="hiding-spots-container">
-            <!-- Generated by JS -->
-        </div>
-    </div>
+<div class="hiding-spots-container"></div>
+</div>
 
-    <!-- Envelope Stage -->
-    <div id="envelope-stage">
-        <div class="envelope-container" id="envelope">
-            <div class="envelope">
-                <div class="pocket"></div>
-                <!-- The letter inside -->
-                <div class="letter-preview"></div>
-                <div class="flap"></div>
-                <div class="seal">❤️</div>
-            </div>
-        </div>
-        <button class="open-btn" onclick="openEnvelope()">Open Me</button>
-    </div>
+<!-- Envelope -->
+<div id="envelope-stage">
+<div class="envelope-container" id="envelope">
+<div class="envelope">
+<div class="flap"></div>
+</div>
+</div>
+<button class="open-btn" onclick="openEnvelope()">Open Me</button>
+</div>
 
-    <!-- Full Letter View -->
-    <div id="letter-view">
-        <div class="love-letter">
-            <button class="close-btn" onclick="closeLetter()">×</button>
-            <h2>My Dearest Valentine,</h2>
-            <p>Just like you found these hidden hearts, you've found the deepest parts of my soul.</p>
-            <p>Every moment with you is a surprise I cherish, a gift I never want to stop opening.</p>
-            <p>Thank you for being my adventure, my comfort, and my love.</p>
-            <p>Happy Valentine's Day! ❤️</p>
-            <p style="text-align: right;">- Yours forever</p>
-        </div>
-    </div>
+<!-- Letter -->
+<div id="letter-view">
+<div class="love-letter">
+<h2>My Dearest Valentine</h2>
+<p>You found my heart ❤️</p>
+<p>Thank you for being my love.</p>
 
-    <style>
-        /* Additional Styles for Hiding Spots */
-        .hiding-spots-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-            max-width: 800px;
-            padding: 20px;
-            z-index: 15;
-            perspective: 1000px;
-        }
+<button class="next-btn" onclick="showLove()">Next ❤️</button>
+</div>
+</div>
 
-        .hiding-spot {
-            font-size: 3.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease, opacity 0.3s;
-            position: relative;
-            user-select: none;
-            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.1));
-        }
+<!-- Love Screen -->
+<div id="love-screen">
+<h1>I Love You ❤️</h1>
+</div>
 
-        .hiding-spot:hover {
-            transform: scale(1.1) translateY(-5px);
-        }
+<script>
+let heartsFound=0;
+const totalHearts=3;
 
-        .hiding-spot.shaking {
-            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
-            color: #ccc;
-            /* Fade out slightly to show checked */
-            cursor: default;
-        }
+const items=['🎁','🧸','💐','💌','🍬','🧁','🌹','🎁','💐','🧸','🍬','🌹'];
 
-        .hiding-spot.revealed {
-            animation: popOpen 0.5s ease forwards;
-            pointer-events: none;
-        }
+window.onload=()=>{
+const container=document.querySelector('.hiding-spots-container');
+items.sort(()=>Math.random()-.5);
 
-        .hidden-heart-popup {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-size: 2rem;
-            color: #ff0000;
-            pointer-events: none;
-            z-index: 20;
-        }
+let heartIndexes=new Set();
+while(heartIndexes.size<3){
+heartIndexes.add(Math.floor(Math.random()*items.length));
+}
 
-        .pop-anim {
-            animation: popHeart 1s ease forwards;
-        }
+items.forEach((icon,i)=>{
+const el=document.createElement('div');
+el.className='hiding-spot';
+el.innerText=icon;
+el.dataset.heart=heartIndexes.has(i);
+el.onclick=()=>check(el);
+container.appendChild(el);
+});
+}
 
-        @keyframes shake {
+function check(el){
+if(el.dataset.heart==="true"){
+el.classList.add('revealed');
+heartsFound++;
+document.getElementById('counter').innerText=heartsFound;
 
-            10%,
-            90% {
-                transform: translate3d(-1px, 0, 0);
-            }
+if(heartsFound===3){
+setTimeout(()=>{
+document.getElementById('game-stage').style.display='none';
+document.getElementById('envelope-stage').style.display='flex';
+},800);
+}
+}else{
+el.classList.add('shaking');
+}
+}
 
-            20%,
-            80% {
-                transform: translate3d(2px, 0, 0);
-            }
+function openEnvelope(){
+document.getElementById('letter-view').classList.add('active');
+}
 
-            30%,
-            50%,
-            70% {
-                transform: translate3d(-4px, 0, 0);
-            }
+function showLove(){
+document.getElementById('letter-view').classList.remove('active');
+document.getElementById('love-screen').style.display='flex';
+}
+</script>
 
-            40%,
-            60% {
-                transform: translate3d(4px, 0, 0);
-            }
-        }
-
-        @keyframes popOpen {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.2);
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: scale(0);
-                opacity: 0;
-            }
-        }
-
-        @keyframes popHeart {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0;
-            }
-
-            50% {
-                transform: translate(-50%, -150%) scale(2);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translate(-50%, -300%) scale(0);
-                opacity: 0;
-            }
-        }
-
-        /* Adjust game stage layout for grid */
-        #game-stage {
-            display: flex;
-            /* Ensure flex for centering */
-        }
-    </style>
-
-    <script>
-        let heartsFound = 0;
-        const totalHearts = 3;
-
-        // Items to hide things in
-        const hidingItems = ['🎁', '🎁', '🎁', '🧸', '🧸', '💐', '💐', '☁️', '💌', '🍬', '🧁', '🌹'];
-        let spots = [];
-
-        window.onload = function () {
-            initGame();
-        };
-
-        function initGame() {
-            const container = document.querySelector('.hiding-spots-container');
-            // Shuffle items
-            hidingItems.sort(() => Math.random() - 0.5);
-
-            // Limit to maybe 12 items on screen for clean look
-            const displayItems = hidingItems.slice(0, 12);
-
-            // Pick 3 random indices to hold hearts
-            let heartIndices = new Set();
-            while (heartIndices.size < 3) {
-                heartIndices.add(Math.floor(Math.random() * displayItems.length));
-            }
-
-            displayItems.forEach((icon, index) => {
-                const spot = document.createElement('div');
-                spot.classList.add('hiding-spot');
-                spot.innerText = icon;
-                spot.dataset.hasHeart = heartIndices.has(index);
-                spot.onclick = () => checkSpot(spot);
-                container.appendChild(spot);
-                spots.push(spot);
-            });
-        }
-
-        function checkSpot(element) {
-            if (element.classList.contains('shaking') || element.classList.contains('revealed')) return;
-
-            if (element.dataset.hasHeart === "true") {
-                // FOUND HEART
-                element.classList.add('revealed');
-
-                // Show floating heart
-                const heart = document.createElement('div');
-                heart.classList.add('hidden-heart-popup', 'pop-anim');
-                heart.innerText = '❤️';
-                element.appendChild(heart);
-
-                // Sparkles at position
-                const rect = element.getBoundingClientRect();
-                createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-                heartsFound++;
-                document.getElementById('counter').innerText = heartsFound;
-
-                if (heartsFound === totalHearts) {
-                    setTimeout(revealEnvelope, 1200);
-                }
-            } else {
-                // EMPTY
-                element.classList.add('shaking');
-                // Optional: Change emoji to empty/sad or just fade
-                // element.style.opacity = '0.5';
-            }
-        }
-
-        function createSparkles(x, y) {
-            for (let i = 0; i < 8; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.classList.add('sparkle');
-                sparkle.innerText = '✨';
-                sparkle.style.left = (x + (Math.random() * 40 - 20)) + 'px';
-                sparkle.style.top = (y + (Math.random() * 40 - 20)) + 'px';
-                document.body.appendChild(sparkle);
-                setTimeout(() => sparkle.remove(), 800);
-            }
-        }
-
-        function revealEnvelope() {
-            const gameStage = document.getElementById('game-stage');
-            const envelopeStage = document.getElementById('envelope-stage');
-
-            gameStage.classList.add('hidden');
-
-            setTimeout(() => {
-                gameStage.style.display = 'none';
-                envelopeStage.style.display = 'flex';
-                void envelopeStage.offsetWidth;
-                envelopeStage.classList.add('visible');
-            }, 1000);
-        }
-
-        function openEnvelope() {
-            const envContainer = document.getElementById('envelope');
-            const letterView = document.getElementById('letter-view');
-            envContainer.classList.add('open');
-            setTimeout(() => {
-                letterView.classList.add('active');
-                createConfetti();
-            }, 1500);
-        }
-
-        function closeLetter() {
-            document.getElementById('letter-view').classList.remove('active');
-        }
-
-        function createConfetti() {
-            const colors = ['#ff4d6d', '#ff8fa3', '#fff', '#gold'];
-            for (let i = 0; i < 50; i++) {
-                const conf = document.createElement('div');
-                conf.style.position = 'fixed';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.top = -10 + 'px';
-                conf.style.width = '10px';
-                conf.style.height = '10px';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animation = `float ${Math.random() * 3 + 2}s linear forwards`;
-                document.body.appendChild(conf);
-                setTimeout(() => conf.remove(), 5000);
-            }
-        }
-    </script>
 </body>
-
 </html>
