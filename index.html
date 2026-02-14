@@ -29,171 +29,6 @@ align-items:center;
 color:var(--text-color);
 }
 
-/* Background */
-.bg-shapes{position:absolute;width:100%;height:100%;z-index:0;}
-.shape{
-position:absolute;border-radius:50%;
-background:rgba(255,255,255,0.3);
-animation:float 20s infinite linear;
-}
-.shape:nth-child(1){width:150px;height:150px;top:10%;left:10%;}
-.shape:nth-child(2){width:200px;height:200px;bottom:20%;right:10%;}
-.shape:nth-child(3){width:100px;height:100px;top:40%;left:50%;}
-
-@keyframes float{
-0%{transform:translate(0,0) rotate(0);}
-50%{transform:translate(20px,40px) rotate(180deg);}
-100%{transform:translate(0,0) rotate(360deg);}
-}
-
-/* Game */
-#game-stage{
-position:relative;
-width:100%;
-height:100%;
-z-index:10;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-}
-
-.instructions{
-background:var(--glass-bg);
-backdrop-filter:blur(10px);
-padding:2rem;
-border-radius:20px;
-border:1px solid var(--glass-border);
-text-align:center;
-margin-bottom:2rem;
-}
-
-.instructions h1{
-font-family:'Dancing Script',cursive;
-font-size:3rem;
-}
-
-.score-board{
-margin-top:1rem;
-font-size:1.5rem;
-font-weight:600;
-color:var(--primary-color);
-}
-
-/* Hiding Spots */
-.hiding-spots-container{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:2rem;
-max-width:800px;
-padding:20px;
-}
-
-.hiding-spot{
-font-size:3.5rem;
-cursor:pointer;
-transition:.3s;
-}
-
-.hiding-spot:hover{transform:scale(1.1);}
-
-.hiding-spot.shaking{animation:shake .5s;opacity:.5;}
-.hiding-spot.revealed{animation:popOpen .5s forwards;}
-
-@keyframes shake{
-10%,90%{transform:translateX(-2px);}
-20%,80%{transform:translateX(2px);}
-}
-
-@keyframes popOpen{
-0%{transform:scale(1);}
-100%{transform:scale(0);opacity:0;}
-}
-
-/* Envelope */
-#envelope-stage{
-display:none;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-}
-
-.envelope{
-width:300px;
-height:200px;
-background:#ff4d6d;
-border-radius:10px;
-position:relative;
-}
-
-.flap{
-position:absolute;
-width:0;height:0;
-border-left:150px solid transparent;
-border-right:150px solid transparent;
-border-top:110px solid #ff758f;
-transition:.6s;
-}
-
-.envelope-container.open .flap{
-transform:rotateX(180deg);
-}
-
-.open-btn{
-margin-top:2rem;
-padding:1rem 3rem;
-border:none;
-border-radius:50px;
-font-size:1.3rem;
-cursor:pointer;
-}
-
-/* Letter */
-#letter-view{
-position:fixed;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.6);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-#letter-view.active{display:flex;}
-
-.love-letter{
-background:#fff;
-width:90%;
-max-width:600px;
-padding:3rem;
-border-radius:5px;
-text-align:center;
-}
-
-.love-letter h2{
-font-family:'Dancing Script';
-font-size:2.5rem;
-color:var(--primary-color);
-margin-bottom:1rem;
-}
-
-/* Next Button */
-.next-btn{
-margin-top:2rem;
-padding:12px 30px;
-border:none;
-border-radius:40px;
-font-size:1.3rem;
-background:#ff4d6d;
-color:white;
-cursor:pointer;
-}
-
 /* Love Screen */
 #love-screen{
 position:fixed;
@@ -219,102 +54,63 @@ animation:fadeLove 1.5s ease forwards;
 from{opacity:0;transform:scale(.7);}
 to{opacity:1;transform:scale(1);}
 }
+
+.next-btn{
+margin-top:2rem;
+padding:12px 30px;
+border:none;
+border-radius:40px;
+font-size:1.3rem;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
-<div class="bg-shapes">
-<div class="shape"></div>
-<div class="shape"></div>
-<div class="shape"></div>
-</div>
+<!-- Letter View -->
+<div id="letter-view" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:flex;
+justify-content:center;
+align-items:center;
+">
 
-<!-- Game -->
-<div id="game-stage">
-<div class="instructions">
-<h1>Find My Heart</h1>
-<p>Find 3 hidden hearts ❤️</p>
-<div class="score-board">Hearts Found: <span id="counter">0</span>/3</div>
-</div>
+<div class="love-letter" style="
+background:#fff;
+width:90%;
+max-width:600px;
+padding:3rem;
+border-radius:5px;
+">
 
-<div class="hiding-spots-container"></div>
-</div>
-
-<!-- Envelope -->
-<div id="envelope-stage">
-<div class="envelope-container" id="envelope">
-<div class="envelope">
-<div class="flap"></div>
-</div>
-</div>
-<button class="open-btn" onclick="openEnvelope()">Open Me</button>
-</div>
-
-<!-- Letter -->
-<div id="letter-view">
-<div class="love-letter">
-<h2>My Dearest Valentine</h2>
-<p>You found my heart ❤️</p>
-<p>Thank you for being my love.</p>
+<h2>My Dearest Valentine,</h2>
+<p>Just like you found these hidden hearts, you've found the deepest parts of my soul.</p>
+<p>Every moment with you is a surprise I cherish, a gift I never want to stop opening.</p>
+<p>Thank you for being my adventure, my comfort, and my love.</p>
+<p>Happy Valentine's Day! ❤️</p>
+<p style="text-align: right;">- Yours forever</p>
 
 <button class="next-btn" onclick="showLove()">Next ❤️</button>
+
 </div>
 </div>
 
-<!-- Love Screen -->
+<!-- Final Love Screen -->
 <div id="love-screen">
 <h1>I Love You ❤️</h1>
 </div>
 
 <script>
-let heartsFound=0;
-const totalHearts=3;
-
-const items=['🎁','🧸','💐','💌','🍬','🧁','🌹','🎁','💐','🧸','🍬','🌹'];
-
-window.onload=()=>{
-const container=document.querySelector('.hiding-spots-container');
-items.sort(()=>Math.random()-.5);
-
-let heartIndexes=new Set();
-while(heartIndexes.size<3){
-heartIndexes.add(Math.floor(Math.random()*items.length));
-}
-
-items.forEach((icon,i)=>{
-const el=document.createElement('div');
-el.className='hiding-spot';
-el.innerText=icon;
-el.dataset.heart=heartIndexes.has(i);
-el.onclick=()=>check(el);
-container.appendChild(el);
-});
-}
-
-function check(el){
-if(el.dataset.heart==="true"){
-el.classList.add('revealed');
-heartsFound++;
-document.getElementById('counter').innerText=heartsFound;
-
-if(heartsFound===3){
-setTimeout(()=>{
-document.getElementById('game-stage').style.display='none';
-document.getElementById('envelope-stage').style.display='flex';
-},800);
-}
-}else{
-el.classList.add('shaking');
-}
-}
-
-function openEnvelope(){
-document.getElementById('letter-view').classList.add('active');
-}
-
 function showLove(){
-document.getElementById('letter-view').classList.remove('active');
+document.getElementById('letter-view').style.display='none';
 document.getElementById('love-screen').style.display='flex';
 }
 </script>
