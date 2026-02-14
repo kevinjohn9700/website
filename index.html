@@ -8,9 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
+:root {
 --primary-color:#ff4d6d;
 --secondary-color:#ff8fa3;
+--glass-bg:rgba(255,255,255,0.25);
+--glass-border:rgba(255,255,255,0.5);
 --text-color:#590d22;
 }
 
@@ -24,6 +26,7 @@ overflow:hidden;
 display:flex;
 justify-content:center;
 align-items:center;
+color:var(--text-color);
 }
 
 /* GAME */
@@ -41,13 +44,15 @@ transition:opacity 1s;
 #game-stage.hidden{
 opacity:0;
 pointer-events:none;
+display:none;
 }
 
 .instructions{
-background:rgba(255,255,255,0.3);
+background:var(--glass-bg);
 backdrop-filter:blur(10px);
 padding:2rem;
 border-radius:20px;
+border:1px solid var(--glass-border);
 text-align:center;
 margin-bottom:2rem;
 }
@@ -57,43 +62,53 @@ font-family:'Dancing Script';
 font-size:3rem;
 }
 
-.score-board{
-font-size:1.4rem;
-color:#ff4d6d;
-margin-top:10px;
+.instructions p{
+font-size:1.2rem;
 }
 
+.score-board{
+margin-top:1rem;
+font-size:1.5rem;
+font-weight:600;
+color:var(--primary-color);
+}
+
+/* ORIGINAL SIZE PRESERVED */
 .hiding-spots-container{
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
 gap:2rem;
-max-width:700px;
+max-width:800px;
+padding:20px;
 }
 
 .hiding-spot{
-font-size:3rem;
+font-size:3.5rem;
 cursor:pointer;
 transition:0.3s;
 }
 
-.hiding-spot:hover{transform:scale(1.1);}
+.hiding-spot:hover{
+transform:scale(1.1) translateY(-5px);
+}
 
 /* ENVELOPE */
 #envelope-stage{
 display:none;
 flex-direction:column;
 align-items:center;
+justify-content:center;
 }
 
 .open-btn{
-margin-top:2rem;
+margin-top:3rem;
 padding:1rem 3rem;
-font-size:1.4rem;
-border:none;
-border-radius:40px;
 background:white;
-color:#ff4d6d;
+color:var(--primary-color);
+border:none;
+border-radius:50px;
+font-size:1.5rem;
 cursor:pointer;
 }
 
@@ -105,6 +120,7 @@ left:0;
 width:100%;
 height:100%;
 background:rgba(0,0,0,0.6);
+backdrop-filter:blur(5px);
 display:none;
 justify-content:center;
 align-items:center;
@@ -115,29 +131,29 @@ display:flex;
 }
 
 .love-letter{
-background:white;
-padding:3rem;
-max-width:600px;
+background:#fff;
 width:90%;
-border-radius:10px;
+max-width:600px;
+padding:3rem;
+border-radius:5px;
 text-align:center;
 }
 
 .love-letter h2{
 font-family:'Dancing Script';
 font-size:2.5rem;
-color:#ff4d6d;
-margin-bottom:20px;
+color:var(--primary-color);
+margin-bottom:2rem;
 }
 
 .love-letter p{
 font-family:'Dancing Script';
-font-size:1.5rem;
-margin-bottom:15px;
+font-size:1.6rem;
+margin-bottom:1.5rem;
 }
 
 .next-btn{
-margin-top:20px;
+margin-top:2rem;
 padding:12px 30px;
 border:none;
 border-radius:40px;
@@ -159,12 +175,12 @@ display:none;
 justify-content:center;
 align-items:center;
 z-index:200;
+font-family:'Dancing Script';
 }
 
 #love-screen h1{
 color:white;
 font-size:4rem;
-font-family:'Dancing Script';
 animation:fadeLove 1.5s ease forwards;
 }
 
@@ -181,7 +197,7 @@ to{opacity:1;transform:scale(1);}
 <div id="game-stage">
 <div class="instructions">
 <h1>Find My Heart</h1>
-<p>Find 3 hidden hearts ❤️</p>
+<p>I've hidden 3 hearts inside these gifts and surprises.<br>Click them to find where my heart lies!</p>
 <div class="score-board">Hearts Found: <span id="counter">0</span>/3</div>
 </div>
 
@@ -191,7 +207,7 @@ to{opacity:1;transform:scale(1);}
 <!-- ENVELOPE -->
 <div id="envelope-stage">
 <h2 style="font-family:Dancing Script;font-size:3rem;">You Found My Heart ❤️</h2>
-<button class="open-btn" onclick="openEnvelope()">Open Letter</button>
+<button class="open-btn" onclick="openEnvelope()">Open Me</button>
 </div>
 
 <!-- LETTER -->
@@ -219,12 +235,13 @@ to{opacity:1;transform:scale(1);}
 let heartsFound=0;
 const totalHearts=3;
 
-const items=['🎁','🧸','💐','🍬','🌹','🧁','💌','☁️','🎁','💐','🧸','🌹'];
+const items=['🎁','🎁','🎁','🧸','🧸','💐','💐','☁️','💌','🍬','🧁','🌹'];
 
 window.onload=initGame;
 
 function initGame(){
 const container=document.getElementById('spots');
+
 items.sort(()=>Math.random()-0.5);
 
 let heartIndexes=new Set();
@@ -255,7 +272,6 @@ if(heartsFound===totalHearts){
 setTimeout(()=>{
 document.getElementById('game-stage').classList.add('hidden');
 setTimeout(()=>{
-document.getElementById('game-stage').style.display='none';
 document.getElementById('envelope-stage').style.display='flex';
 },800);
 },800);
