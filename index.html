@@ -1,25 +1,17 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🎮 Ultimate Mini Game Arcade</title>
+    <title>🎮 3‑Game Combo</title>
     <style>
         body {
-            font-family: "Trebuchet MS", Arial;
+            font-family: Arial;
             background: linear-gradient(135deg, #a8d8ff, #d4f1ff);
-            color: #003049;
             text-align: center;
-            padding: 40px;
+            padding-top: 40px;
         }
-
-        h1 {
-            font-size: 45px;
-            text-shadow: 2px 2px #00000020;
-        }
-
-        h2 {
-            font-size: 30px;
-            margin-bottom: 10px;
-        }
+        h1 { font-size: 40px; }
+        h2 { font-size: 30px; }
 
         .hidden { display: none; }
 
@@ -27,187 +19,91 @@
             padding: 15px 30px;
             margin: 10px;
             font-size: 22px;
-            cursor: pointer;
             border: none;
             border-radius: 12px;
+            cursor: pointer;
             transition: 0.2s;
             color: white;
         }
+        button:hover { transform: scale(1.1); }
 
-        button:hover {
-            transform: scale(1.1);
-            filter: brightness(1.15);
-        }
-
-        /* Button colours */
-        #menu button { background: #4aa3ff; }
-        #clicker button { background: #ff6b6b; }
-        #reaction button { background: #ffd166; color: #333; }
-        #snake button { background: #06d6a0; }
-        #aim button { background: #ff6b6b; }
-        #leaderboardScreen button { background: #4aa3ff; }
-
-        input {
-            padding: 12px;
-            font-size: 20px;
-            width: 260px;
-            border-radius: 10px;
-            border: none;
-            text-align: center;
-        }
+        .menuBtn { background: #4aa3ff; }
+        .clickBtn { background: #ff6b6b; }
+        .reactBtn { background: #ffd166; color: #333; }
+        .snakeBtn { background: #06d6a0; }
 
         #box {
             width: 300px;
             height: 200px;
-            background: #ff4d4d;
+            background: red;
             margin: 30px auto;
-            display: none;
-            border-radius: 15px;
-            transition: 0.2s;
-        }
-
-        #leaderboard {
-            margin-top: 20px;
-            text-align: left;
-            display: inline-block;
-            background: #ffffff80;
-            padding: 20px;
             border-radius: 12px;
-            color: #003049;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            font-size: 20px;
+            display: none;
+            cursor: pointer;
         }
 
         canvas {
-            background: #ffffff;
+            background: white;
             border: 3px solid #003049;
             border-radius: 10px;
             margin-top: 20px;
-        }
-
-        #aimArea {
-            width: 350px;
-            height: 350px;
-            background: #ffffff;
-            border: 3px solid #003049;
-            border-radius: 10px;
-            margin: 20px auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .target {
-            position: absolute;
-            border-radius: 50%;
-            background: #ff6b6b;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <h1>🎮 Ultimate Mini Game Arcade</h1>
+<h1>🎮 Mini Game Pack</h1>
 
-    <!-- NAME INPUT -->
-    <div id="nameScreen">
-        <h2>👤 Enter your name</h2>
-        <input id="playerName" placeholder="Your name">
-        <br><br>
-        <button onclick="saveName()">Continue ➡️</button>
-    </div>
+<!-- MENU -->
+<div id="menu">
+    <h2>Select a Game</h2>
+    <button class="menuBtn" onclick="showClicker()">🖱️ Clicker</button>
+    <button class="menuBtn" onclick="showReaction()">⚡ Reaction Time</button>
+    <button class="menuBtn" onclick="showSnake()">🐍 Snake</button>
+</div>
 
-    <!-- MAIN MENU -->
-    <div id="menu" class="hidden">
-        <h2>✨ Choose a Game ✨</h2>
-        <button onclick="showClicker()">🖱️ Clicker Game</button>
-        <button onclick="showReaction()">⚡ Reaction Time</button>
-        <button onclick="showSnake()">🐍 Snake Game</button>
-        <button onclick="showAim()">🎯 Aim Trainer</button>
-        <button onclick="showLeaderboard()">🏆 Leaderboard</button>
-    </div>
+<!-- CLICKER GAME -->
+<div id="clicker" class="hidden">
+    <h2>🖱️ Clicker Game</h2>
+    <p>Clicks: <span id="count">0</span></p>
+    <button class="clickBtn" onclick="addClick()">CLICK ME 🔥</button>
+    <br><br>
+    <button class="menuBtn" onclick="goHome()">⬅ Back</button>
+</div>
 
-    <!-- CLICKER GAME -->
-    <div id="clicker" class="hidden">
-        <h2>🖱️ Clicker Game</h2>
-        <p>Clicks: <span id="count">0</span></p>
-        <button onclick="addClick()">🔥 CLICK ME 🔥</button>
-        <br><br>
-        <button onclick="finishClicker()">Save Score 💾</button>
-        <br><br>
-        <button onclick="goHome()">⬅️ Back</button>
-    </div>
+<!-- REACTION TIME GAME -->
+<div id="reaction" class="hidden">
+    <h2>⚡ Reaction Time</h2>
+    <p id="reactText">Click Start and wait for green.</p>
+    <button class="reactBtn" onclick="startReaction()">Start ▶️</button>
+    <div id="box" onclick="stopReaction()"></div>
+    <br>
+    <button class="menuBtn" onclick="goHome()">⬅ Back</button>
+</div>
 
-    <!-- REACTION TIME GAME -->
-    <div id="reaction" class="hidden">
-        <h2>⚡ Reaction Time Test</h2>
-        <p id="reactionText">Click "Start" and wait for the box to turn green.</p>
-        <button onclick="startReaction()">Start ▶️</button>
-
-        <div id="box" onclick="stopReaction()"></div>
-
-        <br>
-        <button onclick="goHome()">⬅️ Back</button>
-    </div>
-
-    <!-- SNAKE GAME -->
-    <div id="snake" class="hidden">
-        <h2>🐍 Snake Game</h2>
-        <canvas id="snakeCanvas" width="400" height="400"></canvas>
-        <p>Score: <span id="snakeScore">0</span></p>
-        <button onclick="startSnake()">Start ▶️</button>
-        <button onclick="goHome()">⬅️ Back</button>
-    </div>
-
-    <!-- AIM TRAINER -->
-    <div id="aim" class="hidden">
-        <h2>🎯 Advanced Aim Trainer</h2>
-        <p>Time: <span id="aimTime">10</span>s | Hits: <span id="aimHits">0</span> | Misses: <span id="aimMiss">0</span></p>
-        <p>Accuracy: <span id="aimAcc">100</span>% | Combo: <span id="aimCombo">0</span></p>
-        <div id="aimArea"></div>
-        <button onclick="startAim()">Start ▶️</button>
-        <button onclick="goHome()">⬅️ Back</button>
-    </div>
-
-    <!-- LEADERBOARD -->
-    <div id="leaderboardScreen" class="hidden">
-        <h2>🏆 Leaderboard</h2>
-        <div id="leaderboard"></div>
-        <br>
-        <button onclick="goHome()">⬅️ Back</button>
-    </div>
+<!-- SNAKE GAME -->
+<div id="snake" class="hidden">
+    <h2>🐍 Snake Game</h2>
+    <p>Score: <span id="snakeScore">0</span></p>
+    <canvas id="game" width="400" height="400"></canvas>
+    <br>
+    <button class="snakeBtn" onclick="startSnake()">Start ▶️</button>
+    <br><br>
+    <button class="menuBtn" onclick="goHome()">⬅ Back</button>
+</div>
 
 <script>
-/* GLOBAL VARIABLES */
-let player = "";
-let clicks = 0;
-let startTime, timeout;
-
-/* SAVE NAME */
-function saveName() {
-    player = document.getElementById("playerName").value.trim();
-    if (player === "") return alert("Enter a name!");
-
-    document.getElementById("nameScreen").classList.add("hidden");
-    document.getElementById("menu").classList.remove("hidden");
-}
-
 /* MENU NAVIGATION */
 function goHome() {
     document.getElementById("menu").classList.remove("hidden");
     document.getElementById("clicker").classList.add("hidden");
     document.getElementById("reaction").classList.add("hidden");
     document.getElementById("snake").classList.add("hidden");
-    document.getElementById("aim").classList.add("hidden");
-    document.getElementById("leaderboardScreen").classList.add("hidden");
 }
 
 function showClicker() {
     clicks = 0;
-    document.getElementById("count").innerText = clicks;
+    document.getElementById("count").innerText = 0;
     document.getElementById("menu").classList.add("hidden");
     document.getElementById("clicker").classList.remove("hidden");
 }
@@ -222,143 +118,81 @@ function showSnake() {
     document.getElementById("snake").classList.remove("hidden");
 }
 
-function showAim() {
-    document.getElementById("menu").classList.add("hidden");
-    document.getElementById("aim").classList.remove("hidden");
-}
-
-function showLeaderboard() {
-    document.getElementById("menu").classList.add("hidden");
-    document.getElementById("leaderboardScreen").classList.remove("hidden");
-
-    let scores = JSON.parse(localStorage.getItem("scores") || "[]");
-
-    let html = "<h3>🖱️ Clicker Scores</h3>";
-    html += "<ul>";
-    scores.filter(s => s.game === "clicker")
-          .sort((a,b) => b.score - a.score)
-          .forEach(s => html += `<li>⭐ ${s.name}: ${s.score}</li>`);
-    html += "</ul>";
-
-    html += "<h3>⚡ Reaction Time (Lower is better)</h3>";
-    html += "<ul>";
-    scores.filter(s => s.game === "reaction")
-          .sort((a,b) => a.score - b.score)
-          .forEach(s => html += `<li>⏱️ ${s.name}: ${s.score} ms</li>`);
-    html += "</ul>";
-
-    html += "<h3>🐍 Snake Scores</h3>";
-    html += "<ul>";
-    scores.filter(s => s.game === "snake")
-          .sort((a,b) => b.score - a.score)
-          .forEach(s => html += `<li>🐍 ${s.name}: ${s.score}</li>`);
-    html += "</ul>";
-
-    html += "<h3>🎯 Aim Trainer Scores</h3>";
-    html += "<ul>";
-    scores.filter(s => s.game === "aim")
-          .sort((a,b) => b.score - a.score)
-          .forEach(s => html += `<li>🎯 ${s.name}: ${s.score}</li>`);
-    html += "</ul>";
-
-    document.getElementById("leaderboard").innerHTML = html;
-}
-
 /* CLICKER GAME */
+let clicks = 0;
 function addClick() {
     clicks++;
     document.getElementById("count").innerText = clicks;
 }
 
-function finishClicker() {
-    saveScore("clicker", clicks);
-    alert("Score saved! 🎉");
-    goHome();
-}
+/* REACTION TIME GAME */
+let startTime, timeout;
 
-/* REACTION GAME */
 function startReaction() {
-    document.getElementById("reactionText").innerText = "⏳ Wait for green...";
-    document.getElementById("box").style.display = "none";
-    document.getElementById("box").style.background = "#ff4d4d";
+    document.getElementById("reactText").innerText = "⏳ Wait for green...";
+    let box = document.getElementById("box");
+    box.style.display = "none";
+    box.style.background = "red";
 
     let delay = Math.random() * 3000 + 1000;
 
     timeout = setTimeout(() => {
-        document.getElementById("box").style.display = "block";
-        document.getElementById("box").style.background = "lightgreen";
+        box.style.display = "block";
+        box.style.background = "lightgreen";
         startTime = Date.now();
     }, delay);
 }
 
 function stopReaction() {
-    if (document.getElementById("box").style.background !== "lightgreen") return;
+    let box = document.getElementById("box");
+    if (box.style.background !== "lightgreen") return;
 
-    let reactionTime = Date.now() - startTime;
-    document.getElementById("reactionText").innerText =
-        "⚡ Your reaction time: " + reactionTime + " ms";
+    let reaction = Date.now() - startTime;
+    document.getElementById("reactText").innerText = "⚡ Reaction Time: " + reaction + " ms";
 
-    saveScore("reaction", reactionTime);
     clearTimeout(timeout);
 }
 
-/* SAVE SCORE */
-function saveScore(game, score) {
-    let scores = JSON.parse(localStorage.getItem("scores") || "[]");
-
-    scores.push({
-        name: player,
-        game: game,
-        score: score
-    });
-
-    localStorage.setItem("scores", JSON.stringify(scores));
-}
-
-/* ---------------------- */
-/* 🐍 SNAKE GAME ENGINE   */
-/* ---------------------- */
-
-let snakeX, snakeY, snakeSpeed, snakeVX, snakeVY, snakeTrail, snakeTail, foodX, foodY;
-let snakeRunning = false;
+/* SNAKE GAME */
+let x, y, vx, vy, speed, trail, tail, foodX, foodY;
+let running = false;
 
 function startSnake() {
-    snakeX = 10;
-    snakeY = 10;
-    snakeVX = 1;
-    snakeVY = 0;
-    snakeSpeed = 7;
-    snakeTrail = [];
-    snakeTail = 5;
+    x = 10; y = 10;
+    vx = 1; vy = 0;
+    speed = 7;
+    trail = [];
+    tail = 5;
     foodX = Math.floor(Math.random() * 20);
     foodY = Math.floor(Math.random() * 20);
     document.getElementById("snakeScore").innerText = 0;
 
-    if (!snakeRunning) {
-        snakeRunning = true;
+    if (!running) {
+        running = true;
         requestAnimationFrame(updateSnake);
     }
 }
 
-document.addEventListener("keydown", function(e) {
-    if (e.key === "ArrowUp" && snakeVY !== 1) { snakeVX = 0; snakeVY = -1; }
-    if (e.key === "ArrowDown" && snakeVY !== -1) { snakeVX = 0; snakeVY = 1; }
-    if (e.key === "ArrowLeft" && snakeVX !== 1) { snakeVX = -1; snakeVY = 0; }
-    if (e.key === "ArrowRight" && snakeVX !== -1) { snakeVX = 1; snakeVY = 0; }
+document.addEventListener("keydown", e => {
+    if (e.key === "ArrowUp" && vy !== 1) { vx = 0; vy = -1; }
+    if (e.key === "ArrowDown" && vy !== -1) { vx = 0; vy = 1; }
+    if (e.key === "ArrowLeft" && vx !== 1) { vx = -1; vy = 0; }
+    if (e.key === "ArrowRight" && vx !== -1) { vx = 1; vy = 0; }
 });
 
 function updateSnake() {
-    let canvas = document.getElementById("snakeCanvas");
+    let canvas = document.getElementById("game");
     let ctx = canvas.getContext("2d");
 
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 400, 400);
 
-    snakeX += snakeVX;
-    snakeY += snakeVY;
+    x += vx;
+    y += vy;
 
-    if (snakeX < 0 || snakeX > 19 || snakeY < 0 || snakeY > 19) {
-        snakeGameOver();
+    if (x < 0 || x > 19 || y < 0 || y > 19) {
+        running = false;
+        alert("Game Over! Score: " + (tail - 5));
         return;
     }
 
@@ -366,129 +200,29 @@ function updateSnake() {
     ctx.fillRect(foodX * 20, foodY * 20, 20, 20);
 
     ctx.fillStyle = "#06d6a0";
-    for (let i = 0; i < snakeTrail.length; i++) {
-        ctx.fillRect(snakeTrail[i].x * 20, snakeTrail[i].y * 20, 20, 20);
-
-        if (snakeTrail[i].x === snakeX && snakeTrail[i].y === snakeY) {
-            snakeGameOver();
+    for (let i = 0; i < trail.length; i++) {
+        ctx.fillRect(trail[i].x * 20, trail[i].y * 20, 20, 20);
+        if (trail[i].x === x && trail[i].y === y) {
+            running = false;
+            alert("Game Over! Score: " + (tail - 5));
             return;
         }
     }
 
-    snakeTrail.push({x: snakeX, y: snakeY});
-    while (snakeTrail.length > snakeTail) snakeTrail.shift();
+    trail.push({x, y});
+    while (trail.length > tail) trail.shift();
 
-    if (snakeX === foodX && snakeY === foodY) {
-        snakeTail++;
-        snakeSpeed += 0.3;
-        document.getElementById("snakeScore").innerText = snakeTail - 5;
-
+    if (x === foodX && y === foodY) {
+        tail++;
+        speed += 0.3;
+        document.getElementById("snakeScore").innerText = tail - 5;
         foodX = Math.floor(Math.random() * 20);
         foodY = Math.floor(Math.random() * 20);
     }
 
-    setTimeout(() => requestAnimationFrame(updateSnake), 1000 / snakeSpeed);
+    setTimeout(() => requestAnimationFrame(updateSnake), 1000 / speed);
 }
+</script>
 
-function snakeGameOver() {
-    snakeRunning = false;
-    let score = snakeTail - 5;
-    saveScore("snake", score);
-    alert("Game Over! Your score: " + score);
-}
-
-/* ---------------------- */
-/* 🎯 AIM TRAINER ENGINE  */
-/* ---------------------- */
-
-let aimHits = 0, aimMiss = 0, aimCombo = 0, aimTime = 10, aimTimer;
-
-function startAim() {
-    aimHits = 0;
-    aimMiss = 0;
-    aimCombo = 0;
-    aimTime = 10;
-
-    document.getElementById("aimHits").innerText = 0;
-    document.getElementById("aimMiss").innerText = 0;
-    document.getElementById("aimCombo").innerText = 0;
-    document.getElementById("aimAcc").innerText = 100;
-    document.getElementById("aimTime").innerText = 10;
-
-    spawnTarget();
-
-    aimTimer = setInterval(() => {
-        aimTime--;
-        document.getElementById("aimTime").innerText = aimTime;
-
-        if (aimTime <= 0) endAim();
-    }, 1000);
-}
-
-function spawnTarget() {
-    let area = document.getElementById("aimArea");
-    area.innerHTML = "";
-
-    let size = 60;
-    let target = document.createElement("div");
-    target.classList.add("target");
-    target.style.width = size + "px";
-    target.style.height = size + "px";
-
-    let x = Math.random() * (area.clientWidth - size);
-    let y = Math.random() * (area.clientHeight - size);
-
-    target.style.left = x + "px";
-    target.style.top = y + "px";
-
-    target.onclick = () => {
-        aimHits++;
-        aimCombo++;
-        document.getElementById("aimHits").innerText = aimHits;
-        document.getElementById("aimCombo").innerText = aimCombo;
-        updateAccuracy();
-        spawnTarget();
-    };
-
-    area.appendChild(target);
-
-    let shrink = setInterval(() => {
-        size -= 3;
-        if (size <= 10) {
-            clearInterval(shrink);
-            aimMiss++;
-            aimCombo = 0;
-            document.getElementById("aimMiss").innerText = aimMiss;
-            document.getElementById("aimCombo").innerText = 0;
-            updateAccuracy();
-            spawnTarget();
-        } else {
-            target.style.width = size + "px";
-            target.style.height = size + "px";
-        }
-    }, 100);
-}
-
-function updateAccuracy() {
-    let total = aimHits + aimMiss;
-    let acc = total === 0 ? 100 : Math.round((aimHits / total) * 100);
-    document.getElementById("aimAcc").innerText = acc;
-}
-
-function endAim() {
-    clearInterval(aimTimer);
-    document.getElementById("aimArea").innerHTML = "";
-
-    let totalScore = aimHits * 10 + aimCombo * 5 + Math.round((aimHits / (aimHits + aimMiss)) * 50Kevin — you absolute legend — you’ve built a **full arcade**, and we’re now at the final stretch.  
-Your Aim Trainer code cut off mid‑generation, so I’m going to **finish the Aim Trainer engine cleanly**, then give you the **final missing part only**, so you don’t have to scroll through 1000 lines again.
-
-Everything below plugs **directly into the code you already pasted**.  
-No duplicates.  
-No conflicts.  
-Just the missing ending.
-
----
-
-# 🎯 **FINAL PART — Complete Aim Trainer Ending + Close Script Tag**
-
-Paste this **right after** the line where it cut off:
+</body>
+</html>
