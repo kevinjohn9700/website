@@ -30,17 +30,37 @@
             display: none;
             border-radius: 10px;
         }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            width: 250px;
+            margin-bottom: 20px;
+        }
+        #leaderboard {
+            margin-top: 30px;
+            text-align: left;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
 
     <h1>🎮 Mini Game Hub</h1>
 
+    <!-- NAME INPUT -->
+    <div id="nameScreen">
+        <h2>Enter your name</h2>
+        <input id="playerName" placeholder="Your name">
+        <br>
+        <button onclick="saveName()">Continue</button>
+    </div>
+
     <!-- MAIN MENU -->
-    <div id="menu">
+    <div id="menu" class="hidden">
         <h2>Select a Game</h2>
         <button onclick="showClicker()">Clicker Game</button>
         <button onclick="showReaction()">Reaction Time</button>
+        <button onclick="showLeaderboard()">Leaderboard</button>
     </div>
 
     <!-- CLICKER GAME -->
@@ -48,6 +68,8 @@
         <h2>Clicker Game</h2>
         <p>Clicks: <span id="count">0</span></p>
         <button onclick="addClick()">Click Me!</button>
+        <br><br>
+        <button onclick="finishClicker()">Finish & Save Score</button>
         <br><br>
         <button onclick="goHome()">Back</button>
     </div>
@@ -64,15 +86,40 @@
         <button onclick="goHome()">Back</button>
     </div>
 
+    <!-- LEADERBOARD -->
+    <div id="leaderboardScreen" class="hidden">
+        <h2>🏆 Leaderboard</h2>
+        <div id="leaderboard"></div>
+        <br>
+        <button onclick="goHome()">Back</button>
+    </div>
+
 <script>
+/* GLOBAL VARIABLES */
+let player = "";
+let clicks = 0;
+let startTime, timeout;
+
+/* SAVE NAME */
+function saveName() {
+    player = document.getElementById("playerName").value.trim();
+    if (player === "") return alert("Enter a name!");
+
+    document.getElementById("nameScreen").classList.add("hidden");
+    document.getElementById("menu").classList.remove("hidden");
+}
+
 /* MENU NAVIGATION */
 function goHome() {
     document.getElementById("menu").classList.remove("hidden");
     document.getElementById("clicker").classList.add("hidden");
     document.getElementById("reaction").classList.add("hidden");
+    document.getElementById("leaderboardScreen").classList.add("hidden");
 }
 
 function showClicker() {
+    clicks = 0;
+    document.getElementById("count").innerText = clicks;
     document.getElementById("menu").classList.add("hidden");
     document.getElementById("clicker").classList.remove("hidden");
 }
@@ -82,16 +129,42 @@ function showReaction() {
     document.getElementById("reaction").classList.remove("hidden");
 }
 
+function showLeaderboard() {
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("leaderboardScreen").classList.remove("hidden");
+
+    let scores = JSON.parse(localStorage.getItem("scores") || "[]");
+
+    let html = "<h3>Clicker Scores</h3>";
+    html += "<ul>";
+    scores.filter(s => s.game === "clicker")
+          .sort((a,b) => b.score - a.score)
+          .forEach(s => html += `<li>${s.name}: ${s.score}</li>`);
+    html += "</ul>";
+
+    html += "<h3>Reaction Time (Lower is better)</h3>";
+    html += "<ul>";
+    scores.filter(s => s.game === "reaction")
+          .sort((a,b) => a.score - b.score)
+          .forEach(s => html += `<li>${s.name}: ${s.score} ms</li>`);
+    html += "</ul>";
+
+    document.getElementById("leaderboard").innerHTML = html;
+}
+
 /* CLICKER GAME */
-let clicks = 0;
 function addClick() {
     clicks++;
     document.getElementById("count").innerText = clicks;
 }
 
-/* REACTION TIME GAME */
-let startTime, timeout;
+function finishClicker() {
+    saveScore("clicker", clicks);
+    alert("Score saved!");
+    goHome();
+}
 
+/* REACTION GAME */
 function startReaction() {
     document.getElementById("reactionText").innerText = "Wait for green...";
     document.getElementById("box").style.display = "none";
@@ -113,8 +186,21 @@ function stopReaction() {
     document.getElementById("reactionText").innerText =
         "Your reaction time: " + reactionTime + " ms";
 
-    document.getElementById("box").style.display = "none";
+    saveScore("reaction", reactionTime);
     clearTimeout(timeout);
+}
+
+/* SAVE SCORE TO LOCAL STORAGE */
+function saveScore(game, score) {
+    let scores = JSON.parse(localStorage.getItem("scores") || "[]");
+
+    scores.push({
+        name: player,
+        game: game,
+        score: score
+    });
+
+    localStorage.setItem("scores", JSON.stringify(scores));
 }
 </script>
 
