@@ -1,51 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Send Anonymous Message</title>
+    <title>Mini Game Hub</title>
     <style>
         body {
             font-family: Arial;
-            background: #f0f0f0;
-            padding: 40px;
-            text-align: center;
-        }
-        textarea {
-            width: 90%;
-            height: 120px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 12px 25px;
-            font-size: 18px;
-            background: black;
+            background: #222;
             color: white;
-            border: none;
-            cursor: pointer;
+            text-align: center;
+            padding: 40px;
         }
-        #status {
-            margin-top: 20px;
-            font-size: 18px;
-            color: green;
+        .hidden { display: none; }
+        button {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+        }
+        #menu button { background: #4CAF50; color: white; }
+        #clicker button { background: #2196F3; color: white; }
+        #reaction button { background: #FF5722; color: white; }
+        #box {
+            width: 300px;
+            height: 200px;
+            background: red;
+            margin: 30px auto;
+            display: none;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Send Me an Anonymous Message</h1>
+    <h1>🎮 Mini Game Hub</h1>
 
-    <form action="/send" method="POST" onsubmit="sent()">
-        <textarea name="message" placeholder="Type your message..." required></textarea>
+    <!-- MAIN MENU -->
+    <div id="menu">
+        <h2>Select a Game</h2>
+        <button onclick="showClicker()">Clicker Game</button>
+        <button onclick="showReaction()">Reaction Time</button>
+    </div>
+
+    <!-- CLICKER GAME -->
+    <div id="clicker" class="hidden">
+        <h2>Clicker Game</h2>
+        <p>Clicks: <span id="count">0</span></p>
+        <button onclick="addClick()">Click Me!</button>
+        <br><br>
+        <button onclick="goHome()">Back</button>
+    </div>
+
+    <!-- REACTION TIME GAME -->
+    <div id="reaction" class="hidden">
+        <h2>Reaction Time Test</h2>
+        <p id="reactionText">Click "Start" and wait for the box to turn green.</p>
+        <button onclick="startReaction()">Start</button>
+
+        <div id="box" onclick="stopReaction()"></div>
+
         <br>
-        <button type="submit">Send</button>
-    </form>
-
-    <div id="status"></div>
+        <button onclick="goHome()">Back</button>
+    </div>
 
 <script>
-function sent() {
-    document.getElementById("status").innerText = "Message sent!";
+/* MENU NAVIGATION */
+function goHome() {
+    document.getElementById("menu").classList.remove("hidden");
+    document.getElementById("clicker").classList.add("hidden");
+    document.getElementById("reaction").classList.add("hidden");
+}
+
+function showClicker() {
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("clicker").classList.remove("hidden");
+}
+
+function showReaction() {
+    document.getElementById("menu").classList.add("hidden");
+    document.getElementById("reaction").classList.remove("hidden");
+}
+
+/* CLICKER GAME */
+let clicks = 0;
+function addClick() {
+    clicks++;
+    document.getElementById("count").innerText = clicks;
+}
+
+/* REACTION TIME GAME */
+let startTime, timeout;
+
+function startReaction() {
+    document.getElementById("reactionText").innerText = "Wait for green...";
+    document.getElementById("box").style.display = "none";
+    document.getElementById("box").style.background = "red";
+
+    let delay = Math.random() * 3000 + 1000;
+
+    timeout = setTimeout(() => {
+        document.getElementById("box").style.display = "block";
+        document.getElementById("box").style.background = "green";
+        startTime = Date.now();
+    }, delay);
+}
+
+function stopReaction() {
+    if (document.getElementById("box").style.background !== "green") return;
+
+    let reactionTime = Date.now() - startTime;
+    document.getElementById("reactionText").innerText =
+        "Your reaction time: " + reactionTime + " ms";
+
+    document.getElementById("box").style.display = "none";
+    clearTimeout(timeout);
 }
 </script>
 
