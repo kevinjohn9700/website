@@ -13,6 +13,7 @@
       background: linear-gradient(135deg, #ffd1dc, #ffb6c1);
       font-family: "Poppins", Arial, sans-serif;
       transition: background 0.6s ease;
+      overflow: hidden;
     }
 
     .page {
@@ -83,18 +84,16 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Floating hearts */
     .heart {
       position: absolute;
       color: #ff8fb1;
-      font-size: 20px;
-      animation: floatUp 3s linear infinite;
-      opacity: 0.8;
+      opacity: 0.9;
+      animation: floatUp 3s linear forwards;
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-80px); opacity: 0; }
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-120px) scale(1.4); opacity: 0; }
     }
   </style>
 </head>
@@ -124,7 +123,7 @@
     <button onclick="nextPage(4)">Next ➜</button>
   </div>
 
-  <!-- PAGE 4 (Proposal with upgraded YES effect) -->
+  <!-- PAGE 4 -->
   <div id="page4" class="page" style="position: relative;">
     <h1>So now I have a question... 💘</h1>
     <p><strong>Will you be my partner? 💖</strong></p>
@@ -151,22 +150,24 @@
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + num).classList.add('active');
 
-      // Background transitions
-      if (num === 1) body.style.background = "linear-gradient(135deg, #ffd1dc, #ffb6c1)";
-      if (num === 2) body.style.background = "linear-gradient(135deg, #ffb6c1, #ff9bb3)";
-      if (num === 3) body.style.background = "linear-gradient(135deg, #ff9bb3, #ff8fb1)";
-      if (num === 4) body.style.background = "linear-gradient(135deg, #ff8fb1, #ffd1dc)";
-      if (num === 5) body.style.background = "linear-gradient(135deg, #ffd1dc, #ffb6c1)";
+      const bg = [
+        "#ffd1dc, #ffb6c1",
+        "#ffb6c1, #ff9bb3",
+        "#ff9bb3, #ff8fb1",
+        "#ff8fb1, #ffd1dc",
+        "#ffd1dc, #ffb6c1"
+      ];
+
+      document.body.style.background = `linear-gradient(135deg, ${bg[num-1]})`;
     }
 
     function sayYes() {
       document.getElementById('answer').textContent =
         "I love you, Nova 💖✨";
 
-      spawnHearts(20); // MORE HEARTS NOW
+      spawnHearts(30);
     }
 
-    // Moving No button
     const noBtn = document.getElementById("noBtn");
 
     noBtn.addEventListener("mouseover", () => {
@@ -180,18 +181,20 @@
       noBtn.style.top = y + "px";
     });
 
-    // Floating hearts animation (UPGRADED)
-    function spawnHearts(amount = 8) {
+    function spawnHearts(amount = 20) {
       for (let i = 0; i < amount; i++) {
         let heart = document.createElement("div");
         heart.classList.add("heart");
         heart.innerHTML = "💖";
-        heart.style.left = (Math.random() * 100) + "%";
-        heart.style.bottom = "10px";
-        heart.style.fontSize = (20 + Math.random() * 20) + "px";
+
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = Math.random() * 100 + "vh";
+        heart.style.fontSize = (20 + Math.random() * 25) + "px";
+        heart.style.animationDuration = (2 + Math.random() * 2) + "s";
+
         document.body.appendChild(heart);
 
-        setTimeout(() => heart.remove(), 3000);
+        setTimeout(() => heart.remove(), 4000);
       }
     }
   </script>
