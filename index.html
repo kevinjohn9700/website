@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- IMPORTANT FOR PHONE -->
   <title>For You 💖</title>
   <style>
     body {
@@ -16,7 +17,7 @@
       overflow: hidden;
     }
 
-    /* Soft pastel sparkles */
+    /* Sparkles */
     .sparkle {
       position: absolute;
       width: 7px;
@@ -33,17 +34,18 @@
       100% { transform: translateY(-90px) scale(1.5); opacity: 0; }
     }
 
-    /* Page container aesthetic */
+    /* MAIN PAGE CARD */
     .page {
       display: none;
       text-align: center;
       background: #ffffffee;
-      padding: 50px;
+      padding: 40px;
       border-radius: 30px;
       border: 2px solid #ffb6d5;
       box-shadow: 0 0 25px rgba(255, 150, 190, 0.45),
                   0 0 60px rgba(255, 200, 230, 0.35);
-      max-width: 450px;
+      width: 90vw;               /* FULL WIDTH ON PHONE */
+      max-width: 450px;          /* NICE SIZE ON PC */
       animation: fadeZoom 0.7s ease;
       position: relative;
       backdrop-filter: blur(4px);
@@ -66,14 +68,14 @@
 
     h1 {
       color: #ff5c8a;
-      font-size: 28px;
+      font-size: 26px;
       margin-bottom: 15px;
       text-shadow: 0 0 8px #ffe3f1;
     }
 
     p {
       color: #555;
-      font-size: 18px;
+      font-size: 17px;
       margin-bottom: 20px;
       line-height: 1.6;
       text-shadow: 0 0 6px #ffe3f1;
@@ -134,6 +136,27 @@
     @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 1; }
       100% { transform: translateY(-150px) scale(1.5); opacity: 0; }
+    }
+
+    /* 📱 MOBILE FIXES */
+    @media (max-width: 480px) {
+      .page {
+        padding: 30px;
+        border-radius: 22px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 12px 22px;
+      }
     }
   </style>
 </head>
@@ -260,4 +283,3 @@
 
 </body>
 </html>
-
