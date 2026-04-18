@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hey...</title>
+  <title>For You 💌</title>
   <style>
     body {
       margin: 0;
@@ -10,17 +10,26 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #89cff0, #ffe4b5);
+      background: linear-gradient(135deg, #89cff0, #ffb6c1);
       font-family: Arial, sans-serif;
-      text-align: center;
+      transition: background 0.5s ease;
     }
-    .box {
+
+    .page {
+      display: none;
+      text-align: center;
       background: white;
       padding: 40px;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       max-width: 400px;
+      animation: fadeIn 0.6s ease;
     }
+
+    .active {
+      display: block;
+    }
+
     button {
       margin-top: 25px;
       padding: 12px 20px;
@@ -30,18 +39,96 @@
       color: white;
       font-size: 16px;
       cursor: pointer;
+      transition: 0.2s;
     }
+
     button:hover {
-      background: #357ac9;
+      transform: scale(1.05);
+    }
+
+    .yes {
+      background-color: #4caf50;
+    }
+
+    .no {
+      background-color: #f44336;
+      position: absolute;
+    }
+
+    #answer {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="box">
+
+  <!-- PAGE 1 -->
+  <div id="page1" class="page active">
     <h1>I just wanted to say something...</h1>
     <p>But I need you to go to the next page first.</p>
-    <button onclick="location.href='page2.html'">Next ➜</button>
+    <button onclick="nextPage(2)">Next ➜</button>
   </div>
+
+  <!-- PAGE 2 -->
+  <div id="page2" class="page">
+    <h1>Okay... you're really close now.</h1>
+    <p>What I want to say is important to me.</p>
+    <p>Go to the last page.</p>
+    <button onclick="nextPage(3)">Next ➜</button>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div id="page3" class="page" style="position: relative;">
+    <h1>So... here it is 🥺</h1>
+    <p>I really like you.</p>
+    <p><strong>Will you be my partner? 💖</strong></p>
+
+    <div style="position: relative; height: 120px;">
+      <button class="yes" onclick="sayYes()">Yes</button>
+      <button class="no" id="noBtn">No</button>
+    </div>
+
+    <div id="answer"></div>
+  </div>
+
+  <script>
+    function nextPage(num) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page' + num).classList.add('active');
+
+      // Change background per page
+      if (num === 1) document.body.style.background = "linear-gradient(135deg, #89cff0, #ffb6c1)";
+      if (num === 2) document.body.style.background = "linear-gradient(135deg, #ffe4b5, #ffb6c1)";
+      if (num === 3) document.body.style.background = "linear-gradient(135deg, #ffb6c1, #89cff0)";
+    }
+
+    function sayYes() {
+      document.getElementById('answer').textContent =
+        "You just made me the happiest person ever 💕";
+    }
+
+    // Moving No button
+    const noBtn = document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover", () => {
+      const page = document.getElementById("page3");
+      const rect = page.getBoundingClientRect();
+
+      const x = Math.random() * (rect.width - 100);
+      const y = Math.random() * (rect.height - 150);
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+  </script>
+
 </body>
 </html>
-
