@@ -83,7 +83,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Cute floating hearts */
+    /* Floating hearts */
     .heart {
       position: absolute;
       color: #ff8fb1;
@@ -103,24 +103,31 @@
   <!-- PAGE 1 -->
   <div id="page1" class="page active">
     <h1>Hey... 💕</h1>
-    <p>I just wanted to say something cute...</p>
-    <p>But you gotta tap next first 🌸</p>
+    <p>I wanted to tell you something cute...</p>
+    <p>But you have to go to the next page first 🌸</p>
     <button onclick="nextPage(2)">Next ➜</button>
   </div>
 
   <!-- PAGE 2 -->
   <div id="page2" class="page">
-    <h1>You're almost there 💗</h1>
+    <h1>You're getting closer 💗</h1>
     <p>What I want to say means a lot to me...</p>
-    <p>Just one more page, promise ✨</p>
+    <p>Just keep going ✨</p>
     <button onclick="nextPage(3)">Next ➜</button>
   </div>
 
   <!-- PAGE 3 -->
-  <div id="page3" class="page" style="position: relative;">
-    <h1>So... here it is 🥺💖</h1>
-    <p>I really like you.</p>
-    <p><strong>Will you be my partner? 💞</strong></p>
+  <div id="page3" class="page">
+    <h1>Okay... here it is 🥺💖</h1>
+    <p><strong>I love you 💞</strong></p>
+    <p>There. I said it.</p>
+    <button onclick="nextPage(4)">Next ➜</button>
+  </div>
+
+  <!-- PAGE 4 (Proposal with dodging No button) -->
+  <div id="page4" class="page" style="position: relative;">
+    <h1>So now I have a question... 💘</h1>
+    <p><strong>Will you be my partner? 💖</strong></p>
 
     <div style="position: relative; height: 140px;">
       <button class="yes" onclick="sayYes()">Yes 💗</button>
@@ -128,6 +135,15 @@
     </div>
 
     <div id="answer"></div>
+
+    <button onclick="nextPage(5)" style="margin-top: 30px;">Next ➜</button>
+  </div>
+
+  <!-- PAGE 5 (You will tell me what to put here later) -->
+  <div id="page5" class="page">
+    <h1>Page 5 💞</h1>
+    <p>This page is ready for whatever message you want to add.</p>
+    <p>Just tell me what you want it to say ✨</p>
   </div>
 
   <script>
@@ -135,10 +151,12 @@
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page' + num).classList.add('active');
 
-      // Pink gradient changes
+      // Background transitions
       if (num === 1) body.style.background = "linear-gradient(135deg, #ffd1dc, #ffb6c1)";
       if (num === 2) body.style.background = "linear-gradient(135deg, #ffb6c1, #ff9bb3)";
-      if (num === 3) body.style.background = "linear-gradient(135deg, #ff9bb3, #ffd1dc)";
+      if (num === 3) body.style.background = "linear-gradient(135deg, #ff9bb3, #ff8fb1)";
+      if (num === 4) body.style.background = "linear-gradient(135deg, #ff8fb1, #ffd1dc)";
+      if (num === 5) body.style.background = "linear-gradient(135deg, #ffd1dc, #ffb6c1)";
     }
 
     function sayYes() {
@@ -151,7 +169,7 @@
     const noBtn = document.getElementById("noBtn");
 
     noBtn.addEventListener("mouseover", () => {
-      const page = document.getElementById("page3");
+      const page = document.getElementById("page4");
       const rect = page.getBoundingClientRect();
 
       const x = Math.random() * (rect.width - 100);
@@ -179,4 +197,3 @@
 
 </body>
 </html>
-
