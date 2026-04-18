@@ -124,7 +124,7 @@
     <button onclick="nextPage(4)">Next ➜</button>
   </div>
 
-  <!-- PAGE 4 (Proposal with dodging No button) -->
+  <!-- PAGE 4 (Proposal with upgraded YES effect) -->
   <div id="page4" class="page" style="position: relative;">
     <h1>So now I have a question... 💘</h1>
     <p><strong>Will you be my partner? 💖</strong></p>
@@ -139,11 +139,11 @@
     <button onclick="nextPage(5)" style="margin-top: 30px;">Next ➜</button>
   </div>
 
-  <!-- PAGE 5 (You will tell me what to put here later) -->
+  <!-- PAGE 5 -->
   <div id="page5" class="page">
     <h1>Page 5 💞</h1>
-    <p>This page is ready for whatever message you want to add.</p>
-    <p>Just tell me what you want it to say ✨</p>
+    <p>This page is ready for your custom message.</p>
+    <p>Tell me what to put here ✨</p>
   </div>
 
   <script>
@@ -161,8 +161,9 @@
 
     function sayYes() {
       document.getElementById('answer').textContent =
-        "Awwww you made my heart so happy 💖✨";
-      spawnHearts();
+        "I love you, Nova 💖✨";
+
+      spawnHearts(20); // MORE HEARTS NOW
     }
 
     // Moving No button
@@ -179,15 +180,15 @@
       noBtn.style.top = y + "px";
     });
 
-    // Floating hearts animation
-    function spawnHearts() {
-      for (let i = 0; i < 8; i++) {
+    // Floating hearts animation (UPGRADED)
+    function spawnHearts(amount = 8) {
+      for (let i = 0; i < amount; i++) {
         let heart = document.createElement("div");
         heart.classList.add("heart");
         heart.innerHTML = "💖";
-        heart.style.left = (50 + Math.random() * 100 - 50) + "%";
-        heart.style.bottom = "20px";
-        heart.style.fontSize = (20 + Math.random() * 10) + "px";
+        heart.style.left = (Math.random() * 100) + "%";
+        heart.style.bottom = "10px";
+        heart.style.fontSize = (20 + Math.random() * 20) + "px";
         document.body.appendChild(heart);
 
         setTimeout(() => heart.remove(), 3000);
