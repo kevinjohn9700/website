@@ -44,8 +44,8 @@
       border: 2px solid #ffb6d5;
       box-shadow: 0 0 25px rgba(255, 150, 190, 0.45),
                   0 0 60px rgba(255, 200, 230, 0.35);
-      width: 90vw;               /* FULL WIDTH ON PHONE */
-      max-width: 450px;          /* NICE SIZE ON PC */
+      width: 90vw;
+      max-width: 450px;
       animation: fadeZoom 0.7s ease;
       position: relative;
       backdrop-filter: blur(4px);
@@ -158,6 +158,21 @@
         padding: 12px 22px;
       }
     }
+
+    /* CREDIT TAG */
+    .credit-tag {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      font-size: 14px;
+      color: #ff5c8a;
+      opacity: 0.9;
+      font-weight: 600;
+      text-shadow: 0 0 6px #ffd1e6;
+      pointer-events: none;
+      z-index: 9999;
+      font-family: "Poppins", Arial, sans-serif;
+    }
   </style>
 </head>
 <body>
@@ -227,21 +242,8 @@
     </p>
   </div>
 
-  <!-- MADE BY KEVIN JOHN (HTML ONLY) -->
-  <div style="
-    position: fixed;
-    bottom: 12px;
-    right: 12px;
-    font-size: 13px;
-    color: #ff5c8a;
-    opacity: 0.85;
-    font-weight: 600;
-    text-shadow: 0 0 6px #ffd1e6;
-    pointer-events: none;
-    z-index: 9999;
-  ">
-    Made by Kevin John 💗
-  </div>
+  <!-- CREDIT TAG -->
+  <div class="credit-tag">Made by Kevin 💗</div>
 
   <script>
     function nextPage(num) {
