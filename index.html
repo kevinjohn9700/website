@@ -8,14 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-1:#fbeaef;
-    --bg-2:#f3d9e4;
-    --wine:#3b0f1f;
-    --rose:#b5485f;
-    --sage:#7c9473;
-    --gold:#d8b26e;
-    --paper:#fffaf5;
-    --shadow: rgba(59,15,31,0.18);
+    --bg-1:#eaf2fb;
+    --bg-2:#d3e4f5;
+    --wine:#122b40;
+    --rose:#2f6f9e;
+    --sage:#5f8aa8;
+    --gold:#cda85e;
+    --paper:#f8fbff;
+    --shadow: rgba(18,43,64,0.18);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
@@ -79,7 +79,7 @@
   .env-flap{
     position:absolute;
     top:0; left:0; width:100%; height:60%;
-    background:linear-gradient(135deg, #f3c9d6, #eab3c6);
+    background:linear-gradient(135deg, #cfe3f7, #a9cbe8);
     clip-path: polygon(0 0, 100% 0, 50% 78%);
     border-radius:10px 10px 0 0;
     transform-origin:top center;
@@ -90,7 +90,7 @@
   .env-body{
     position:absolute;
     inset:0;
-    background:linear-gradient(135deg, #fceef3, #f7d9e5);
+    background:linear-gradient(135deg, #eef6fd, #dbeafc);
     border-radius:10px;
     z-index:1;
   }
@@ -99,7 +99,7 @@
     position:absolute;
     left:0; right:0; bottom:0;
     height:55%;
-    background:#f6d3e0;
+    background:#dceaf9;
     clip-path: polygon(0 100%, 0 20%, 50% 65%, 100% 20%, 100% 100%);
   }
   .seal{
@@ -244,7 +244,7 @@
     aspect-ratio:1/1;
     border-radius:2px;
     overflow:hidden;
-    background:linear-gradient(135deg,#f3c9d6,#eab3c6);
+    background:linear-gradient(135deg,#cfe3f7,#a9cbe8);
     display:flex; align-items:center; justify-content:center;
     font-size:2.4rem;
   }
@@ -280,7 +280,7 @@
 
   /* ---------- COUNTDOWN ---------- */
   .countdown-card{
-    background:linear-gradient(135deg, var(--rose), #8f2e46);
+    background:linear-gradient(135deg, var(--rose), #123a56);
     border-radius:20px;
     padding:48px 30px;
     text-align:center;
@@ -390,7 +390,7 @@
     text-align:center;
     font-size:1.6rem;
     font-family:'Playfair Display', serif;
-    border:2px solid #f0c9d6;
+    border:2px solid #bcd9f2;
     border-radius:10px;
     background:var(--bg-1);
     color:var(--wine);
@@ -620,7 +620,7 @@
 
   // ---- floating petals ----
   const petalHost = document.getElementById('petals');
-  const petalColors = ['#eab3c6','#f3c9d6','#d8b26e','#c98aa0'];
+  const petalColors = ['#a9cbe8','#cfe3f7','#cda85e','#7fa8cc'];
   for(let i=0;i<18;i++){
     const p = document.createElement('div');
     p.className='petal';
