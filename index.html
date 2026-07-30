@@ -427,7 +427,91 @@
     }
   });
 
-  // Pet is intentionally static now: removed follow-cursor logic per user request so it remains centered above keypad.
+  // Pet follow-cursor logic (robust, reintroduced)
+  (function(){
+    const pet = document.getElementById('pet');
+    const card = document.getElementById('gateCard');
+    if(!pet || !card) return;
+
+    // initial position (centered above keypad)
+    let petX = card.offsetWidth / 2;
+    let petY = card.offsetHeight * 0.45;
+    let targetX = petX;
+    let targetY = petY;
+    let lastX = petX;
+    let walking = false;
+
+    // set initial inline position so layout is consistent
+    pet.style.left = petX + 'px';
+    pet.style.top = (petY - 10) + 'px';
+
+    function toLocal(clientX, clientY){
+      const r = card.getBoundingClientRect();
+      return { x: clientX - r.left, y: clientY - r.top };
+    }
+
+    function setTargetFromEvent(clientX, clientY){
+      const p = toLocal(clientX, clientY);
+      const padding = 24; // keep pet inside card edges
+      targetX = Math.max(padding, Math.min(card.offsetWidth - padding, p.x));
+      targetY = Math.max(10, Math.min(card.offsetHeight - 40, p.y));
+    }
+
+    // Prefer pointer events; fall back to mouse/touch
+    function onPointerMove(e){
+      if(e && e.clientX != null) setTargetFromEvent(e.clientX, e.clientY);
+    }
+
+    function onTouchMove(e){
+      if(e.touches && e.touches[0]){
+        setTargetFromEvent(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }
+
+    // Listen on document so movement is captured even when cursor is slightly outside the card
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('touchmove', onTouchMove, { passive: true });
+
+    // If pointer leaves the viewport, return pet to center
+    document.addEventListener('pointerleave', () => {
+      targetX = card.offsetWidth / 2;
+      targetY = card.offsetHeight * 0.45;
+    });
+
+    // animation loop
+    function raf(){
+      petX += (targetX - petX) * 0.18;
+      petY += (targetY - petY) * 0.18;
+
+      pet.style.left = petX + 'px';
+      pet.style.top = (petY - 10) + 'px';
+
+      const dx = petX - lastX;
+      if(Math.abs(dx) > 0.5){
+        pet.classList.add('walking');
+        if(dx < 0) pet.classList.add('left'); else pet.classList.remove('left');
+        walking = true;
+      } else if(walking){
+        pet.classList.remove('walking');
+        walking = false;
+      }
+
+      lastX = petX;
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    // respect reduced motion
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq && mq.matches){
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('touchmove', onTouchMove);
+      pet.style.left = '50%';
+      pet.style.top = '';
+      pet.style.transform = 'translate(-50%,0)';
+    }
+  })();
 
   // Keep older bloom logic
   function startBloom() {
