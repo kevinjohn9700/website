@@ -445,6 +445,10 @@
     let lastX = petX;
     let walking = false;
 
+    // apply initial inline position so it's visible immediately
+    pet.style.left = petX + 'px';
+    pet.style.top = (petY - 10) + 'px';
+
     // convert window coordinates to gateCard local coordinates
     function toLocal(clientX, clientY){
       const gRect = gateCardEl.getBoundingClientRect();
@@ -459,9 +463,10 @@
       targetY = Math.max(10, Math.min(gateCardEl.offsetHeight - 40, p.y));
     }
 
-    gateCardEl.addEventListener('pointermove', onPointerMove);
+    // Listen on the full gate overlay (covers viewport) so movement registers even when cursor is not exactly over the card
+    gate.addEventListener('pointermove', onPointerMove);
 
-    gateCardEl.addEventListener('pointerleave', () => {
+    gate.addEventListener('pointerleave', () => {
       targetX = gateCardEl.offsetWidth / 2;
       targetY = gateCardEl.offsetHeight * 0.45;
     });
@@ -472,7 +477,7 @@
       petX += (targetX - petX) * 0.18;
       petY += (targetY - petY) * 0.18;
 
-      // update transform (pet is positioned using translateX(-50%), so we compute left percent)
+      // update transform (pet is positioned using translateX(-50%), so left is the center x)
       pet.style.left = petX + 'px';
       pet.style.bottom = 'auto';
       pet.style.top = (petY - 10) + 'px';
@@ -498,7 +503,7 @@
     // respect reduced motion preference
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     if(mq && mq.matches){
-      gateCardEl.removeEventListener('pointermove', onPointerMove);
+      gate.removeEventListener('pointermove', onPointerMove);
       pet.style.top = '';
       pet.style.left = '50%';
       pet.style.transform = 'translate(-50%,0)';
