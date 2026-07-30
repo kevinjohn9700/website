@@ -273,6 +273,10 @@
     border-radius:14px;
     box-shadow:0 14px 28px rgba(59,15,31,0.15);
   }
+  .song-embed{
+    min-height:152px;
+    border-radius:14px;
+  }
 
   /* ---------- COUNTDOWN ---------- */
   .countdown-card{
@@ -513,21 +517,13 @@
     <h2>Our top songs</h2>
   </div>
   <div class="songs-grid">
-    <!-- ✏️ EDIT: swap these Spotify track links for your own songs.
-         To get a link: open the song on open.spotify.com → Share → Copy Song Link,
-         then just paste the full URL into src below (replace the whole src value). -->
-    <div class="song-embed">
-      <iframe style="border-radius:14px" src="https://open.spotify.com/embed/track/6vrUTGn5p8IrfTZ0J6sIVM?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-    <div class="song-embed">
-      <iframe style="border-radius:14px" src="https://open.spotify.com/embed/track/5dH4ODGDW7OsRdsDCKRs44?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-    <div class="song-embed">
-      <iframe style="border-radius:14px" src="https://open.spotify.com/embed/track/3S0OXQeoh0w6AY8WQVckRW?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-    <div class="song-embed">
-      <iframe style="border-radius:14px" src="https://open.spotify.com/embed/track/5OAJiCoAR9WcrxACDqPj3J?utm_source=generator" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
+    <!-- ✏️ EDIT: swap the data-uri values for your own songs.
+         To get a URI: open the song on open.spotify.com → Share → Copy Song Link,
+         then take the ID at the end of that link (after /track/) and put it after "spotify:track:" below. -->
+    <div class="song-embed" data-uri="spotify:track:6vrUTGn5p8IrfTZ0J6sIVM"></div>
+    <div class="song-embed" data-uri="spotify:track:5dH4ODGDW7OsRdsDCKRs44"></div>
+    <div class="song-embed" data-uri="spotify:track:3S0OXQeoh0w6AY8WQVckRW"></div>
+    <div class="song-embed" data-uri="spotify:track:5OAJiCoAR9WcrxACDqPj3J"></div>
   </div>
 </section>
 
@@ -555,6 +551,7 @@
   made with &hearts; for the best girlfriend &mdash; edit this site anytime on GitHub
 </footer>
 
+<script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 <script>
   // ---- PIN lock screen ----
   // ✏️ EDIT: change the PIN here
@@ -595,6 +592,24 @@
       pinBoxes[0].focus();
     }
   }
+
+  // ---- Spotify players: playing one pauses the others ----
+  window.onSpotifyIframeApiReady = (IFrameAPI) => {
+    const embeds = document.querySelectorAll('.song-embed');
+    const controllers = [];
+    embeds.forEach((el) => {
+      IFrameAPI.createController(el, { uri: el.dataset.uri, width: '100%', height: '152' }, (controller) => {
+        controllers.push(controller);
+        controller.addListener('playback_update', (e) => {
+          if (!e.data.isPaused) {
+            controllers.forEach((other) => {
+              if (other !== controller) other.pause();
+            });
+          }
+        });
+      });
+    });
+  };
 
   // ---- envelope open ----
   const envelopeWrap = document.getElementById('envelopeWrap');
