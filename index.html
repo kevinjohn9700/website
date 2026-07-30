@@ -372,9 +372,108 @@
     outline-offset: 4px;
   }
 
+  /* ---------- LOCK SCREEN ---------- */
+  body.locked{ overflow: hidden; height: 100vh; }
+
+  #lock-screen{
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--paper);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding: 2rem;
+    transition: opacity .6s ease, visibility .6s ease;
+  }
+  #lock-screen.hidden{ opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .lock-heart{
+    width: 54px; height:54px;
+    color: var(--wine);
+    margin-bottom: 1.6rem;
+    animation: heartbeat 1.8s ease-in-out infinite;
+  }
+  @keyframes heartbeat{
+    0%, 100%{ transform: scale(1); }
+    15%{ transform: scale(1.12); }
+    30%{ transform: scale(1); }
+    45%{ transform: scale(1.08); }
+    60%{ transform: scale(1); }
+  }
+
+  .lock-dots{
+    display:flex; gap: .7rem;
+    margin-bottom: 2.4rem;
+  }
+  .lock-dots .dot{
+    width: 12px; height:12px; border-radius:50%;
+    border: 1px solid var(--wine);
+    background: transparent;
+    transition: background .18s ease, transform .18s ease;
+  }
+  .lock-dots .dot.filled{
+    background: var(--wine);
+    transform: scale(1.1);
+  }
+  .lock-dots.shake{ animation: shakeRow .4s ease; }
+  @keyframes shakeRow{
+    0%,100%{ transform: translateX(0); }
+    20%{ transform: translateX(-8px); }
+    40%{ transform: translateX(8px); }
+    60%{ transform: translateX(-6px); }
+    80%{ transform: translateX(6px); }
+  }
+
+  .lock-keypad{
+    display:grid;
+    grid-template-columns: repeat(3, 80px);
+    gap: 1rem;
+  }
+  .lock-key{
+    width: 80px; height:80px; border-radius:50%;
+    border: none;
+    background: #fff;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(42,24,16,0.08);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .lock-key:hover{ transform: translateY(-2px); }
+  .lock-key:active{ transform: translateY(0) scale(.94); }
+  .lock-key.lock-key-muted{
+    background: var(--blush);
+    color: var(--wine);
+    font-size: 1.2rem;
+  }
+
 </style>
 </head>
-<body>
+<body class="locked">
+
+<div id="lock-screen">
+  <svg class="lock-heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 21s-6.7-4.35-9.5-8.1C.6 10.3 1 6.6 4 4.9c2.2-1.25 4.9-.6 6.4 1.3.5.6.9 1.3 1.6 1.3s1.1-.7 1.6-1.3c1.5-1.9 4.2-2.55 6.4-1.3 3 1.7 3.4 5.4 1.5 8-2.8 3.75-9.5 8.1-9.5 8.1z"/>
+  </svg>
+
+  <div class="lock-dots" id="lock-dots">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+  </div>
+
+  <div class="lock-keypad">
+    <button class="lock-key" data-key="1">1</button>
+    <button class="lock-key" data-key="2">2</button>
+    <button class="lock-key" data-key="3">3</button>
+    <button class="lock-key" data-key="4">4</button>
+    <button class="lock-key" data-key="5">5</button>
+    <button class="lock-key" data-key="6">6</button>
+    <button class="lock-key" data-key="7">7</button>
+    <button class="lock-key" data-key="8">8</button>
+    <button class="lock-key" data-key="9">9</button>
+    <button class="lock-key lock-key-muted" data-key="clear">C</button>
+    <button class="lock-key" data-key="0">0</button>
+    <button class="lock-key lock-key-muted" data-key="back" aria-label="Delete">&#9003;</button>
+  </div>
+</div>
 
 <div id="ambient"></div>
 
@@ -455,6 +554,68 @@
 </footer>
 
 <script>
+  /* ---------------- lock screen ---------------- */
+  // Change this to whatever PIN you want.
+  const PASSCODE = "000000";
+
+  const lockScreen = document.getElementById('lock-screen');
+  const dotsRow = document.getElementById('lock-dots');
+  const dots = Array.from(dotsRow.querySelectorAll('.dot'));
+  let entered = "";
+  let lockBusy = false;
+
+  function updateDots(){
+    dots.forEach((d, i)=> d.classList.toggle('filled', i < entered.length));
+  }
+
+  function pressKey(key){
+    if(lockBusy) return;
+    if(key === 'clear'){
+      entered = "";
+      updateDots();
+      return;
+    }
+    if(key === 'back'){
+      entered = entered.slice(0, -1);
+      updateDots();
+      return;
+    }
+    if(entered.length >= 6) return;
+    entered += key;
+    updateDots();
+    if(entered.length === 6){
+      lockBusy = true;
+      setTimeout(checkPasscode, 150);
+    }
+  }
+
+  function checkPasscode(){
+    if(entered === PASSCODE){
+      lockScreen.classList.add('hidden');
+      document.body.classList.remove('locked');
+      setTimeout(()=>{ lockScreen.remove(); }, 700);
+    } else {
+      dotsRow.classList.add('shake');
+      setTimeout(()=>{
+        dotsRow.classList.remove('shake');
+        entered = "";
+        updateDots();
+        lockBusy = false;
+      }, 450);
+    }
+  }
+
+  document.querySelectorAll('.lock-key').forEach(btn=>{
+    btn.addEventListener('click', ()=> pressKey(btn.dataset.key));
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if(!document.body.classList.contains('locked')) return;
+    if(e.key >= '0' && e.key <= '9') pressKey(e.key);
+    else if(e.key === 'Backspace') pressKey('back');
+    else if(e.key === 'Escape') pressKey('clear');
+  });
+
   /* ---------------- ambient floating hearts ---------------- */
   const ambient = document.getElementById('ambient');
   const HEART_COUNT = 14;
