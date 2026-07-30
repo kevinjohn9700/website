@@ -69,6 +69,16 @@
     margin:0 0 1.8rem;
   }
 
+  /* Heart-only header (replaces text) */
+  .gate-card .heart{
+    font-size:clamp(2.2rem, 8vw, 4rem);
+    color:var(--pink);
+    line-height:1;
+    display:block;
+    margin:0 0 1.1rem;
+    filter:drop-shadow(0 8px 18px rgba(58,20,32,.18));
+  }
+
   /* New keypad and pin dots */
   .pin-wrap{
     display:flex;
@@ -233,9 +243,7 @@
 
 <div class="gate" id="gate">
   <div class="gate-card" id="gateCard">
-    <span class="eyebrow">For you</span>
-    <h1>Before we begin&hellip;</h1>
-    <p class="sub">Enter the password to continue</p>
+    <div class="heart" aria-hidden="true">❤</div>
 
     <div class="pin-wrap">
       <div class="pin-dots" id="pinDots" aria-hidden="true">
