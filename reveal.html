@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon:#3a1420;
+    --maroon-deep:#2a0e18;
+    --cream:#f3eee0;
+    --gold:#e9c46a;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--maroon-deep);
+    font-family:'Cormorant Garamond', serif;
+    color:var(--cream);
+  }
+
+  /* ======================= INTRO / HERO ======================= */
+  .hero-wrap{
+    position:relative;
+    height:320vh;   /* scroll distance that drives the curtain animation */
+  }
+  .hero-sticky{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  /* ---- layer 1 (bottom): the polaroid wall revealed behind the flowers ---- */
+  .reveal{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse at center, rgba(233,196,106,0.08), transparent 60%),
+      var(--maroon);
+  }
+
+  .polaroid-wall{
+    display:flex;
+    flex-wrap:wrap;
+    align-content:center;
+    justify-content:center;
+    gap:.9rem 1.1rem;
+    max-width:1400px;
+    padding:2rem;
+    opacity:.9;
+  }
+  .polaroid{
+    width:150px;
+    background:#efe9df;
+    padding:10px 10px 34px;
+    border-radius:2px;
+    box-shadow:0 10px 22px rgba(0,0,0,.35);
+    transform:rotate(var(--r));
+  }
+  .polaroid img{
+    display:block;
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+  }
+
+  .love-message{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    z-index:3;
+    padding:1.6rem 2.2rem;
+    width:min(90vw, 720px);
+  }
+  .love-message::before{
+    content:"";
+    position:absolute;
+    inset:-10% -6%;
+    background:radial-gradient(ellipse at center, rgba(42,14,24,.72), transparent 72%);
+    z-index:-1;
+  }
+  .love-message h2{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.7rem, 5vw, 3.2rem);
+    line-height:1.2;
+    margin:0;
+    color:var(--cream);
+  }
+  .love-message .cursor{
+    display:inline-block;
+    width:2px;
+    margin-left:2px;
+    background:var(--cream);
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .go-start{
+    position:absolute;
+    right:clamp(1rem, 4vw, 2.5rem);
+    bottom:clamp(1rem, 4vw, 2.5rem);
+    z-index:4;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1rem;
+    letter-spacing:.02em;
+    background:var(--cream);
+    color:var(--maroon-deep);
+    border:none;
+    padding:.7rem 1.4rem;
+    border-radius:999px;
+    cursor:pointer;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .5s ease, transform .5s ease, background .25s ease;
+    pointer-events:none;
+  }
+  .go-start:hover{ background:var(--gold); }
+  .go-start.show{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  /* ---- layer 2 (top): the two flower curtain panels ---- */
+  .panel{
+    position:absolute;
+    top:0;
+    width:52%;
+    height:100%;
+    background-size:cover;
+    background-position:center;
+    z-index:2;
+    will-change:transform;
+  }
+  .panel::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom, rgba(0,0,0,0) 72%, rgba(0,0,0,.18));
+    pointer-events:none;
+  }
+  .panel-left{
+    left:0;
+    background-image:url('left.png');
+    box-shadow:8px 0 30px rgba(0,0,0,.35);
+  }
+  .panel-right{
+    right:0;
+    background-image:url('right.png');
+    box-shadow:-8px 0 30px rgba(0,0,0,.35);
+  }
+
+  /* ---- scroll hint shown before any scrolling ---- */
+  .scroll-hint{
+    position:absolute;
+    left:50%;
+    bottom:6%;
+    transform:translateX(-50%);
+    z-index:5;
+    text-align:center;
+    color:var(--cream);
+    letter-spacing:.35em;
+    font-size:.8rem;
+    text-transform:uppercase;
+    transition:opacity .4s ease;
+  }
+  .scroll-hint span{
+    display:block;
+    margin-top:.6rem;
+    font-size:1.1rem;
+    animation:bob 1.8s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(8px); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .panel{ transition:none !important; }
+  }
+
+  /* ======================= REST OF PAGE (placeholder) ======================= */
+  .next-section{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:4rem 1.5rem;
+    background:var(--maroon-deep);
+  }
+  .next-section .inner{ max-width:560px; }
+  .next-section .eyebrow{
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    font-size:.75rem;
+    color:var(--gold);
+    margin-bottom:1rem;
+  }
+  .next-section h3{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    font-size:clamp(1.6rem,4vw,2.4rem);
+    margin:0 0 1rem;
+  }
+  .next-section p{
+    font-size:1.15rem;
+    color:#e6d9d3;
+    line-height:1.6;
+  }
+
+  @media (max-width:600px){
+    .polaroid{ width:110px; padding:7px 7px 24px; }
+    .hero-wrap{ height:360vh; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero-wrap" id="heroWrap">
+  <div class="hero-sticky">
+
+    <div class="reveal">
+      <div class="polaroid-wall" id="polaroidWall"><!-- filled by JS --></div>
+      <div class="love-message">
+        <h2 id="loveText"></h2>
+      </div>
+      <button class="go-start" id="goStart">&uarr; Go to the start</button>
+    </div>
+
+    <div class="panel panel-left" id="panelLeft"></div>
+    <div class="panel panel-right" id="panelRight"></div>
+
+    <div class="scroll-hint" id="scrollHint">
+      Scroll
+      <span>&darr;</span>
+    </div>
+
+  </div>
+</div>
+
+<div class="next-section">
+  <div class="inner">
+    <span class="eyebrow">The rest of the story</span>
+    <h3>This is where the page continues</h3>
+    <p>Add whatever comes next for her day here &mdash; a timeline, a gallery, a letter, a countdown. The intro above is a self-contained section, so you can build freely below it.</p>
+  </div>
+</div>
+
+<script>
+  // ---- configure the message and photos here ----
+  const MESSAGE = "I love you so much, baby";
+  const PHOTO_COUNT = 16;
+  const PHOTO_ROTATIONS = [-6, 4, -3, 7, -8, 2, 5, -4, 3, -7, 6, -2, 8, -5, 4, -3];
+
+  const wall = document.getElementById('polaroidWall');
+  for (let i = 1; i <= PHOTO_COUNT; i++) {
+    const div = document.createElement('div');
+    div.className = 'polaroid';
+    div.style.setProperty('--r', (PHOTO_ROTATIONS[(i - 1) % PHOTO_ROTATIONS.length]) + 'deg');
+    const img = document.createElement('img');
+    img.src = `photos/photo${String(i).padStart(2, '0')}.jpg`;
+    img.alt = '';
+    div.appendChild(img);
+    wall.appendChild(div);
+  }
+
+  const heroWrap = document.getElementById('heroWrap');
+  const panelLeft = document.getElementById('panelLeft');
+  const panelRight = document.getElementById('panelRight');
+  const loveText = document.getElementById('loveText');
+  const scrollHint = document.getElementById('scrollHint');
+  const goStart = document.getElementById('goStart');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function render() {
+    const rect = heroWrap.getBoundingClientRect();
+    const scrollable = heroWrap.offsetHeight - window.innerHeight;
+    const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
+
+    // curtain opens over the first 60% of scroll progress
+    const openP = Math.min(1, progress / 0.6);
+    const shift = openP * 110; // vw-ish percent of own width
+    panelLeft.style.transform = `translateX(${-shift}%)`;
+    panelRight.style.transform = `translateX(${shift}%)`;
+
+    // typewriter over progress 0.15 -> 0.75
+    const typeP = Math.min(1, Math.max(0, (progress - 0.15) / 0.6));
+    const chars = Math.round(typeP * MESSAGE.length);
+    const shown = MESSAGE.slice(0, chars);
+    loveText.innerHTML = shown + (typeP < 1 ? '<span class="cursor">&nbsp;</span>' : '');
+
+    // scroll hint fades almost immediately
+    scrollHint.style.opacity = progress > 0.03 ? 0 : 1;
+
+    // go-to-start button appears near the very end
+    if (progress > 0.92) goStart.classList.add('show');
+    else goStart.classList.remove('show');
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => { render(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  window.addEventListener('resize', render);
+
+  goStart.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+
+  render();
+</script>
+
+</body>
+</html>

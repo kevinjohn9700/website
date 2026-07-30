@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon:#3a1420;
+    --maroon-deep:#2a0e18;
+    --cream:#f3eee0;
+    --gold:#e9c46a;
+    --blush:#fbf1ee;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    height:100%;
+    font-family:'Cormorant Garamond', serif;
+    background:var(--maroon-deep);
+    overflow:hidden;
+  }
+
+  /* ======================= PASSWORD GATE ======================= */
+  .gate{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+      radial-gradient(ellipse at center, rgba(233,196,106,.08), transparent 60%),
+      var(--maroon-deep);
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  .gate.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
+
+  .gate-card{
+    text-align:center;
+    color:var(--cream);
+    padding:2.6rem 2.4rem;
+    width:min(90vw, 400px);
+  }
+  .gate-card .eyebrow{
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--gold);
+    margin-bottom:.9rem;
+  }
+  .gate-card h1{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.6rem, 5vw, 2.2rem);
+    margin:0 0 .6rem;
+  }
+  .gate-card p.sub{
+    font-size:1.05rem;
+    color:#e6d9d3;
+    margin:0 0 1.8rem;
+  }
+
+  .pw-row{
+    display:flex;
+    gap:.6rem;
+    justify-content:center;
+  }
+  #pwInput{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.3rem;
+    letter-spacing:.3em;
+    text-align:center;
+    width:11rem;
+    padding:.7rem .6rem;
+    border-radius:10px;
+    border:1px solid rgba(233,196,106,.5);
+    background:rgba(255,255,255,.06);
+    color:var(--cream);
+    outline:none;
+    transition:border-color .25s ease, background .25s ease;
+  }
+  #pwInput::placeholder{ color:rgba(243,238,224,.35); letter-spacing:.3em; }
+  #pwInput:focus{
+    border-color:var(--gold);
+    background:rgba(255,255,255,.1);
+  }
+  #pwSubmit{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.05rem;
+    background:var(--gold);
+    color:var(--maroon-deep);
+    border:none;
+    padding:.7rem 1.3rem;
+    border-radius:10px;
+    cursor:pointer;
+    transition:filter .2s ease;
+  }
+  #pwSubmit:hover{ filter:brightness(1.08); }
+
+  .pw-error{
+    margin-top:1rem;
+    font-size:.95rem;
+    color:#e88;
+    opacity:0;
+    transition:opacity .25s ease;
+  }
+  .pw-error.show{ opacity:1; }
+
+  .shake{ animation:shake .4s ease; }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px); }
+    40%{ transform:translateX(7px); }
+    60%{ transform:translateX(-5px); }
+    80%{ transform:translateX(4px); }
+  }
+
+  /* ======================= BLOOM STAGE ======================= */
+  .bloom-stage{
+    position:fixed;
+    inset:0;
+    background:var(--blush);
+    overflow:hidden;
+  }
+
+  .hero-flower{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:min(34vw, 230px);
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    filter:drop-shadow(0 14px 26px rgba(58,20,32,.25));
+    transition:transform 1s cubic-bezier(.34,1.56,.64,1), opacity .8s ease;
+    z-index:2;
+  }
+  .bloom-stage.armed .hero-flower{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+
+  .flower-field{
+    position:absolute;
+    inset:0;
+    z-index:1;
+  }
+  .field-flower{
+    position:absolute;
+    transform:translate(-50%,-50%) scale(0) rotate(0deg);
+    opacity:0;
+    transition:transform .85s cubic-bezier(.34,1.56,.64,1), opacity .6s ease;
+    pointer-events:none;
+  }
+  .field-flower.bloomed{
+    opacity:1;
+  }
+
+  .continue-btn{
+    position:absolute;
+    left:50%;
+    bottom:6%;
+    transform:translateX(-50%) translateY(10px);
+    z-index:3;
+    text-decoration:none;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--maroon-deep);
+    background:var(--cream);
+    border:1px solid rgba(58,20,32,.15);
+    padding:.75rem 1.6rem;
+    border-radius:999px;
+    box-shadow:0 10px 26px rgba(58,20,32,.18);
+    opacity:0;
+    transition:opacity .6s ease, transform .6s ease, background .25s ease;
+    pointer-events:none;
+  }
+  .continue-btn:hover{ background:var(--gold); }
+  .continue-btn.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+    pointer-events:auto;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-flower, .field-flower, .continue-btn, .gate{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-card" id="gateCard">
+    <span class="eyebrow">For you</span>
+    <h1>Before we begin&hellip;</h1>
+    <p class="sub">Enter the password to continue</p>
+    <div class="pw-row">
+      <input type="password" id="pwInput" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" inputmode="numeric" autocomplete="off">
+      <button id="pwSubmit">Enter</button>
+    </div>
+    <p class="pw-error" id="pwError">That's not it &mdash; try again</p>
+  </div>
+</div>
+
+<div class="bloom-stage" id="bloomStage">
+  <img class="hero-flower" id="heroFlower" src="assets/flower.png" alt="">
+  <div class="flower-field" id="flowerField"></div>
+  <a class="continue-btn" id="continueBtn" href="reveal.html">Continue &rarr;</a>
+</div>
+
+<script>
+  const PASSWORD = "000000";
+
+  const gate = document.getElementById('gate');
+  const gateCard = document.getElementById('gateCard');
+  const pwInput = document.getElementById('pwInput');
+  const pwSubmit = document.getElementById('pwSubmit');
+  const pwError = document.getElementById('pwError');
+  const bloomStage = document.getElementById('bloomStage');
+  const flowerField = document.getElementById('flowerField');
+  const continueBtn = document.getElementById('continueBtn');
+
+  function tryUnlock() {
+    if (pwInput.value === PASSWORD) {
+      gate.classList.add('hide');
+      startBloom();
+    } else {
+      pwError.classList.add('show');
+      gateCard.classList.remove('shake');
+      // restart the shake animation
+      void gateCard.offsetWidth;
+      gateCard.classList.add('shake');
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  }
+
+  pwSubmit.addEventListener('click', tryUnlock);
+  pwInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') tryUnlock();
+  });
+
+  let bloomed = false;
+  function startBloom() {
+    if (bloomed) return;
+    bloomed = true;
+
+    // 1. the single flower appears alone, centered
+    requestAnimationFrame(() => bloomStage.classList.add('armed'));
+
+    // 2. after a pause, it multiplies to fill the screen
+    setTimeout(multiplyFlowers, 1300);
+  }
+
+  function multiplyFlowers() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const baseSize = Math.max(90, Math.min(w, h) * 0.16);
+    const spacing = baseSize * 0.68;
+
+    const cx = w / 2;
+    const cy = h / 2;
+    const items = [];
+
+    let row = 0;
+    for (let y = -spacing; y < h + spacing; y += spacing * 0.86) {
+      const xOffset = (row % 2) ? spacing / 2 : 0;
+      for (let x = -spacing + xOffset; x < w + spacing; x += spacing) {
+        const jx = x + (Math.random() - 0.5) * spacing * 0.7;
+        const jy = y + (Math.random() - 0.5) * spacing * 0.7;
+        const size = baseSize * (0.75 + Math.random() * 0.6);
+        const rot = (Math.random() - 0.5) * 50;
+        const dist = Math.hypot(jx - cx, jy - cy);
+        items.push({ x: jx, y: jy, size, rot, dist });
+      }
+      row++;
+    }
+
+    const maxDist = Math.max(...items.map(i => i.dist)) || 1;
+
+    items.forEach(item => {
+      const img = document.createElement('img');
+      img.src = 'assets/flower.png';
+      img.className = 'field-flower';
+      img.style.left = item.x + 'px';
+      img.style.top = item.y + 'px';
+      img.style.width = item.size + 'px';
+      img.style.setProperty('--rot', item.rot + 'deg');
+      const hue = (Math.random() - 0.5) * 20;
+      const sat = 0.9 + Math.random() * 0.25;
+      img.style.filter = `hue-rotate(${hue}deg) saturate(${sat}) drop-shadow(0 6px 10px rgba(58,20,32,.18))`;
+      flowerField.appendChild(img);
+
+      const delay = (item.dist / maxDist) * 900 + Math.random() * 220;
+      setTimeout(() => {
+        img.style.transform = `translate(-50%,-50%) scale(1) rotate(${item.rot}deg)`;
+        img.classList.add('bloomed');
+      }, delay);
+    });
+
+    const totalTime = 900 + 220 + 500;
+    setTimeout(() => continueBtn.classList.add('show'), totalTime);
+  }
+
+  window.addEventListener('resize', () => {
+    if (bloomed) {
+      flowerField.innerHTML = '';
+      multiplyFlowers();
+    }
+  });
+</script>
+
+</body>
+</html>
