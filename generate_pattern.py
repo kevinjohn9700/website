@@ -56,11 +56,7 @@ def build_scene():
     return canvas.convert("RGB")
 
 
-def main():
-    scene = build_scene()
-    left = scene.crop((0, 0, PANEL_W, PANEL_H))
-    right = scene.crop((PANEL_W, 0, CANVAS_W, PANEL_H))
-    print("Saved left.png and right.png", left.size, right.size)
+
 
 
 if __name__ == "__main__":
