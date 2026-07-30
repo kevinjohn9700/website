@@ -80,28 +80,46 @@
     filter:drop-shadow(0 8px 18px rgba(58,20,32,.18));
   }
 
-  /* Pet styles */
+  /* Pet styles - fixed so it can roam the whole viewport */
   .pet{
-    position:absolute;
-    bottom:110px; /* sits above keypad */
+    position:fixed;
     left:50%;
+    top:60%;
     transform:translate(-50%,0) scaleX(1);
-    width:90px;
-    height:90px;
+    width:110px;
+    height:110px;
     pointer-events:none;
-    z-index:6;
-    transition:transform .12s linear;
-    will-change:transform;
+    z-index:9999;
+    will-change:transform, left, top;
   }
-  .pet-inner{ width:100%; height:100%; }
-  .pet.walking{ animation:pet-bob .36s ease-in-out infinite; }
-  .pet.left{ transform-origin:center; transform:translate(-50%,0) scaleX(-1); }
+  .pet-inner{ width:100%; height:100%; display:block; }
 
-  @keyframes pet-bob{
-    0%{ transform: translate(-50%,0) translateY(0); }
-    50%{ transform: translate(-50%,0) translateY(-4px); }
-    100%{ transform: translate(-50%,0) translateY(0); }
+  /* Leg animations when walking */
+  .pet.walking .leg-left,
+  .pet.walking .leg-right{
+    animation:leg-swing .45s ease-in-out infinite;
+    transform-origin: center top;
   }
+  .pet.walking .leg-right{ animation-delay: .225s; }
+
+  @keyframes leg-swing{
+    0%{ transform: rotate(18deg) translateY(0); }
+    50%{ transform: rotate(-18deg) translateY(2px); }
+    100%{ transform: rotate(18deg) translateY(0); }
+  }
+
+  /* small bob while walking */
+  .pet.walking .body{
+    animation:pet-bob .36s ease-in-out infinite;
+  }
+  @keyframes pet-bob{
+    0%{ transform: translateY(0); }
+    50%{ transform: translateY(-4px); }
+    100%{ transform: translateY(0); }
+  }
+
+  /* flip horizontally when moving left */
+  .pet.left{ transform: translate(-50%,0) scaleX(-1); }
 
   /* New keypad and pin dots */
   .pin-wrap{
@@ -254,13 +272,14 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .hero-flower, .field-flower, .continue-btn, .gate, .pet{ transition:none !important; animation:none !important; }
+    .hero-flower, .field-flower, .continue-btn, .gate{ transition:none !important; animation:none !important; }
+    .pet{ transition:none !important; animation:none !important; }
   }
 
   @media (max-width:420px){
     .key{ width:62px; height:62px; }
     .keypad{ gap:14px; grid-template-columns:repeat(3,62px);} 
-    .pet{ width:70px; height:70px; bottom:100px; }
+    .pet{ width:84px; height:84px; }
   }
 </style>
 </head>
@@ -278,45 +297,6 @@
         <div class="pin-dot" data-index="3"></div>
         <div class="pin-dot" data-index="4"></div>
         <div class="pin-dot" data-index="5"></div>
-      </div>
-
-      <!-- Pet: inline SVG so no external asset required -->
-      <div class="pet" id="pet" aria-hidden="true">
-        <svg class="pet-inner" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- simple cute dog shape inspired by the provided image -->
-          <defs>
-            <style>
-              .fur{ fill:#f9d9b8; }
-              .ear{ fill:#f3c98f; }
-              .spot{ fill:#000; }
-              .eye{ fill:#000; }
-              .nose{ fill:#000; }
-              .tail{ fill:#f9d9b8; }
-              .leg{ fill:#f9d9b8; }
-            </style>
-          </defs>
-          <ellipse cx="60" cy="92" rx="40" ry="10" fill="rgba(0,0,0,0.08)" />
-          <g transform="translate(8,6)">
-            <ellipse class="fur" cx="46" cy="54" rx="38" ry="30" />
-            <circle class="fur" cx="16" cy="40" r="12" />
-            <circle class="fur" cx="68" cy="24" r="10" />
-
-            <!-- legs -->
-            <rect class="leg" x="22" y="70" width="12" height="18" rx="6" />
-            <rect class="leg" x="50" y="70" width="12" height="18" rx="6" />
-
-            <!-- tail -->
-            <path class="tail" d="M84 46c6-2 14-2 18 6-6-2-12 6-18 10" />
-
-            <!-- eyes & nose -->
-            <circle class="eye" cx="34" cy="44" r="3" />
-            <circle class="eye" cx="54" cy="42" r="3" />
-            <circle class="nose" cx="44" cy="54" r="2.6" />
-
-            <!-- mouth (subtle) -->
-            <path d="M40 58 q4 4 8 0" stroke="#b57b60" stroke-width="1" fill="none" stroke-linecap="round" />
-          </g>
-        </svg>
       </div>
 
       <div class="keypad" role="group" aria-label="numeric keypad">
@@ -347,6 +327,51 @@
 
     <p class="pw-error" id="pwError">That's not it &mdash; try again</p>
   </div>
+</div>
+
+<!-- Pet lives at top-level so it can move across the entire viewport -->
+<div class="pet" id="pet" aria-hidden="true">
+  <svg class="pet-inner" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <style>
+        .fur{ fill:#f9d9b8; }
+        .ear{ fill:#f3c98f; }
+        .spot{ fill:#000; }
+        .eye{ fill:#000; }
+        .nose{ fill:#000; }
+        .tail{ fill:#f9d9b8; }
+        .leg-shape{ fill:#f9d9b8; }
+        .shadow{ fill:rgba(0,0,0,0.08); }
+      </style>
+    </defs>
+    <ellipse class="shadow" cx="60" cy="110" rx="40" ry="8" />
+    <g class="body" transform="translate(10,10)">
+      <ellipse class="fur" cx="46" cy="54" rx="38" ry="30" />
+      <circle class="fur" cx="16" cy="40" r="12" />
+      <circle class="fur" cx="70" cy="36" r="10" />
+
+      <!-- legs as groups so we can animate them -->
+      <g class="leg-left" transform="translate(20,64) rotate(18)">
+        <rect class="leg-shape" x="-6" y="0" width="12" height="18" rx="6" />
+      </g>
+      <g class="leg-right" transform="translate(56,64) rotate(-12)">
+        <rect class="leg-shape" x="-6" y="0" width="12" height="18" rx="6" />
+      </g>
+
+      <!-- tail -->
+      <g class="tail-g" transform="translate(78,36)">
+        <path class="tail" d="M0 6c6-2 14-2 18 6-6-2-12 6-18 10" />
+      </g>
+
+      <!-- eyes & nose -->
+      <circle class="eye" cx="34" cy="44" r="3" />
+      <circle class="eye" cx="54" cy="42" r="3" />
+      <circle class="nose" cx="44" cy="54" r="2.6" />
+
+      <!-- mouth (subtle) -->
+      <path d="M40 58 q4 4 8 0" stroke="#b57b60" stroke-width="1" fill="none" stroke-linecap="round" />
+    </g>
+  </svg>
 </div>
 
 <div class="bloom-stage" id="bloomStage">
@@ -427,57 +452,44 @@
     }
   });
 
-  // Pet follow-cursor logic
+  // Pet follow-cursor logic (now follows across whole viewport)
   (function(){
     const pet = document.getElementById('pet');
     if(!pet) return;
 
-    // initial position (centered above keypad)
-    const rect = pet.getBoundingClientRect();
-    let petX = gateCard.offsetWidth / 2; // relative to gateCard
-    let petY = gateCard.offsetHeight * 0.45;
+    // starting position: center-bottom area
+    let petX = window.innerWidth / 2;
+    let petY = window.innerHeight * 0.6;
     let targetX = petX;
     let targetY = petY;
     let lastX = petX;
     let walking = false;
 
-    // convert window coordinates to gateCard local coordinates
-    function toLocal(clientX, clientY){
-      const gRect = gateCard.getBoundingClientRect();
-      return { x: clientX - gRect.left, y: clientY - gRect.top };
-    }
-
-    // listen for pointer movement over the gate (desktop + touch)
-    gateCard.addEventListener('pointermove', (e) => {
-      const p = toLocal(e.clientX, e.clientY);
-      // constrain target to a box inside gateCard so pet doesn't go off
-      const padding = 30;
-      targetX = Math.max(padding, Math.min(gateCard.offsetWidth - padding, p.x));
-      targetY = Math.max(10, Math.min(gateCard.offsetHeight - 40, p.y));
+    // pointer movement anywhere on window
+    window.addEventListener('pointermove', (e) => {
+      targetX = Math.max(30, Math.min(window.innerWidth - 30, e.clientX));
+      targetY = Math.max(30, Math.min(window.innerHeight - 30, e.clientY));
     });
 
-    // when pointer leaves, return to center
-    gateCard.addEventListener('pointerleave', () => {
-      targetX = gateCard.offsetWidth / 2;
-      targetY = gateCard.offsetHeight * 0.45;
+    // when pointer leaves window, return to center
+    window.addEventListener('pointerleave', () => {
+      targetX = window.innerWidth / 2;
+      targetY = window.innerHeight * 0.6;
     });
 
-    // animation loop
+    // animation loop: lerp toward target
     function raf(){
-      // lerp towards target
-      petX += (targetX - petX) * 0.18;
-      petY += (targetY - petY) * 0.18;
+      // smooth follow; adjust factor for responsiveness
+      const lerp = 0.16;
+      petX += (targetX - petX) * lerp;
+      petY += (targetY - petY) * lerp;
 
-      // update transform (pet is positioned using translateX(-50%), so we compute left percent)
-      const left = petX; // px inside gateCard
-      const top = petY; // px
-      pet.style.left = left + 'px';
-      pet.style.bottom = 'auto';
-      pet.style.top = (top - 10) + 'px';
+      pet.style.left = petX + 'px';
+      pet.style.top = petY + 'px';
 
-      // determine direction
+      // determine direction for flipping
       const dx = petX - lastX;
-      if(Math.abs(dx) > 0.5){
+      if(Math.abs(dx) > 0.7){
         pet.classList.add('walking');
         if(dx < 0) pet.classList.add('left'); else pet.classList.remove('left');
         walking = true;
@@ -490,18 +502,24 @@
       requestAnimationFrame(raf);
     }
 
-    // start loop
-    requestAnimationFrame(raf);
-
-    // respect reduced motion preference
+    // respect reduced motion
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     if(mq && mq.matches){
-      // disable follow behavior
-      gateCard.removeEventListener('pointermove', () => {});
-      pet.style.top = '';
-      pet.style.left = '50%';
-      pet.style.transform = 'translate(-50%,0)';
+      // keep pet centered and static
+      pet.style.left = (window.innerWidth/2) + 'px';
+      pet.style.top = (window.innerHeight * 0.6) + 'px';
+      return;
     }
+
+    requestAnimationFrame(raf);
+
+    // handle resize so pet stays in viewport
+    window.addEventListener('resize', () => {
+      petX = Math.max(30, Math.min(window.innerWidth - 30, petX));
+      petY = Math.max(30, Math.min(window.innerHeight - 30, petY));
+      targetX = petX;
+      targetY = petY;
+    });
   })();
 
   // Keep older bloom logic
