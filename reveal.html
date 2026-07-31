@@ -464,21 +464,17 @@
   const letterProgressBar = document.getElementById('letterProgressBar');
   const fallingHearts = document.getElementById('fallingHearts');
 
-  // Spawn one (occasionally two) hearts that drift down the section.
-  // Called from the scroll loop, throttled by time so scrolling fast
-  // doesn't flood the page with hearts.
-  let lastHeartTime = 0;
   function spawnHeart() {
     const heart = document.createElement('span');
     heart.className = 'falling-heart';
     heart.textContent = '♡';
 
-    const left = 2 + Math.random() * 96;
-    const size = 12 + Math.random() * 20;
-    const duration = (4 + Math.random() * 5).toFixed(2);
-    const drift = Math.round(Math.random() * 80 - 40) + 'px';
-    const spin = Math.round(Math.random() * 140 - 70) + 'deg';
-    const op = (0.35 + Math.random() * 0.45).toFixed(2);
+    const left = Math.random() * 100;
+    const size = 10 + Math.random() * 18;
+    const duration = (2.4 + Math.random() * 2.6).toFixed(2); // fast, rain-like fall
+    const drift = Math.round(Math.random() * 60 - 30) + 'px';
+    const spin = Math.round(Math.random() * 100 - 50) + 'deg';
+    const op = (0.45 + Math.random() * 0.45).toFixed(2);
 
     heart.style.left = left + '%';
     heart.style.fontSize = size + 'px';
@@ -486,26 +482,43 @@
     heart.style.setProperty('--drift', drift);
     heart.style.setProperty('--spin', spin);
     heart.style.setProperty('--heart-op', op);
-    if (Math.random() < 0.4) heart.style.color = 'var(--gold)';
+    if (Math.random() < 0.35) heart.style.color = 'var(--gold)';
 
     heart.addEventListener('animationend', () => heart.remove());
     fallingHearts.appendChild(heart);
   }
 
-  function maybeSpawnHearts(inView) {
-    if (!inView || reduceMotion) return;
-    const now = Date.now();
-    if (now - lastHeartTime < 110) return;
-    lastHeartTime = now;
-    spawnHeart();
-    if (Math.random() < 0.35) spawnHeart();
+  function isLetterInView() {
+    const rect = letterWrap.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
   }
+
+  // Extra burst on scroll, on top of the steady rain below, so scrolling
+  // faster visibly makes more hearts fall.
+  let lastHeartBurst = 0;
+  function maybeSpawnHearts(inView) {
+    if (!inView) return;
+    const now = Date.now();
+    if (now - lastHeartBurst < 90) return;
+    lastHeartBurst = now;
+    spawnHeart();
+    if (Math.random() < 0.6) spawnHeart();
+  }
+
+  // Continuous rain: as long as the letter section is on screen, keep
+  // several hearts falling at all times — not dependent on scroll ticks.
+  setInterval(() => {
+    if (!isLetterInView()) return;
+    spawnHeart();
+    spawnHeart();
+    if (Math.random() < 0.7) spawnHeart();
+  }, 160);
 
   function renderLetter() {
     const rect = letterWrap.getBoundingClientRect();
     const scrollable = letterWrap.offsetHeight - window.innerHeight;
     const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
-    const inView = rect.top < window.innerHeight && rect.bottom > 0;
+    const inView = isLetterInView();
 
     letterProgressBar.style.width = (progress * 100) + '%';
 
