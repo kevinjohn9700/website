@@ -94,13 +94,17 @@
     will-change:transform;
   }
   .pet-inner{ width:100%; height:100%; }
-  .pet.walking{ animation:pet-bob .36s ease-in-out infinite; }
+  /* Bobbing animation now lives on .pet-inner (the child), not .pet itself.
+     .pet keeps the left/right flip (scaleX). Putting both on the same
+     element meant the animation's transform was clobbering the flip
+     whenever the pet was walking. */
+  .pet.walking .pet-inner{ animation: pet-bob .36s ease-in-out infinite; }
   .pet.left{ transform-origin:center; transform:translate(-50%,0) scaleX(-1); }
 
   @keyframes pet-bob{
-    0%{ transform: translate(-50%,0) translateY(0); }
-    50%{ transform: translate(-50%,0) translateY(-4px); }
-    100%{ transform: translate(-50%,0) translateY(0); }
+    0%{ transform: translateY(0); }
+    50%{ transform: translateY(-4px); }
+    100%{ transform: translateY(0); }
   }
 
   /* New keypad and pin dots */
@@ -254,7 +258,7 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .hero-flower, .field-flower, .continue-btn, .gate, .pet{ transition:none !important; animation:none !important; }
+    .hero-flower, .field-flower, .continue-btn, .gate, .pet, .pet-inner{ transition:none !important; animation:none !important; }
   }
 
   @media (max-width:420px){
@@ -386,7 +390,7 @@
   function tryUnlock(){
     const entry = pin.join('');
     if(entry === PASSWORD){
-      document.getElementById('gate').classList.add('hide');
+      gate.classList.add('hide');
       startBloom();
     } else {
       pwError.classList.add('show');
@@ -432,6 +436,17 @@
     const pet = document.getElementById('pet');
     const card = document.getElementById('gateCard');
     if(!pet || !card) return;
+
+    // respect reduced motion — decide up front instead of after the
+    // animation loop has already started, otherwise the loop just
+    // keeps overwriting the "resting" position every frame anyway.
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq && mq.matches){
+      pet.style.left = '50%';
+      pet.style.top = '';
+      pet.style.transform = 'translate(-50%,0)';
+      return;
+    }
 
     // initial position (centered above keypad)
     let petX = card.offsetWidth / 2;
@@ -501,16 +516,6 @@
     }
 
     requestAnimationFrame(raf);
-
-    // respect reduced motion
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if(mq && mq.matches){
-      document.removeEventListener('pointermove', onPointerMove);
-      document.removeEventListener('touchmove', onTouchMove);
-      pet.style.left = '50%';
-      pet.style.top = '';
-      pet.style.transform = 'translate(-50%,0)';
-    }
   })();
 
   // Keep older bloom logic
@@ -521,8 +526,9 @@
     // 1. the single flower appears alone, centered
     requestAnimationFrame(() => bloomStage.classList.add('armed'));
 
-    // 2. after a pause, it multiplies to fill the screen
-    setTimeout(multiplyFlowers, 100);
+    // 2. after the hero flower has finished its 1s bloom transition,
+    //    it multiplies to fill the screen
+    setTimeout(multiplyFlowers, 1000);
   }
 
   function multiplyFlowers() {
