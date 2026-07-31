@@ -50,6 +50,25 @@
     padding:2.6rem 2.4rem;
     width:min(90vw, 400px);
   }
+  .gate-card .eyebrow{
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    color:var(--gold);
+    margin-bottom:.9rem;
+  }
+  .gate-card h1{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.6rem, 5vw, 2.2rem);
+    margin:0 0 .6rem;
+  }
+  .gate-card p.sub{
+    font-size:1.05rem;
+    color:#e6d9d3;
+    margin:0 0 1.8rem;
+  }
 
   /* Heart-only header (replaces text) */
   .gate-card .heart{
@@ -61,25 +80,27 @@
     filter:drop-shadow(0 8px 18px rgba(58,20,32,.18));
   }
 
-  /* Pet styles (optimized for transform-only movement) */
+  /* Pet styles */
   .pet{
     position:absolute;
-    left:0;
-    top:0;
+    bottom:110px; /* sits above keypad */
+    left:50%;
+    transform:translate(-50%,0) scaleX(1);
     width:90px;
     height:90px;
     pointer-events:none;
     z-index:6;
+    transition:transform .12s linear;
     will-change:transform;
   }
   .pet-inner{ width:100%; height:100%; }
   .pet.walking{ animation:pet-bob .36s ease-in-out infinite; }
-  .pet.left{ transform-origin:center; }
+  .pet.left{ transform-origin:center; transform:translate(-50%,0) scaleX(-1); }
 
   @keyframes pet-bob{
-    0%{ transform: translateY(0); }
-    50%{ transform: translateY(-4px); }
-    100%{ transform: translateY(0); }
+    0%{ transform: translate(-50%,0) translateY(0); }
+    50%{ transform: translate(-50%,0) translateY(-4px); }
+    100%{ transform: translate(-50%,0) translateY(0); }
   }
 
   /* New keypad and pin dots */
@@ -90,39 +111,157 @@
     gap:1.1rem;
     margin-top:.6rem;
   }
-  .pin-dots{ display:flex; gap:.9rem; }
-  .pin-dot{ width:12px; height:12px; border-radius:50%; border:2px solid rgba(226,123,138,0.65); background:transparent; box-shadow:0 4px 10px rgba(226,123,138,.06); transition:background .18s ease, transform .12s ease; }
-  .pin-dot.filled{ background:var(--pink); box-shadow:0 6px 16px rgba(226,123,138,.16); transform:scale(1.05); }
+  .pin-dots{
+    display:flex;
+    gap:.9rem;
+  }
+  .pin-dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    border:2px solid rgba(226,123,138,0.65);
+    background:transparent;
+    box-shadow:0 4px 10px rgba(226,123,138,.06);
+    transition:background .18s ease, transform .12s ease;
+  }
+  .pin-dot.filled{
+    background:var(--pink);
+    box-shadow:0 6px 16px rgba(226,123,138,.16);
+    transform:scale(1.05);
+  }
 
-  .keypad{ display:grid; grid-template-columns:repeat(3, 72px); gap:18px; justify-content:center; align-items:center; margin-top:8px; }
-  .key{ width:72px; height:72px; border-radius:999px; background:linear-gradient(180deg, #fff 0%, #f8f5f4 100%); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:var(--maroon-deep); border:1px solid rgba(58,20,32,.06); box-shadow:0 10px 20px rgba(58,20,32,.06); cursor:pointer; user-select:none; transition:transform .12s ease, box-shadow .12s ease, background .12s ease; }
+  .keypad{
+    display:grid;
+    grid-template-columns:repeat(3, 72px);
+    gap:18px;
+    justify-content:center;
+    align-items:center;
+    margin-top:8px;
+  }
+  .key{
+    width:72px;
+    height:72px;
+    border-radius:999px;
+    background:linear-gradient(180deg, #fff 0%, #f8f5f4 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.1rem;
+    color:var(--maroon-deep);
+    border:1px solid rgba(58,20,32,.06);
+    box-shadow:0 10px 20px rgba(58,20,32,.06);
+    cursor:pointer;
+    user-select:none;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
   .key:active{ transform:translateY(2px) scale(.995); }
-  .key.special{ background:linear-gradient(180deg, rgba(226,123,138,.12) 0%, rgba(226,123,138,.06) 100%); color:var(--maroon-deep); box-shadow:0 14px 28px rgba(226,123,138,.06); }
 
-  #pwError{ margin-top:1rem; font-size:.95rem; color:#e88; opacity:0; transition:opacity .25s ease; }
+  .key.special{
+    background:linear-gradient(180deg, rgba(226,123,138,.12) 0%, rgba(226,123,138,.06) 100%);
+    color:var(--maroon-deep);
+    box-shadow:0 14px 28px rgba(226,123,138,.06);
+  }
+
+  .key .icon{
+    width:18px;
+    height:18px;
+    display:inline-block;
+  }
+
+  #pwError{
+    margin-top:1rem;
+    font-size:.95rem;
+    color:#e88;
+    opacity:0;
+    transition:opacity .25s ease;
+  }
   #pwError.show{ opacity:1; }
 
   .shake{ animation:shake .4s ease; }
-  @keyframes shake{ 0%,100%{ transform:translateX(0); } 20%{ transform:translateX(-8px); } 40%{ transform:translateX(7px); } 60%{ transform:translateX(-5px); } 80%{ transform:translateX(4px); } }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px); }
+    40%{ transform:translateX(7px); }
+    60%{ transform:translateX(-5px); }
+    80%{ transform:translateX(4px); }
+  }
 
   /* ======================= BLOOM STAGE ======================= */
-  .bloom-stage{ position:fixed; inset:0; background:var(--blush); overflow:hidden; }
+  .bloom-stage{
+    position:fixed;
+    inset:0;
+    background:var(--blush);
+    overflow:hidden;
+  }
 
-  .hero-flower{ position:absolute; left:50%; top:50%; width:min(34vw, 230px); transform:translate(-50%,-50%) scale(0); opacity:0; filter:drop-shadow(0 14px 26px rgba(58,20,32,.25)); transition:transform 1s cubic-bezier(.34,1.56,.64,1), opacity .8s ease; z-index:2; }
-  .bloom-stage.armed .hero-flower{ transform:translate(-50%,-50%) scale(1); opacity:1; }
+  .hero-flower{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:min(34vw, 230px);
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    filter:drop-shadow(0 14px 26px rgba(58,20,32,.25));
+    transition:transform 1s cubic-bezier(.34,1.56,.64,1), opacity .8s ease;
+    z-index:2;
+  }
+  .bloom-stage.armed .hero-flower{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
 
-  .flower-field{ position:absolute; inset:0; z-index:1; }
-  /* Use CSS var for rotation and class-based prebloom -> bloomed flow */
-  .field-flower{ position:absolute; left:0; top:0; transform:translate(-50%,-50%) scale(0) rotate(var(--rot, 0deg)); opacity:0; transition:transform .85s cubic-bezier(.34,1.56,.64,1), opacity .6s ease; pointer-events:none; will-change:transform,opacity; }
-  .field-flower.prebloom{ /* explicit initial state */ transform:translate(-50%,-50%) scale(0) rotate(var(--rot, 0deg)); opacity:0; }
-  .field-flower.bloomed{ transform:translate(-50%,-50%) scale(1) rotate(var(--rot, 0deg)); opacity:1; }
+  .flower-field{
+    position:absolute;
+    inset:0;
+    z-index:1;
+  }
+  .field-flower{
+    position:absolute;
+    transform:translate(-50%,-50%) scale(0) rotate(0deg);
+    opacity:0;
+    transition:transform .85s cubic-bezier(.34,1.56,.64,1), opacity .6s ease;
+    pointer-events:none;
+  }
+  .field-flower.bloomed{
+    opacity:1;
+  }
 
-  .continue-btn{ position:absolute; left:50%; bottom:6%; transform:translateX(-50%) translateY(10px); z-index:3; text-decoration:none; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.1rem; color:var(--maroon-deep); background:var(--cream); border:1px solid rgba(58,20,32,.15); padding:.75rem 1.6rem; border-radius:999px; box-shadow:0 10px 26px rgba(58,20,32,.18); opacity:0; transition:opacity .6s ease, transform .6s ease, background .25s ease; pointer-events:none; }
+  .continue-btn{
+    position:absolute;
+    left:50%;
+    bottom:6%;
+    transform:translateX(-50%) translateY(10px);
+    z-index:3;
+    text-decoration:none;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--maroon-deep);
+    background:var(--cream);
+    border:1px solid rgba(58,20,32,.15);
+    padding:.75rem 1.6rem;
+    border-radius:999px;
+    box-shadow:0 10px 26px rgba(58,20,32,.18);
+    opacity:0;
+    transition:opacity .6s ease, transform .6s ease, background .25s ease;
+    pointer-events:none;
+  }
   .continue-btn:hover{ background:var(--gold); }
-  .continue-btn.show{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+  .continue-btn.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+    pointer-events:auto;
+  }
 
-  @media (prefers-reduced-motion: reduce){ .hero-flower, .field-flower, .continue-btn, .gate, .pet{ transition:none !important; animation:none !important; } }
-  @media (max-width:420px){ .key{ width:62px; height:62px; } .keypad{ gap:14px; grid-template-columns:repeat(3,62px);} .pet{ width:70px; height:70px; } }
+  @media (prefers-reduced-motion: reduce){
+    .hero-flower, .field-flower, .continue-btn, .gate, .pet{ transition:none !important; animation:none !important; }
+  }
+
+  @media (max-width:420px){
+    .key{ width:62px; height:62px; }
+    .keypad{ gap:14px; grid-template-columns:repeat(3,62px);} 
+    .pet{ width:70px; height:70px; bottom:100px; }
+  }
 </style>
 </head>
 <body>
@@ -144,6 +283,7 @@
       <!-- Pet: inline SVG so no external asset required -->
       <div class="pet" id="pet" aria-hidden="true">
         <svg class="pet-inner" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- simple cute dog shape inspired by the provided image -->
           <defs>
             <style>
               .fur{ fill:#f9d9b8; }
@@ -160,12 +300,20 @@
             <ellipse class="fur" cx="46" cy="54" rx="38" ry="30" />
             <circle class="fur" cx="16" cy="40" r="12" />
             <circle class="fur" cx="68" cy="24" r="10" />
+
+            <!-- legs -->
             <rect class="leg" x="22" y="70" width="12" height="18" rx="6" />
             <rect class="leg" x="50" y="70" width="12" height="18" rx="6" />
+
+            <!-- tail -->
             <path class="tail" d="M84 46c6-2 14-2 18 6-6-2-12 6-18 10" />
+
+            <!-- eyes & nose -->
             <circle class="eye" cx="34" cy="44" r="3" />
             <circle class="eye" cx="54" cy="42" r="3" />
             <circle class="nose" cx="44" cy="54" r="2.6" />
+
+            <!-- mouth (subtle) -->
             <path d="M40 58 q4 4 8 0" stroke="#b57b60" stroke-width="1" fill="none" stroke-linecap="round" />
           </g>
         </svg>
@@ -175,15 +323,19 @@
         <button class="key" data-key="1" aria-label="1">1</button>
         <button class="key" data-key="2" aria-label="2">2</button>
         <button class="key" data-key="3" aria-label="3">3</button>
+
         <button class="key" data-key="4" aria-label="4">4</button>
         <button class="key" data-key="5" aria-label="5">5</button>
         <button class="key" data-key="6" aria-label="6">6</button>
+
         <button class="key" data-key="7" aria-label="7">7</button>
         <button class="key" data-key="8" aria-label="8">8</button>
         <button class="key" data-key="9" aria-label="9">9</button>
+
         <button class="key special" data-key="clear" aria-label="clear">C</button>
         <button class="key" data-key="0" aria-label="0">0</button>
         <button class="key special" data-key="enter" aria-label="enter">
+          <!-- simple envelope icon -->
           <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M3 7.5L12 13L21 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
             <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.4" />
@@ -198,8 +350,8 @@
 </div>
 
 <div class="bloom-stage" id="bloomStage">
-  <img class="hero-flower" id="heroFlower" src="flower.png" alt="" loading="eager" decoding="async">
-  <div class="flower-field" id="flowerField" aria-hidden="true"></div>
+  <img class="hero-flower" id="heroFlower" src="flower.png" alt="">
+  <div class="flower-field" id="flowerField"></div>
   <a class="continue-btn" id="continueBtn" href="reveal.html">Continue &rarr;</a>
 </div>
 
@@ -213,19 +365,28 @@
   const flowerField = document.getElementById('flowerField');
   const continueBtn = document.getElementById('continueBtn');
 
-  // Keypad/pin logic
+  // New keypad/pin logic
   const keyButtons = document.querySelectorAll('.key');
   const pinDots = document.querySelectorAll('.pin-dot');
   let pin = [];
   let bloomed = false;
 
-  function updateDots(){ pinDots.forEach((dot, i) => dot.classList.toggle('filled', i < pin.length)); }
-  function clearPin(){ pin = []; updateDots(); }
+  function updateDots(){
+    pinDots.forEach((dot, i) => {
+      if(i < pin.length) dot.classList.add('filled');
+      else dot.classList.remove('filled');
+    });
+  }
+
+  function clearPin(){
+    pin = [];
+    updateDots();
+  }
 
   function tryUnlock(){
     const entry = pin.join('');
     if(entry === PASSWORD){
-      gate.classList.add('hide');
+      document.getElementById('gate').classList.add('hide');
       startBloom();
     } else {
       pwError.classList.add('show');
@@ -237,64 +398,96 @@
     }
   }
 
-  keyButtons.forEach(btn => btn.addEventListener('click', () => {
-    const k = btn.getAttribute('data-key');
-    if(k === 'clear') clearPin();
-    else if(k === 'enter') { if(pin.length) tryUnlock(); }
-    else { if(pin.length < 6){ pin.push(k); updateDots(); if(pin.length === 6) setTimeout(tryUnlock, 180); } }
-  }));
+  keyButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.getAttribute('data-key');
+      if(k === 'clear'){
+        clearPin();
+      } else if(k === 'enter'){
+        if(pin.length > 0) tryUnlock();
+      } else {
+        if(pin.length < 6){
+          pin.push(k);
+          updateDots();
+          // if reached 6, auto-submit
+          if(pin.length === 6) setTimeout(tryUnlock, 180);
+        }
+      }
+    });
+  });
 
   // keyboard support
   window.addEventListener('keydown', (e) => {
-    if(e.key >= '0' && e.key <= '9'){ if(pin.length < 6){ pin.push(e.key); updateDots(); if(pin.length === 6) setTimeout(tryUnlock, 180); } }
-    else if(e.key === 'Backspace'){ pin.pop(); updateDots(); }
-    else if(e.key === 'Enter'){ if(pin.length) tryUnlock(); }
+    if(e.key >= '0' && e.key <= '9'){
+      if(pin.length < 6){ pin.push(e.key); updateDots(); if(pin.length === 6) setTimeout(tryUnlock, 180); }
+    } else if(e.key === 'Backspace'){
+      pin.pop(); updateDots();
+    } else if(e.key === 'Enter'){
+      if(pin.length > 0) tryUnlock();
+    }
   });
 
-  // -------------------- Pet follow-cursor (smoothed) --------------------
+  // Pet follow-cursor logic (robust, reintroduced)
   (function(){
     const pet = document.getElementById('pet');
     const card = document.getElementById('gateCard');
     if(!pet || !card) return;
 
-    // local coordinates; movement applied with transform only (GPU)
-    let petX = card.offsetWidth/2;
-    let petY = card.offsetHeight*0.45;
+    // initial position (centered above keypad)
+    let petX = card.offsetWidth / 2;
+    let petY = card.offsetHeight * 0.45;
     let targetX = petX;
     let targetY = petY;
     let lastX = petX;
     let walking = false;
 
-    // position pet at center (use transform later)
-    pet.style.transform = `translate3d(${petX - pet.offsetWidth/2}px, ${petY - pet.offsetHeight/2}px, 0)`;
+    // set initial inline position so layout is consistent
+    pet.style.left = petX + 'px';
+    pet.style.top = (petY - 10) + 'px';
 
-    function toLocal(clientX, clientY){ const r = card.getBoundingClientRect(); return { x: clientX - r.left, y: clientY - r.top }; }
+    function toLocal(clientX, clientY){
+      const r = card.getBoundingClientRect();
+      return { x: clientX - r.left, y: clientY - r.top };
+    }
 
     function setTargetFromEvent(clientX, clientY){
       const p = toLocal(clientX, clientY);
-      const padding = 24;
+      const padding = 24; // keep pet inside card edges
       targetX = Math.max(padding, Math.min(card.offsetWidth - padding, p.x));
       targetY = Math.max(10, Math.min(card.offsetHeight - 40, p.y));
     }
 
-    // pointer move updates only target (cheap)
-    document.addEventListener('pointermove', (e) => { if(e && e.clientX != null) setTargetFromEvent(e.clientX, e.clientY); });
-    document.addEventListener('touchmove', (e) => { if(e.touches && e.touches[0]) setTargetFromEvent(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    // Prefer pointer events; fall back to mouse/touch
+    function onPointerMove(e){
+      if(e && e.clientX != null) setTargetFromEvent(e.clientX, e.clientY);
+    }
 
-    document.addEventListener('pointerleave', () => { targetX = card.offsetWidth/2; targetY = card.offsetHeight*0.45; });
+    function onTouchMove(e){
+      if(e.touches && e.touches[0]){
+        setTargetFromEvent(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }
 
-    // animation loop — only write transform (no left/top)
+    // Listen on document so movement is captured even when cursor is slightly outside the card
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('touchmove', onTouchMove, { passive: true });
+
+    // If pointer leaves the viewport, return pet to center
+    document.addEventListener('pointerleave', () => {
+      targetX = card.offsetWidth / 2;
+      targetY = card.offsetHeight * 0.45;
+    });
+
+    // animation loop
     function raf(){
-      // lerp
-      petX += (targetX - petX) * 0.12; // slower smoothing for less jitter
-      petY += (targetY - petY) * 0.12;
+      petX += (targetX - petX) * 0.18;
+      petY += (targetY - petY) * 0.18;
 
-      const tx = Math.round(petX - pet.offsetWidth/2);
-      const ty = Math.round(petY - pet.offsetHeight/2);
-      pet.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      pet.style.left = petX + 'px';
+      pet.style.top = (petY - 10) + 'px';
 
       const dx = petX - lastX;
-      if(Math.abs(dx) > 1){
+      if(Math.abs(dx) > 0.5){
         pet.classList.add('walking');
         if(dx < 0) pet.classList.add('left'); else pet.classList.remove('left');
         walking = true;
@@ -302,41 +495,50 @@
         pet.classList.remove('walking');
         walking = false;
       }
+
       lastX = petX;
       requestAnimationFrame(raf);
     }
+
     requestAnimationFrame(raf);
 
     // respect reduced motion
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     if(mq && mq.matches){
-      document.removeEventListener('pointermove', () => {});
-      document.removeEventListener('touchmove', () => {});
-      pet.style.transform = 'translate3d(50%,0,0)';
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('touchmove', onTouchMove);
+      pet.style.left = '50%';
+      pet.style.top = '';
+      pet.style.transform = 'translate(-50%,0)';
     }
   })();
 
-  // -------------------- Bloom optimization (fixed transition flow) --------------------
-  function startBloom(){ if(bloomed) return; bloomed = true; requestAnimationFrame(() => bloomStage.classList.add('armed')); setTimeout(multiplyFlowers, 120); }
+  // Keep older bloom logic
+  function startBloom() {
+    if (bloomed) return;
+    bloomed = true;
 
-  // simple debounce helper
-  function debounce(fn, wait){ let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn.apply(this, args), wait); }; }
+    // 1. the single flower appears alone, centered
+    requestAnimationFrame(() => bloomStage.classList.add('armed'));
 
-  function multiplyFlowers(){
-    flowerField.innerHTML = ''; // clear previous
-    const w = window.innerWidth; const h = window.innerHeight;
+    // 2. after a pause, it multiplies to fill the screen
+    setTimeout(multiplyFlowers, 100);
+  }
 
-    const baseSize = Math.max(70, Math.min(w, h) * 0.12);
-    const spacing = baseSize * 0.45;
+  function multiplyFlowers() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const baseSize = Math.max(90, Math.min(w, h) * 0.16);
+    const spacing = baseSize * 0.68;
 
-    const cx = w/2; const cy = h/2; const items = [];
+    const cx = w / 2;
+    const cy = h / 2;
+    const items = [];
 
-    // Grid fill but cap total to avoid huge DOM
-    const cap = 140; // upper bound for performance
     let row = 0;
-    for (let y = -spacing; y < h + spacing && items.length < cap; y += spacing * 0.86) {
-      const xOffset = (row % 2) ? spacing/2 : 0;
-      for (let x = -spacing + xOffset; x < w + spacing && items.length < cap; x += spacing) {
+    for (let y = -spacing; y < h + spacing; y += spacing * 0.86) {
+      const xOffset = (row % 2) ? spacing / 2 : 0;
+      for (let x = -spacing + xOffset; x < w + spacing; x += spacing) {
         const jx = x + (Math.random() - 0.5) * spacing * 0.7;
         const jy = y + (Math.random() - 0.5) * spacing * 0.7;
         const size = baseSize * (0.75 + Math.random() * 0.6);
@@ -349,42 +551,36 @@
 
     const maxDist = Math.max(...items.map(i => i.dist)) || 1;
 
-    // create nodes in a fragment for one DOM insert and use class-based prebloom -> bloomed
-    const frag = document.createDocumentFragment();
-    const delays = [];
     items.forEach(item => {
       const img = document.createElement('img');
       img.src = 'flower.png';
-      img.className = 'field-flower prebloom';
+      img.className = 'field-flower';
       img.style.left = item.x + 'px';
       img.style.top = item.y + 'px';
       img.style.width = item.size + 'px';
       img.style.setProperty('--rot', item.rot + 'deg');
+      const hue = (Math.random() - 0.5) * 20;
+      const sat = 0.9 + Math.random() * 0.25;
+      img.style.filter = `hue-rotate(${hue}deg) saturate(${sat}) drop-shadow(0 6px 10px rgba(58,20,32,.18))`;
+      flowerField.appendChild(img);
 
-      // stagger using transition-delay instead of setTimeout per element
-      const delay = Math.round((item.dist / maxDist) * 900 + Math.random() * 220);
-      img.style.transitionDelay = delay + 'ms';
-      delays.push(delay);
-      frag.appendChild(img);
+      const delay = (item.dist / maxDist) * 900 + Math.random() * 220;
+      setTimeout(() => {
+        img.style.transform = `translate(-50%,-50%) scale(1) rotate(${item.rot}deg)`;
+        img.classList.add('bloomed');
+      }, delay);
     });
 
-    flowerField.appendChild(frag);
-
-    // Force a reflow to ensure initial scale(0) state is registered, then flip to bloomed in rAF
-    void flowerField.offsetWidth;
-    requestAnimationFrame(() => {
-      const nodes = flowerField.querySelectorAll('.field-flower');
-      nodes.forEach((img) => img.classList.add('bloomed'));
-
-      // show continue button after the last animation + small buffer
-      const maxDelay = delays.length ? Math.max(...delays) : 0;
-      const totalTime = maxDelay + 900; // 900 matches transition duration
-      setTimeout(() => continueBtn.classList.add('show'), totalTime);
-    });
+    const totalTime = 900 + 220 + 500;
+    setTimeout(() => continueBtn.classList.add('show'), totalTime);
   }
 
-  // debounce resize to avoid thrash
-  window.addEventListener('resize', debounce(() => { if(bloomed){ flowerField.innerHTML = ''; multiplyFlowers(); } }, 220));
+  window.addEventListener('resize', () => {
+    if (bloomed) {
+      flowerField.innerHTML = '';
+      multiplyFlowers();
+    }
+  });
 </script>
 
 </body>
