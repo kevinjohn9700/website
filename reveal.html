@@ -312,9 +312,79 @@
     .falling-hearts{ display:none; }
   }
 
+  /* ======================= SONGS SECTION ======================= */
+  .songs-blend{
+    position:relative;
+    height:clamp(120px, 20vh, 240px);
+    background:linear-gradient(to bottom, var(--write) 0%, #2a0810 100%);
+  }
+  .songs-blend::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse at center, rgba(233,196,106,0.08), transparent 65%);
+  }
+
+  .songs-section{
+    position:relative;
+    min-height:100vh;
+    padding:clamp(3.5rem, 8vh, 5.5rem) 6vw clamp(6rem, 12vh, 8rem);
+    background:
+      radial-gradient(ellipse at 50% 22%, rgba(150,30,40,.5), transparent 62%),
+      linear-gradient(180deg, #4a0f1c 0%, #300a14 55%, #1c0509 100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow:hidden;
+  }
+
+  .songs-header{
+    text-align:center;
+    margin-bottom:clamp(2.4rem, 6vh, 3.6rem);
+  }
+  .songs-header h2{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(2rem, 6vw, 3.4rem);
+    color:var(--cream);
+    margin:0 0 .6rem;
+  }
+  .songs-sub{
+    letter-spacing:.38em;
+    text-transform:uppercase;
+    font-size:clamp(.7rem, 1.6vw, .85rem);
+    color:rgba(243,238,224,.72);
+    margin:0;
+  }
+
+  .songs-grid{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:1.6rem;
+    max-width:1120px;
+    width:100%;
+  }
+  .song-card{
+    width:min(340px, 100%);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 18px 40px rgba(0,0,0,.45);
+    background:#121212;
+    line-height:0;
+  }
+  .song-card iframe{
+    display:block;
+    width:100%;
+    height:152px;
+    border:0;
+  }
+
   @media (max-width:600px){
     .hero-wrap{ height:360vh; }
     .letter-wrap{ height:760vh; }
+    .song-card{ width:100%; max-width:420px; }
   }
 </style>
 </head>
@@ -356,6 +426,35 @@
     </div>
 
   </div>
+</div>
+
+<div class="songs-blend"></div>
+
+<div class="songs-section" id="songsSection">
+  <div class="songs-header">
+    <h2>Our Top Songs</h2>
+    <p class="songs-sub">The soundtrack of us</p>
+  </div>
+
+  <div class="songs-grid">
+    <div class="song-card">
+      <iframe src="https://open.spotify.com/embed/track/6Qyc6fS4DsZjB2mRW9DsQs?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Iris - The Goo Goo Dolls"></iframe>
+    </div>
+    <div class="song-card">
+      <iframe src="https://open.spotify.com/embed/track/5UNKkoNOjyMiI9qgLRdnKX?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="She Will Be Loved - Maroon 5"></iframe>
+    </div>
+    <div class="song-card">
+      <iframe src="https://open.spotify.com/embed/track/71pQifZL2v2N84aRLU8Ev1?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="You're Beautiful - James Blunt"></iframe>
+    </div>
+    <div class="song-card">
+      <iframe src="https://open.spotify.com/embed/track/1EzrEOXmMH3G43AXT1y7pA?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="I'm Yours - Jason Mraz"></iframe>
+    </div>
+    <div class="song-card">
+      <iframe src="https://open.spotify.com/embed/track/5OAJiCoAR9WcrxACDqPj3J?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Every Breath You Take - The Police"></iframe>
+    </div>
+  </div>
+
+  <button class="go-start show songs-go-start" id="goStartSongs">&uarr; Go to the start</button>
 </div>
 
 <script>
@@ -421,6 +520,14 @@
   goStart.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
   });
+
+  /* ======================= SONGS SECTION ======================= */
+  const goStartSongs = document.getElementById('goStartSongs');
+  if (goStartSongs) {
+    goStartSongs.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  }
 
   /* ======================= LETTER (line-by-line reveal on scroll) ======================= */
   // Each entry is one "line" that reveals on its own. Blank strings become
