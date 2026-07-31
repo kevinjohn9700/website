@@ -283,6 +283,35 @@
     transition:width .1s linear;
   }
 
+  /* ---- hearts that fall while scrolling through the letter section ---- */
+  .falling-hearts{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:4;
+  }
+  .falling-heart{
+    position:absolute;
+    top:-40px;
+    line-height:1;
+    color:var(--cream);
+    text-shadow:0 0 8px rgba(233,196,106,0.35);
+    will-change:transform, opacity;
+    animation-name:heart-fall;
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+  }
+  @keyframes heart-fall{
+    0%{ transform:translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    8%{ opacity:var(--heart-op, .75); }
+    85%{ opacity:var(--heart-op, .75); }
+    100%{ transform:translateY(105vh) translateX(var(--drift, 0px)) rotate(var(--spin, 90deg)); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .falling-hearts{ display:none; }
+  }
+
   @media (max-width:600px){
     .hero-wrap{ height:360vh; }
     .letter-wrap{ height:760vh; }
@@ -316,6 +345,8 @@
   <div class="letter-sticky">
 
     <div class="letter-progress"><div class="letter-progress-bar" id="letterProgressBar"></div></div>
+
+    <div class="falling-hearts" id="fallingHearts"></div>
 
     <div class="letter-card" id="letterCard"><!-- lines filled by JS --></div>
 
@@ -431,11 +462,50 @@
   const letterWrap = document.getElementById('letterWrap');
   const letterScrollHint = document.getElementById('letterScrollHint');
   const letterProgressBar = document.getElementById('letterProgressBar');
+  const fallingHearts = document.getElementById('fallingHearts');
+
+  // Spawn one (occasionally two) hearts that drift down the section.
+  // Called from the scroll loop, throttled by time so scrolling fast
+  // doesn't flood the page with hearts.
+  let lastHeartTime = 0;
+  function spawnHeart() {
+    const heart = document.createElement('span');
+    heart.className = 'falling-heart';
+    heart.textContent = '♡';
+
+    const left = 2 + Math.random() * 96;
+    const size = 12 + Math.random() * 20;
+    const duration = (4 + Math.random() * 5).toFixed(2);
+    const drift = Math.round(Math.random() * 80 - 40) + 'px';
+    const spin = Math.round(Math.random() * 140 - 70) + 'deg';
+    const op = (0.35 + Math.random() * 0.45).toFixed(2);
+
+    heart.style.left = left + '%';
+    heart.style.fontSize = size + 'px';
+    heart.style.animationDuration = duration + 's';
+    heart.style.setProperty('--drift', drift);
+    heart.style.setProperty('--spin', spin);
+    heart.style.setProperty('--heart-op', op);
+    if (Math.random() < 0.4) heart.style.color = 'var(--gold)';
+
+    heart.addEventListener('animationend', () => heart.remove());
+    fallingHearts.appendChild(heart);
+  }
+
+  function maybeSpawnHearts(inView) {
+    if (!inView || reduceMotion) return;
+    const now = Date.now();
+    if (now - lastHeartTime < 110) return;
+    lastHeartTime = now;
+    spawnHeart();
+    if (Math.random() < 0.35) spawnHeart();
+  }
 
   function renderLetter() {
     const rect = letterWrap.getBoundingClientRect();
     const scrollable = letterWrap.offsetHeight - window.innerHeight;
     const progress = Math.min(1, Math.max(0, -rect.top / scrollable));
+    const inView = rect.top < window.innerHeight && rect.bottom > 0;
 
     letterProgressBar.style.width = (progress * 100) + '%';
 
@@ -451,6 +521,8 @@
       if (i < revealCount) el.classList.add('visible');
       else el.classList.remove('visible');
     });
+
+    maybeSpawnHearts(inView);
   }
 
   let ticking = false;
