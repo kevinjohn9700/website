@@ -437,17 +437,6 @@
     const card = document.getElementById('gateCard');
     if(!pet || !card) return;
 
-    // respect reduced motion — decide up front instead of after the
-    // animation loop has already started, otherwise the loop just
-    // keeps overwriting the "resting" position every frame anyway.
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if(mq && mq.matches){
-      pet.style.left = '50%';
-      pet.style.top = '';
-      pet.style.transform = 'translate(-50%,0)';
-      return;
-    }
-
     // initial position (centered above keypad)
     let petX = card.offsetWidth / 2;
     let petY = card.offsetHeight * 0.45;
@@ -581,11 +570,24 @@
     setTimeout(() => continueBtn.classList.add('show'), totalTime);
   }
 
+  // Mobile browsers fire 'resize' constantly as the address bar
+  // collapses/expands while scrolling, even though nothing actually
+  // changed layout-wise. Rebuilding the whole flower field on every
+  // one of those made flowers flash away and re-bloom (visible as
+  // blank patches). Only rebuild on a genuine width change (real
+  // resize / orientation flip), and debounce it.
+  let lastWidth = window.innerWidth;
+  let resizeTimer = null;
   window.addEventListener('resize', () => {
-    if (bloomed) {
+    if (!bloomed) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const newWidth = window.innerWidth;
+      if (newWidth === lastWidth) return; // height-only jitter (mobile toolbar) — ignore
+      lastWidth = newWidth;
       flowerField.innerHTML = '';
       multiplyFlowers();
-    }
+    }, 250);
   });
 </script>
 
