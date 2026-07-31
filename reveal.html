@@ -381,6 +381,38 @@
     border:0;
   }
 
+  /* ======================= MOON SECTION ======================= */
+  .moon-section{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:2rem;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(150,30,40,.5), transparent 62%),
+      linear-gradient(180deg, #1c0509 0%, #300a14 45%, #1c0509 100%);
+    overflow:hidden;
+  }
+  .moon-text{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.8rem, 6vw, 3.6rem);
+    line-height:1.3;
+    text-align:center;
+    color:var(--cream);
+    max-width:16ch;
+    margin:0;
+  }
+  .moon-text .cursor{
+    display:inline-block;
+    width:2px;
+    margin-left:2px;
+    background:var(--cream);
+    animation:blink 1s step-end infinite;
+  }
+
   @media (max-width:600px){
     .hero-wrap{ height:360vh; }
     .letter-wrap{ height:760vh; }
@@ -455,6 +487,10 @@
   </div>
 
   <button class="go-start show songs-go-start" id="goStartSongs">&uarr; Go to the start</button>
+</div>
+
+<div class="moon-section" id="moonSection">
+  <h2 class="moon-text" id="moonText"></h2>
 </div>
 
 <script>
@@ -664,6 +700,57 @@
 
   renderHero();
   renderLetter();
+
+  /* ======================= MOON SECTION (typewriter, starts on view) ======================= */
+  // Unlike the letter section, this one is NOT scroll-scrubbed: it plays a
+  // one-time typewriter animation the moment the section scrolls into view,
+  // then stays finished (won't re-type if you scroll back up and down again).
+  const MOON_MESSAGE = "I love you, to the moon and back";
+  const moonText = document.getElementById('moonText');
+  const moonSection = document.getElementById('moonSection');
+  let moonTyped = false;
+  let moonTypeInterval = null;
+
+  function typeMoonMessage() {
+    if (moonTyped) return;
+    moonTyped = true;
+
+    let i = 0;
+    moonText.innerHTML = '<span class="cursor">&nbsp;</span>';
+
+    moonTypeInterval = setInterval(() => {
+      i++;
+      const shown = MOON_MESSAGE.slice(0, i);
+      moonText.innerHTML = shown + '<span class="cursor">&nbsp;</span>';
+
+      if (i >= MOON_MESSAGE.length) {
+        clearInterval(moonTypeInterval);
+        // let the cursor blink a bit, then settle without it
+        setTimeout(() => { moonText.textContent = MOON_MESSAGE; }, 1400);
+      }
+    }, reduceMotion ? 0 : 65);
+
+    if (reduceMotion) {
+      clearInterval(moonTypeInterval);
+      moonText.textContent = MOON_MESSAGE;
+    }
+  }
+
+  if ('IntersectionObserver' in window) {
+    const moonObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          typeMoonMessage();
+          moonObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    moonObserver.observe(moonSection);
+  } else {
+    // fallback for very old browsers: just type it on load
+    typeMoonMessage();
+  }
 </script>
 
 </body>
