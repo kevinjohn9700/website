@@ -417,6 +417,7 @@
     .hero-wrap{ height:360vh; }
     .letter-wrap{ height:760vh; }
     .song-card{ width:100%; max-width:420px; }
+    .polaroid{ width:clamp(78px, 21vw, 110px); }
   }
 </style>
 </head>
@@ -501,7 +502,8 @@
 
   const wall = document.getElementById('polaroidWall');
 
-  const rows = 2;
+  const isMobileLayout = window.innerWidth <= 600;
+  const rows = isMobileLayout ? 4 : 2;
   const cols = Math.ceil(PHOTO_COUNT / rows);
   const cellW = 100 / cols;
   const cellH = 100 / rows;
