@@ -524,7 +524,7 @@
     div.style.setProperty('--r', rot + 'deg');
 
     const img = document.createElement('img');
-    img.src = `photos/photo${String(i + 1).padStart(2, '0')}.jpg`;
+    img.src = `photo${String(i + 1).padStart(2, '0')}.jpg`;
     img.alt = '';
     div.appendChild(img);
     wall.appendChild(div);
