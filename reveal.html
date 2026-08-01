@@ -54,7 +54,7 @@
   }
   .polaroid{
     position:absolute;
-    width:clamp(96px, 13.5vw, 190px);
+    width:clamp(90px, 11.5vw, 160px);
     background:#efe9df;
     padding:8px 8px 28px;
     border-radius:2px;
@@ -497,11 +497,11 @@
   /* ======================= HERO (unchanged) ======================= */
   const MESSAGE = "Happy girlfriend's day, baby";
   const PHOTO_COUNT = 8;
-  const PHOTO_ROTATIONS = [-6, 4, -3, 7, -8, 2, 5, -4, 3, -7, 6, -2, 8, -5, 4, -3];
+  const PHOTO_ROTATIONS = [-6, 4, -3, 7, -8, 2, 5, -4];
 
   const wall = document.getElementById('polaroidWall');
 
-  const rows = 4;
+  const rows = 2;
   const cols = Math.ceil(PHOTO_COUNT / rows);
   const cellW = 100 / cols;
   const cellH = 100 / rows;
@@ -512,8 +512,8 @@
 
     const baseLeft = col * cellW + cellW / 2;
     const baseTop = row * cellH + cellH / 2;
-    const jitterX = (Math.random() - 0.5) * cellW * 0.3;
-    const jitterY = (Math.random() - 0.5) * cellH * 0.3;
+    const jitterX = 0;
+    const jitterY = 0;
 
     const div = document.createElement('div');
     div.className = 'polaroid';
